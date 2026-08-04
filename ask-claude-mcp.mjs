@@ -225,6 +225,20 @@ function sanitize(text) {
   t = t.replace(/\u001b\[[0-?]*[ -\/]*[@-~]/g, ""); // CSI sequences
   t = t.replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, ""); // stray controls, incl. lone ESC
   t = redactPrivateKeyBlocks(t);
+  // Same best-effort idea, widened to the token shapes that actually turn up in
+  // a repo: a .env Claude was asked to read, a stack trace, a config dump.
+  // Whatever crosses this line lands in Codex's context and goes to OpenAI, so
+  // the cheap patterns are worth having. Still not a guarantee.
+  for (const pattern of [
+    /\bsk-(?:ant-)?[A-Za-z0-9_-]{20,}/g,      // Anthropic / OpenAI style keys
+    /\bAIza[0-9A-Za-z_-]{35}\b/g,              // Google API keys
+    /\bgh[pousr]_[A-Za-z0-9]{20,}\b/g,         // GitHub tokens
+    /\bxox[baprs]-[A-Za-z0-9-]{10,}/g,         // Slack tokens
+    /\bAKIA[0-9A-Z]{16}\b/g,                   // AWS access key ids
+    /\bey[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}/g, // JWTs
+  ]) {
+    t = t.replace(pattern, "[frenemy: credential redacted]");
+  }
   return t;
 }
 
