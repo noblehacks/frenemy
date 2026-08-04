@@ -102,12 +102,21 @@ function runClaude({ prompt }, write) {
       args.push("--permission-mode", "acceptEdits");
       args.push("--setting-sources", "user");
     } else {
-      // Read mode, enforced: safe mode + side-effect tools disabled.
-      // Subagents stay available and inherit the bans.
+      // Read mode, enforced: safe mode + an allowlist of tools.
+      // An allowlist rather than a denylist, because denying `Bash` by name
+      // leaves Windows open: `PowerShell` is a separate tool, switched on by
+      // CLAUDE_CODE_USE_POWERSHELL_TOOL or the Windows rollout rather than by
+      // settings, and it can run `codex exec`, write files and reach the
+      // network. With an allowlist the side-effect tools are absent, not just
+      // named. That absence is also the loop guard: no shell means no way back
+      // to Codex, whatever instructions this Claude happens to read.
+      // Subagents stay available and inherit the restriction.
       args.push("--safe-mode");
+      args.push("--tools", "Read,Glob,Grep,Agent");
+      // Named as well, as a second lock if the allowlist is ever widened.
       args.push(
         "--disallowedTools",
-        "Bash", "Edit", "Write", "NotebookEdit",
+        "Bash", "PowerShell", "Edit", "Write", "NotebookEdit",
         "WebFetch", "WebSearch"
       );
       args.push("--strict-mcp-config");
