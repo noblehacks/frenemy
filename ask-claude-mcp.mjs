@@ -102,12 +102,21 @@ function runClaude({ prompt }, write) {
       args.push("--permission-mode", "acceptEdits");
       args.push("--setting-sources", "user");
     } else {
-      // Read mode, enforced: safe mode + side-effect tools disabled.
-      // Subagents stay available and inherit the bans.
+      // Read mode, enforced: safe mode + an allowlist of tools.
+      // An allowlist rather than a denylist, because denying `Bash` by name
+      // leaves Windows open: `PowerShell` is a separate tool, switched on by
+      // CLAUDE_CODE_USE_POWERSHELL_TOOL or the Windows rollout rather than by
+      // settings, and it can run `codex exec`, write files and reach the
+      // network. With an allowlist the side-effect tools are absent, not just
+      // named. That absence is also the loop guard: no shell means no way back
+      // to Codex, whatever instructions this Claude happens to read.
+      // Subagents stay available and inherit the restriction.
       args.push("--safe-mode");
+      args.push("--tools", "Read,Glob,Grep,Agent");
+      // Named as well, as a second lock if the allowlist is ever widened.
       args.push(
         "--disallowedTools",
-        "Bash", "Edit", "Write", "NotebookEdit",
+        "Bash", "PowerShell", "Edit", "Write", "NotebookEdit",
         "WebFetch", "WebSearch"
       );
       args.push("--strict-mcp-config");
@@ -186,6 +195,27 @@ function runClaude({ prompt }, write) {
   });
 }
 
+// Cut out PEM private key blocks. Doing this with one lazy regex,
+// `BEGIN...[\s\S]*?...END`, is quadratic when the text holds many BEGIN markers
+// and no END: every marker rescans the rest of the string. Both scans below only
+// ever move forward, so the work is linear in the length of the text.
+function redactPrivateKeyBlocks(t) {
+  const beginRe = /-----BEGIN [A-Z ]*PRIVATE KEY-----/g;
+  const endRe = /-----END [A-Z ]*PRIVATE KEY-----/g;
+  let out = "";
+  let cursor = 0;
+  let begin;
+  while ((begin = beginRe.exec(t)) !== null) {
+    endRe.lastIndex = beginRe.lastIndex;
+    const end = endRe.exec(t);
+    if (!end) break; // unterminated block: leave the tail as it is, same as before
+    out += t.slice(cursor, begin.index) + "[frenemy: private key block redacted]";
+    cursor = end.index + end[0].length;
+    beginRe.lastIndex = cursor;
+  }
+  return out + t.slice(cursor);
+}
+
 // Strip terminal control sequences (keep newline and tab) and redact private
 // key blocks before Claude's output enters Codex's context. The key redaction
 // is best effort only; do not rely on it to prevent secret leakage.
@@ -194,10 +224,21 @@ function sanitize(text) {
   t = t.replace(/\u001b\][^\u0007\u001b]*(?:\u0007|\u001b\\)?/g, ""); // OSC sequences
   t = t.replace(/\u001b\[[0-?]*[ -\/]*[@-~]/g, ""); // CSI sequences
   t = t.replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, ""); // stray controls, incl. lone ESC
-  t = t.replace(
-    /-----BEGIN [A-Z ]*PRIVATE KEY-----[\s\S]*?-----END [A-Z ]*PRIVATE KEY-----/g,
-    "[frenemy: private key block redacted]"
-  );
+  t = redactPrivateKeyBlocks(t);
+  // Same best-effort idea, widened to the token shapes that actually turn up in
+  // a repo: a .env Claude was asked to read, a stack trace, a config dump.
+  // Whatever crosses this line lands in Codex's context and goes to OpenAI, so
+  // the cheap patterns are worth having. Still not a guarantee.
+  for (const pattern of [
+    /\bsk-(?:ant-)?[A-Za-z0-9_-]{20,}/g,      // Anthropic / OpenAI style keys
+    /\bAIza[0-9A-Za-z_-]{35}\b/g,              // Google API keys
+    /\bgh[pousr]_[A-Za-z0-9]{20,}\b/g,         // GitHub tokens
+    /\bxox[baprs]-[A-Za-z0-9-]{10,}/g,         // Slack tokens
+    /\bAKIA[0-9A-Z]{16}\b/g,                   // AWS access key ids
+    /\bey[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}/g, // JWTs
+  ]) {
+    t = t.replace(pattern, "[frenemy: credential redacted]");
+  }
   return t;
 }
 
@@ -238,6 +279,16 @@ async function handle(msg) {
     if (!tool) {
       return reply(id, {
         content: [{ type: "text", text: `Unknown tool: ${params?.name}` }],
+        isError: true,
+      });
+    }
+    // The schema says prompt is required, but nothing enforces it on the wire.
+    // Without this check a missing prompt becomes the literal string "undefined"
+    // and burns a full Claude call, and in write mode an unsupervised one.
+    const prompt = params?.arguments?.prompt;
+    if (typeof prompt !== "string" || prompt.trim() === "") {
+      return reply(id, {
+        content: [{ type: "text", text: "prompt is required and must be a non-empty string." }],
         isError: true,
       });
     }
