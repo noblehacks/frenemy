@@ -282,6 +282,16 @@ async function handle(msg) {
         isError: true,
       });
     }
+    // The schema says prompt is required, but nothing enforces it on the wire.
+    // Without this check a missing prompt becomes the literal string "undefined"
+    // and burns a full Claude call, and in write mode an unsupervised one.
+    const prompt = params?.arguments?.prompt;
+    if (typeof prompt !== "string" || prompt.trim() === "") {
+      return reply(id, {
+        content: [{ type: "text", text: "prompt is required and must be a non-empty string." }],
+        isError: true,
+      });
+    }
     const write = tool.name === "ask_claude_write";
     const { ok, text } = await runClaude(params.arguments ?? {}, write);
     return reply(id, { content: [{ type: "text", text: sanitize(text) }], isError: !ok });
