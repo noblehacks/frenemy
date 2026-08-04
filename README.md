@@ -150,11 +150,19 @@ fully accept that risk.
   Tool callers cannot change that directory. (Claude's own file-permission rules are what
   govern which paths it may read.)
 - Read-only is **enforced**: `ask_claude` runs Claude in `--safe-mode` (which disables all
-  of your own customizations: hooks, plugins, MCP servers, CLAUDE.md, skills) with the
-  side-effect tools additionally switched off (`--disallowedTools`: file editing, the shell,
-  and web fetch/search), even if your settings would allow them. Subagents stay available
-  and inherit the same bans. Edits require the separate, unapproved-by-default
-  `ask_claude_write` tool.
+  of your own customizations: hooks, plugins, MCP servers, CLAUDE.md, skills) and hands it
+  an **allowlist** of tools, `--tools "Read,Glob,Grep,Agent"`, so the side-effect tools are
+  absent rather than merely denied. They are named in `--disallowedTools` as well, as a
+  second lock if the allowlist is ever widened. Edits require the separate,
+  unapproved-by-default `ask_claude_write` tool.
+  An allowlist rather than a denylist because **`PowerShell` is a separate tool from
+  `Bash`**: it is switched on by `CLAUDE_CODE_USE_POWERSHELL_TOOL` or by the Windows
+  rollout rather than by your settings, so denying `Bash` alone used to leave a full shell
+  available on Windows.
+  Subagents stay available and inherit the restriction. Measured through the relay on
+  Claude Code 2.1.220: the parent reports `Agent, Glob, Grep, Read`, a spawned
+  general-purpose subagent reports the identical set, and a subagent nested below that one
+  declaring `Tools: *` reports the same set again. No level has a shell.
 - `ask_claude_write` loads only your **user-level** settings (`--setting-sources user`).
   Hooks, plugins, or MCP servers that a cloned repository ships in its project settings are
   ignored, so a random repo can't inject its own automation into the relay.
