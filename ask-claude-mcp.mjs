@@ -195,6 +195,27 @@ function runClaude({ prompt }, write) {
   });
 }
 
+// Cut out PEM private key blocks. Doing this with one lazy regex,
+// `BEGIN...[\s\S]*?...END`, is quadratic when the text holds many BEGIN markers
+// and no END: every marker rescans the rest of the string. Both scans below only
+// ever move forward, so the work is linear in the length of the text.
+function redactPrivateKeyBlocks(t) {
+  const beginRe = /-----BEGIN [A-Z ]*PRIVATE KEY-----/g;
+  const endRe = /-----END [A-Z ]*PRIVATE KEY-----/g;
+  let out = "";
+  let cursor = 0;
+  let begin;
+  while ((begin = beginRe.exec(t)) !== null) {
+    endRe.lastIndex = beginRe.lastIndex;
+    const end = endRe.exec(t);
+    if (!end) break; // unterminated block: leave the tail as it is, same as before
+    out += t.slice(cursor, begin.index) + "[frenemy: private key block redacted]";
+    cursor = end.index + end[0].length;
+    beginRe.lastIndex = cursor;
+  }
+  return out + t.slice(cursor);
+}
+
 // Strip terminal control sequences (keep newline and tab) and redact private
 // key blocks before Claude's output enters Codex's context. The key redaction
 // is best effort only; do not rely on it to prevent secret leakage.
@@ -203,10 +224,7 @@ function sanitize(text) {
   t = t.replace(/\u001b\][^\u0007\u001b]*(?:\u0007|\u001b\\)?/g, ""); // OSC sequences
   t = t.replace(/\u001b\[[0-?]*[ -\/]*[@-~]/g, ""); // CSI sequences
   t = t.replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, ""); // stray controls, incl. lone ESC
-  t = t.replace(
-    /-----BEGIN [A-Z ]*PRIVATE KEY-----[\s\S]*?-----END [A-Z ]*PRIVATE KEY-----/g,
-    "[frenemy: private key block redacted]"
-  );
+  t = redactPrivateKeyBlocks(t);
   return t;
 }
 
