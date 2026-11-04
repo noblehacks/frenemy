@@ -1,0 +1,9 @@
+AGENTS-README-FIRST.yaml
+.mcpServer/
+cache/
+
+# Local QBrain runtime and authoritative storage stay outside source control.
+mcp.db
+mcp.db-*
+todo-bootstrap.marker
+docs/todo.yaml

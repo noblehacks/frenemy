@@ -1,0 +1,227 @@
+{
+  "timestamp": "2026-11-04T14:53:41",
+  "workspace": "F:/GitHub/frenemy",
+  "helperSession": "help-20261104204021-6a40695ccbfa4c4ab2ed7208599191c4",
+  "helperTurn": "turn-0002",
+  "helperStatus": "completed",
+  "helperTranscript": [
+    {
+      "timestampUtc": "2026-11-04T14:47:11.5245549-06:00",
+      "sessionId": "help-20261104204021-6a40695ccbfa4c4ab2ed7208599191c4",
+      "turnId": "turn-0002",
+      "role": "user",
+      "category": "transcript",
+      "text": "Answer directly from the following supplied evidence; no additional file inspection or tool calls are needed. Scope is a diagnosis/recovery recommendation, not execution. Parent verified via PowerShell.MCP: HTTP input at log line47389 is {title:'[Proposed v2] Discover and select a delegation target',priority:0,createBasicFlow:false}, NO Scope; corresponding SQL log47359 still reports old overlong Scope. Entity UseCaseEntity.Scope StringLength50. CreateUseCaseCommandHandler adds entity then SaveChanges; catch returns Failure(ex.Message,ex) without detach/clear. QBrainAi.Cqrs/ServiceCollectionExtensions.cs24 registers Dispatcher singleton. Dispatcher.cs25 stores injected IServiceProvider; line93 resolves handler via _services.GetRequiredService(handlerType). Handler constructors take McpDbContext. Thus failed EF tracked inserts can remain under root-provider lifetime. Service restarted14:39, plugin ListAsync now shows exactly7 baseline UCs and no12 proposed titles. Corrected pending payloads use Scope 'Proposed v2 / unapproved / proposed-v2' (36 chars), FR-FRENEMY-101..112, Realizes links, createBasicFlow=false, unapproved/proposed provenance in briefDescription. Recommend duplicate-safe save/readback sequencing and distinguish confirmed truncation from inferred retained-context mechanism. Also note separate RDP default helper resolution limitation; this session uses supported explicit agentPath and CODEX_HOME. Start FINAL ANSWER: and give the substantive answer now from supplied evidence."
+    },
+    {
+      "timestampUtc": "2026-11-04T14:48:03.7293263-06:00",
+      "sessionId": "help-20261104204021-6a40695ccbfa4c4ab2ed7208599191c4",
+      "turnId": "turn-0002",
+      "role": "assistant",
+      "category": "transcript",
+      "text": "The supplied evidence confirms the Scope length failure. `UseCaseEntity.Scope` permits 50 characters, and SQL still received the original overlong value even though HTTP input at line 47389 contained only `title`, `priority`, and `createBasicFlow:false`. Removing Scope from that later request did not remove the value reaching SQL.\n\nRetained EF tracking is the likely mechanism, but it is not conclusively proven. The create handler adds the entity before `SaveChanges` and leaves it tracked after failure. The singleton Dispatcher resolves handlers through its stored provider; handlers receive `McpDbContext`. That combination can retain a failed insert when resolution uses a context held by the root provider. Context identity and tracking evidence would establish the precise lifetime involved.\n\nThe restart at 14:39 provides a clean recovery checkpoint: plugin `ListAsync` now returns exactly seven baseline use cases and none of the twelve proposed titles. This confirms their absence from that readback; it does not independently prove the tracking mechanism.\n\nRecommended duplicate-safe recovery through the required plugin:\n\n1. Before each create, use `ListAsync` to check for the exact proposed title and provenance. If a match exists, read it back and reconcile its fields and links before considering another create.\n2. Save one proposed use case at a time with Scope `Proposed v2 / unapproved / proposed-v2`, `createBasicFlow:false`, and the unapproved/proposed provenance in `briefDescription`. That Scope is **38 characters**, within the 50-character limit.\n3. Read back the returned ID and verify title, Scope, provenance, unapproved status, and absence of an automatically generated basic flow. Create or verify its intended Realizes link to the corresponding requirement in `FR-FRENEMY-101` through `FR-FRENEMY-112`, then read back that link before proceeding.\n4. On any failure or ambiguous response, stop further creates and check persisted state before retrying. Another smaller payload cannot repair an already tracked failed entity.\n\nThe code correction should give each dispatch a properly scoped handler/context lifetime and discard the failed unit of work after a save failure. Returning `Failure(ex.Message, ex)` alone does not reset EF tracking.\n\nThe RDP helper limitation is separate: default executable/profile resolution lacks a console user in that environment. This diagnostic session’s supported explicit `agentPath` and `CODEX_HOME` address helper startup. They do not explain the UC persistence failure or waive plugin guardrails."
+    }
+  ],
+  "scopeLength": 38,
+  "confirmedCause": "SQL Server error2628, UseCases.Scope exceeded50chars",
+  "retainedContext": "Likely mechanism; exact runtime DbContext identity was not traced.",
+  "savedCount": 12,
+  "verifiedCount": 12,
+  "records": [
+    {
+      "id": 10186,
+      "title": "[Proposed v2] Discover and select a delegation target",
+      "scope": "Proposed v2 / unapproved / proposed-v2",
+      "briefDescription": "Actors: operator and participating agent CLIs. Main flow: Caller queries list_agents; service reports versions, capabilities and configuration status; caller selects a supported target among the four agents.\nProvenance: Source: docs/plans/grok-cline-integration.md:9-15,26-41,99. docs/plans/grok-cline-integration.md SHA256 3EEE11CEED26538066DFA6872670AD00CBF1EB5E62D6831FBE0C37A98808E406. PROPOSED, pending operator approval; capture does not authorize implementation. Source's acceptance scenarios are planned coverage, not existing unit tests or test-derived AC. No unit-test AC attached. Priority medium is an administrative import default. Integration excludes image-helper changes, macOS and remote execution (lines 82).\nNo test-derived AC: no unit-test suite found in the source checkout.",
+      "precondition": "Proposed v2 installed on Windows or Linux.",
+      "postcondition": "Supported caller-to-target route identified.",
+      "approvalStatus": "Draft",
+      "frLinks": [
+        {
+          "frId": "FR-FRENEMY-101",
+          "linkType": "Realizes"
+        }
+      ],
+      "flows": 0
+    },
+    {
+      "id": 10187,
+      "title": "[Proposed v2] Submit a durable delegation job",
+      "scope": "Proposed v2 / unapproved / proposed-v2",
+      "briefDescription": "Actors: operator and participating agent CLIs. Main flow: Caller submits read/write prompt and optional identity/provider/base controls; service obtains workspace/caller from connection, persists acceptance and returns a job ID; retried request ID does not launch duplicate work.\nProvenance: Source: docs/plans/grok-cline-integration.md:16,22-24,55. docs/plans/grok-cline-integration.md SHA256 3EEE11CEED26538066DFA6872670AD00CBF1EB5E62D6831FBE0C37A98808E406. PROPOSED, pending operator approval; capture does not authorize implementation. Source's acceptance scenarios are planned coverage, not existing unit tests or test-derived AC. No unit-test AC attached. Priority medium is an administrative import default. Integration excludes image-helper changes, macOS and remote execution (lines 82).\nNo test-derived AC: no unit-test suite found in the source checkout.",
+      "precondition": "Proposed v2 and configured target CLI.",
+      "postcondition": "One accepted job can be tracked by ID.",
+      "approvalStatus": "Draft",
+      "frLinks": [
+        {
+          "frId": "FR-FRENEMY-102",
+          "linkType": "Realizes"
+        }
+      ],
+      "flows": 0
+    },
+    {
+      "id": 10188,
+      "title": "[Proposed v2] Inspect progress and retrieve a job result",
+      "scope": "Proposed v2 / unapproved / proposed-v2",
+      "briefDescription": "Actors: operator and participating agent CLIs. Main flow: Caller queries get_job and reads read_job_events using a continuation cursor; service returns lifecycle state and retained events; completed work exposes answer, artifacts, identity and audit status.\nProvenance: Source: docs/plans/grok-cline-integration.md:17-18,56-58,62. docs/plans/grok-cline-integration.md SHA256 3EEE11CEED26538066DFA6872670AD00CBF1EB5E62D6831FBE0C37A98808E406. PROPOSED, pending operator approval; capture does not authorize implementation. Source's acceptance scenarios are planned coverage, not existing unit tests or test-derived AC. No unit-test AC attached. Priority medium is an administrative import default. Integration excludes image-helper changes, macOS and remote execution (lines 82).\nNo test-derived AC: no unit-test suite found in the source checkout.",
+      "precondition": "Known proposed-v2 job ID.",
+      "postcondition": "Caller can inspect complete retained redacted evidence and results.",
+      "approvalStatus": "Draft",
+      "frLinks": [
+        {
+          "frId": "FR-FRENEMY-103",
+          "linkType": "Realizes"
+        }
+      ],
+      "flows": 0
+    },
+    {
+      "id": 10189,
+      "title": "[Proposed v2] Cancel a selected delegation job",
+      "scope": "Proposed v2 / unapproved / proposed-v2",
+      "briefDescription": "Actors: operator and participating agent CLIs. Main flow: Caller sends cancel_job for a known job; service cancels its owned process tree while leaving unrelated agent sessions unaffected.\nProvenance: Source: docs/plans/grok-cline-integration.md:19,60. docs/plans/grok-cline-integration.md SHA256 3EEE11CEED26538066DFA6872670AD00CBF1EB5E62D6831FBE0C37A98808E406. PROPOSED, pending operator approval; capture does not authorize implementation. Source's acceptance scenarios are planned coverage, not existing unit tests or test-derived AC. No unit-test AC attached. Priority medium is an administrative import default. Integration excludes image-helper changes, macOS and remote execution (lines 82).\nNo test-derived AC: no unit-test suite found in the source checkout.",
+      "precondition": "Known proposed-v2 job ID.",
+      "postcondition": "Selected job has a recorded cancellation outcome.",
+      "approvalStatus": "Draft",
+      "frLinks": [
+        {
+          "frId": "FR-FRENEMY-104",
+          "linkType": "Realizes"
+        }
+      ],
+      "flows": 0
+    },
+    {
+      "id": 10190,
+      "title": "[Proposed v2] Recover and explicitly continue interrupted work",
+      "scope": "Proposed v2 / unapproved / proposed-v2",
+      "briefDescription": "Actors: operator and participating agent CLIs. Main flow: After caller disconnect the job continues; after reboot history remains and unfinished work is interrupted; caller requests resume_read_job or resume_write_job with a new prompt and recorded exact session.\nProvenance: Source: docs/plans/grok-cline-integration.md:20,28,59. docs/plans/grok-cline-integration.md SHA256 3EEE11CEED26538066DFA6872670AD00CBF1EB5E62D6831FBE0C37A98808E406. PROPOSED, pending operator approval; capture does not authorize implementation. Source's acceptance scenarios are planned coverage, not existing unit tests or test-derived AC. No unit-test AC attached. Priority medium is an administrative import default. Integration excludes image-helper changes, macOS and remote execution (lines 82).\nNo test-derived AC: no unit-test suite found in the source checkout.",
+      "precondition": "Existing proposed-v2 job/session history.",
+      "postcondition": "Continuation is explicit; write work is not silently restarted.",
+      "approvalStatus": "Draft",
+      "frLinks": [
+        {
+          "frId": "FR-FRENEMY-105",
+          "linkType": "Realizes"
+        }
+      ],
+      "flows": 0
+    },
+    {
+      "id": 10191,
+      "title": "[Proposed v2] Request permission-enforced read work",
+      "scope": "Proposed v2 / unapproved / proposed-v2",
+      "briefDescription": "Actors: operator and participating agent CLIs. Main flow: Caller requests read access; adapter enforces no source edits or unrestricted execution; if requested permissions cannot be enforced, service fails explicitly instead of executing under weaker controls.\nProvenance: Source: docs/plans/grok-cline-integration.md:43-45,100. docs/plans/grok-cline-integration.md SHA256 3EEE11CEED26538066DFA6872670AD00CBF1EB5E62D6831FBE0C37A98808E406. PROPOSED, pending operator approval; capture does not authorize implementation. Source's acceptance scenarios are planned coverage, not existing unit tests or test-derived AC. No unit-test AC attached. Priority medium is an administrative import default. Integration excludes image-helper changes, macOS and remote execution (lines 82).\nNo test-derived AC: no unit-test suite found in the source checkout.",
+      "precondition": "Configured proposed-v2 target.",
+      "postcondition": "Read policy enforced or an explicit inability reported.",
+      "approvalStatus": "Draft",
+      "frLinks": [
+        {
+          "frId": "FR-FRENEMY-106",
+          "linkType": "Realizes"
+        }
+      ],
+      "flows": 0
+    },
+    {
+      "id": 10192,
+      "title": "[Proposed v2] Review isolated write artifacts",
+      "scope": "Proposed v2 / unapproved / proposed-v2",
+      "briefDescription": "Actors: operator and participating agent CLIs. Main flow: Caller requests write work with base revision if needed; service creates the job worktree beneath the repository; work runs there and returns path/base/change inventory/diff; user decides what to do with retained work.\nProvenance: Source: docs/plans/grok-cline-integration.md:47-51,101. docs/plans/grok-cline-integration.md SHA256 3EEE11CEED26538066DFA6872670AD00CBF1EB5E62D6831FBE0C37A98808E406. PROPOSED, pending operator approval; capture does not authorize implementation. Source's acceptance scenarios are planned coverage, not existing unit tests or test-derived AC. No unit-test AC attached. Priority medium is an administrative import default. Integration excludes image-helper changes, macOS and remote execution (lines 82).\nNo test-derived AC: no unit-test suite found in the source checkout.",
+      "precondition": "Git repository and valid selected base; dirty checkout requires explicit base.",
+      "postcondition": "Write artifacts retained separately with no automatic merge or push.",
+      "approvalStatus": "Draft",
+      "frLinks": [
+        {
+          "frId": "FR-FRENEMY-107",
+          "linkType": "Realizes"
+        }
+      ],
+      "flows": 0
+    },
+    {
+      "id": 10193,
+      "title": "[Proposed v2] Verify delegation identity",
+      "scope": "Proposed v2 / unapproved / proposed-v2",
+      "briefDescription": "Actors: operator and participating agent CLIs. Main flow: Caller optionally selects model/effort/provider; service reuses CLI authentication and records requested versus observed identity and artifact attribution; missing identity evidence is reported unknown.\nProvenance: Source: docs/plans/grok-cline-integration.md:37-39,57. docs/plans/grok-cline-integration.md SHA256 3EEE11CEED26538066DFA6872670AD00CBF1EB5E62D6831FBE0C37A98808E406. PROPOSED, pending operator approval; capture does not authorize implementation. Source's acceptance scenarios are planned coverage, not existing unit tests or test-derived AC. No unit-test AC attached. Priority medium is an administrative import default. Integration excludes image-helper changes, macOS and remote execution (lines 82).\nNo test-derived AC: no unit-test suite found in the source checkout.",
+      "precondition": "Configured proposed-v2 target.",
+      "postcondition": "Execution identity is inspectable without silent substitution.",
+      "approvalStatus": "Draft",
+      "frLinks": [
+        {
+          "frId": "FR-FRENEMY-108",
+          "linkType": "Realizes"
+        }
+      ],
+      "flows": 0
+    },
+    {
+      "id": 10194,
+      "title": "[Proposed v2] Queue multiple jobs safely",
+      "scope": "Proposed v2 / unapproved / proposed-v2",
+      "briefDescription": "Actors: operator and participating agent CLIs. Main flow: Callers submit more work than active capacity; service runs up to the default four jobs per host, queues excess, and serializes a session's active turn; delegated jobs cannot delegate again.\nProvenance: Source: docs/plans/grok-cline-integration.md:41. docs/plans/grok-cline-integration.md SHA256 3EEE11CEED26538066DFA6872670AD00CBF1EB5E62D6831FBE0C37A98808E406. PROPOSED, pending operator approval; capture does not authorize implementation. Source's acceptance scenarios are planned coverage, not existing unit tests or test-derived AC. No unit-test AC attached. Priority medium is an administrative import default. Integration excludes image-helper changes, macOS and remote execution (lines 82).\nNo test-derived AC: no unit-test suite found in the source checkout.",
+      "precondition": "Proposed job service running.",
+      "postcondition": "Work is scheduled within concurrency and recursion policies.",
+      "approvalStatus": "Draft",
+      "frLinks": [
+        {
+          "frId": "FR-FRENEMY-109",
+          "linkType": "Realizes"
+        }
+      ],
+      "flows": 0
+    },
+    {
+      "id": 10195,
+      "title": "[Proposed v2] Retain and audit a long review",
+      "scope": "Proposed v2 / unapproved / proposed-v2",
+      "briefDescription": "Actors: operator and participating agent CLIs. Main flow: Reviewer emits progress and full findings; service retains complete redacted streams and identity; a stall exceeding 30 minutes leads to a preserved attempt and separate relaunch; audit is sent through the agent plugin and read back, with delivery state distinct from review outcome.\nProvenance: Source: docs/plans/grok-cline-integration.md:62-64,104. docs/plans/grok-cline-integration.md SHA256 3EEE11CEED26538066DFA6872670AD00CBF1EB5E62D6831FBE0C37A98808E406. PROPOSED, pending operator approval; capture does not authorize implementation. Source's acceptance scenarios are planned coverage, not existing unit tests or test-derived AC. No unit-test AC attached. Priority medium is an administrative import default. Integration excludes image-helper changes, macOS and remote execution (lines 82).\nNo test-derived AC: no unit-test suite found in the source checkout.",
+      "precondition": "Proposed review job and supported agent audit route.",
+      "postcondition": "Complete review evidence and explicit audit-delivery outcome retained.",
+      "approvalStatus": "Draft",
+      "frLinks": [
+        {
+          "frId": "FR-FRENEMY-110",
+          "linkType": "Realizes"
+        }
+      ],
+      "flows": 0
+    },
+    {
+      "id": 10196,
+      "title": "[Proposed v2] Install, migrate or roll back selected clients",
+      "scope": "Proposed v2 / unapproved / proposed-v2",
+      "briefDescription": "Actors: operator and participating agent CLIs. Main flow: Operator selects clients and previews changes; installer checks capabilities and retains hash-verified backups, updates only managed entries and instructions without duplicate/write-autoapproval settings; rollback restores managed changes while preserving later unrelated edits.\nProvenance: Source: docs/plans/grok-cline-integration.md:66-80,105. docs/plans/grok-cline-integration.md SHA256 3EEE11CEED26538066DFA6872670AD00CBF1EB5E62D6831FBE0C37A98808E406. PROPOSED, pending operator approval; capture does not authorize implementation. Source's acceptance scenarios are planned coverage, not existing unit tests or test-derived AC. No unit-test AC attached. Priority medium is an administrative import default. Integration excludes image-helper changes, macOS and remote execution (lines 82).\nNo test-derived AC: no unit-test suite found in the source checkout.",
+      "precondition": "Proposed installer and selected client CLIs.",
+      "postcondition": "Selected clients configured or managed changes rolled back with originals retained.",
+      "approvalStatus": "Draft",
+      "frLinks": [
+        {
+          "frId": "FR-FRENEMY-111",
+          "linkType": "Realizes"
+        }
+      ],
+      "flows": 0
+    },
+    {
+      "id": 10197,
+      "title": "[Proposed v2] Evaluate a release phase gate",
+      "scope": "Proposed v2 / unapproved / proposed-v2",
+      "briefDescription": "Actors: implementer and independent reviewer. Main flow: Implementer supplies approved contracts and mock/negative-control evidence before production binding, then production tests/TRX at phase exit; Claude Opus 5.5 high independently reviews supplied evidence and returns scored findings; only the documented acceptance threshold permits phase acceptance.\nProvenance: Source: docs/plans/grok-cline-integration.md:84-107. docs/plans/grok-cline-integration.md SHA256 3EEE11CEED26538066DFA6872670AD00CBF1EB5E62D6831FBE0C37A98808E406. PROPOSED, pending operator approval; capture does not authorize implementation. Source's acceptance scenarios are planned coverage, not existing unit tests or test-derived AC. No unit-test AC attached. Priority medium is an administrative import default. Integration excludes image-helper changes, macOS and remote execution (lines 82).\nNo test-derived AC: no unit-test suite found in the source checkout.",
+      "precondition": "Proposed release phase ready for its specified gate; reviewer identity verified.",
+      "postcondition": "Gate has an evidence-backed verdict; this extracted UC remains Draft.",
+      "approvalStatus": "Draft",
+      "frLinks": [
+        {
+          "frId": "FR-FRENEMY-112",
+          "linkType": "Realizes"
+        }
+      ],
+      "flows": 0
+    }
+  ],
+  "sourceBaseline": "bcae36fdce7ce31e792db9e06a17bff51019bdf9",
+  "deployedBinarySha256": "71890DC921467DBB827BFAA0548D00DD2D6AC3ED59B126DFC82A3396056DBCFB",
+  "knownLimitation": "RDP-only default helper invocation still requires explicit AgentPath and CODEX_HOME."
+}

@@ -1,7 +1,18 @@
 # Frenemy: Claude ↔ Codex
 
 Lets Claude and Codex call each other, so you never copy/paste between them.
-Runs on the **Claude and ChatGPT subscriptions**. No API keys.
+Uses your existing Claude and Codex CLI sign-ins. The relay does not collect API keys.
+
+This is the [sharpninja fork](https://github.com/sharpninja/frenemy) of
+[noblehacks/frenemy](https://github.com/noblehacks/frenemy). The current code supports
+Claude Code and Codex. Grok Build and Cline CLI integration is **proposed, not implemented**.
+
+See the [documentation index](https://github.com/sharpninja/frenemy/blob/main/docs/README.md), [current architecture](https://github.com/sharpninja/frenemy/blob/main/docs/architecture/overview.md),
+[validation status](https://github.com/sharpninja/frenemy/blob/main/docs/testing/validation.md), and [integration plan](https://github.com/sharpninja/frenemy/blob/main/docs/plans/grok-cline-integration.md).
+The plan is tracked in QBrain as high-priority `PLAN-FRENEMY-001`, pending implementation approval.
+
+Version identifiers currently differ: `.version` contains `0.0.1-3`, while the MCP
+initialization response advertises `1.4.0`. No version-2 release is present.
 
 Created by **Zakariya Syed**:
 [YouTube](https://youtube.com/@noblehacksacademy) ·
@@ -51,7 +62,7 @@ bash install.sh
 ```powershell
 .\install.ps1
 ```
-(If Windows blocks the script: `powershell -ExecutionPolicy Bypass -File install.ps1`)
+(If Windows blocks the script: `pwsh -NoProfile -NonInteractive -ExecutionPolicy Bypass -File ./install.ps1`)
 
 No sudo/admin needed. It only writes to config files in your home folder. It checks that
 `node`, `claude`, and `codex` are installed, wires up both sides of the relay, and (on
@@ -158,8 +169,10 @@ fully accept that risk.
 - `ask_claude_write` loads only your **user-level** settings (`--setting-sources user`).
   Hooks, plugins, or MCP servers that a cloned repository ships in its project settings are
   ignored, so a random repo can't inject its own automation into the relay.
-- A stuck `claude` call is killed after 10 minutes; output is capped at ~2 MB; at most
-  4 Claude calls run at once.
+- A stuck `claude` child is killed after 10 minutes. Stdout is capped at 2,097,152
+  JavaScript string code units (not a byte limit); at most 4 calls run at once.
+  Extra calls are rejected rather than queued. The implementation kills the direct
+  child and does not provide process-tree cancellation.
 - Prompts pass via stdin, not command-line arguments, so they don't show up in process lists.
 
 </details>

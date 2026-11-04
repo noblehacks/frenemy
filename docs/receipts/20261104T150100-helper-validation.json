@@ -1,0 +1,95 @@
+{
+  "timestamp": "2026-11-04T15:01:37",
+  "workspace": "F:/GitHub/frenemy",
+  "repairSource": "F:/GitHub/McpServer/.worktrees/frenemy-helper-livebase-20261104",
+  "baseline": "bcae36fdce7ce31e792db9e06a17bff51019bdf9",
+  "ucReceipt": "F:/GitHub/frenemy/docs/receipts/20261104T145300-uc-recovery.json",
+  "ucReceiptSha256": "1CED5C473CEF3F73D050FDA9ED9829BAA2DC4391FFB985035C767DFF985309EB",
+  "unitGateCommand": "./build.ps1 AgentHelpRestoreCompatibility Test --solution QBrainAi.sln --test-run-id 20261104T145430-livebase-final",
+  "unitGate": [
+    {
+      "project": "QBrainAi.Client.Tests",
+      "total": 306,
+      "passed": 306,
+      "failed": 0,
+      "notExecuted": 0,
+      "path": "F:\\GitHub\\McpServer\\.worktrees\\frenemy-helper-livebase-20261104\\TestResults\\20261104T145430-livebase-final\\unit\\QBrainAi.Client.Tests\\QBrainAi.Client.Tests.trx"
+    },
+    {
+      "project": "QBrainAi.Cqrs.Tests",
+      "total": 33,
+      "passed": 33,
+      "failed": 0,
+      "notExecuted": 0,
+      "path": "F:\\GitHub\\McpServer\\.worktrees\\frenemy-helper-livebase-20261104\\TestResults\\20261104T145430-livebase-final\\unit\\QBrainAi.Cqrs.Tests\\QBrainAi.Cqrs.Tests.trx"
+    },
+    {
+      "project": "QBrainAi.Launcher.Tests",
+      "total": 20,
+      "passed": 20,
+      "failed": 0,
+      "notExecuted": 0,
+      "path": "F:\\GitHub\\McpServer\\.worktrees\\frenemy-helper-livebase-20261104\\TestResults\\20261104T145430-livebase-final\\unit\\QBrainAi.Launcher.Tests\\QBrainAi.Launcher.Tests.trx"
+    },
+    {
+      "project": "QBrainAi.McpAgent.Tests",
+      "total": 65,
+      "passed": 65,
+      "failed": 0,
+      "notExecuted": 0,
+      "path": "F:\\GitHub\\McpServer\\.worktrees\\frenemy-helper-livebase-20261104\\TestResults\\20261104T145430-livebase-final\\unit\\QBrainAi.McpAgent.Tests\\QBrainAi.McpAgent.Tests.trx"
+    },
+    {
+      "project": "QBrainAi.QBAgent.Tests",
+      "total": 96,
+      "passed": 96,
+      "failed": 0,
+      "notExecuted": 0,
+      "path": "F:\\GitHub\\McpServer\\.worktrees\\frenemy-helper-livebase-20261104\\TestResults\\20261104T145430-livebase-final\\unit\\QBrainAi.QBAgent.Tests\\QBrainAi.QBAgent.Tests.trx"
+    },
+    {
+      "project": "QBrainAi.Repl.Core.Tests",
+      "total": 868,
+      "passed": 868,
+      "failed": 0,
+      "notExecuted": 0,
+      "path": "F:\\GitHub\\McpServer\\.worktrees\\frenemy-helper-livebase-20261104\\TestResults\\20261104T145430-livebase-final\\unit\\QBrainAi.Repl.Core.Tests\\QBrainAi.Repl.Core.Tests.trx"
+    },
+    {
+      "project": "QBrainAi.Support.Mcp.Tests",
+      "total": 2990,
+      "passed": 2990,
+      "failed": 0,
+      "notExecuted": 0,
+      "path": "F:\\GitHub\\McpServer\\.worktrees\\frenemy-helper-livebase-20261104\\TestResults\\20261104T145430-livebase-final\\unit\\QBrainAi.Support.Mcp.Tests\\QBrainAi.Support.Mcp.Tests.trx"
+    }
+  ],
+  "mockGatePassed": 24,
+  "bindingGatePassed": 46,
+  "fullTestCounts": {
+    "skipped": 0,
+    "failed": 0,
+    "passed": 4378
+  },
+  "helperTurn": "help-20261104204021-6a40695ccbfa4c4ab2ed7208599191c4/turn-0002",
+  "helperStatus": "completed",
+  "ucCount": 19,
+  "proposedUcCount": 12,
+  "ucIds": [
+    10186,
+    10187,
+    10188,
+    10189,
+    10190,
+    10191,
+    10192,
+    10193,
+    10194,
+    10195,
+    10196,
+    10197
+  ],
+  "limitations": "Automatic executable/profile discovery under RDP remains unresolved; successful helper used explicit AgentPath and CODEX_HOME. Independent hostile review has not run; source requirements remain in_progress and no acceptance/satisfaction state is advanced. Saving Draft proposed UCs does not approve implementation.",
+  "helperSourceSha256": "B79C0E858F836EEF9C5EEDC3827438C88EB5B626094939704A8D90986D71DEC5",
+  "deployedBinarySha256": "71890DC921467DBB827BFAA0548D00DD2D6AC3ED59B126DFC82A3396056DBCFB"
+}
