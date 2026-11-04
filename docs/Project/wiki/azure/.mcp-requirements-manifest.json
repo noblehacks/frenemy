@@ -1,7 +1,7 @@
 {
   "schema": "mcp-requirements-wiki/v1",
   "platform": "azure",
-  "generatedAtUtc": "2026-11-04T21:19:19.5390802+00:00",
+  "generatedAtUtc": "2026-11-04T23:02:27.5967954+00:00",
   "documents": [
     "Home.md",
     "Functional-Requirements.md",
@@ -13,6 +13,7 @@
     "Documentation.md",
     "Current-Architecture.md",
     "Validation-Status.md",
-    "Grok-Cline-Integration-Plan.md"
+    "Grok-Cline-Integration-Plan.md",
+    "C4-Architecture.md"
   ]
 }

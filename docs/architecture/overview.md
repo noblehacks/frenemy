@@ -50,7 +50,7 @@ remain available to write calls, so recursive delegation is not fully prevented.
 
 A timeout is not process-tree cancellation. A process/server restart loses active
 in-memory execution state. Credential-redacted durable transcripts, recovery, exact
-session continuation, and audited review persistence are proposed version-2 features.
+session continuation, and local review-output retention are approved version-2 design features.
 
 ## Installation and versions
 
@@ -66,3 +66,8 @@ The mismatch is documented here without changing either product value.
 
 See [the integration proposal](https://github.com/sharpninja/frenemy/blob/main/docs/plans/grok-cline-integration.md) for intended v2
 behavior and [validation status](https://github.com/sharpninja/frenemy/blob/main/docs/testing/validation.md) for evidence limits.
+
+## Source-pinned C4 baseline and target design
+
+The approved Phase 2 amendment adds a [Structurizr workspace](https://github.com/sharpninja/frenemy/blob/main/docs/architecture/structurizr/README.md) with baseline c7338ad39b646e695e7c4b5fbd998d45be914c02, separate target design, four C4 levels, deployment/dynamic views, source evidence and requirement traceability. This overview still describes the shipped source. Architecture validation precedes executable product TDD.
+

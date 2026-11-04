@@ -5,11 +5,11 @@ Uses your existing Claude and Codex CLI sign-ins. The relay does not collect API
 
 This is the [sharpninja fork](https://github.com/sharpninja/frenemy) of
 [noblehacks/frenemy](https://github.com/noblehacks/frenemy). The current code supports
-Claude Code and Codex. Grok Build and Cline CLI integration is **proposed, not implemented**.
+Claude Code and Codex. Grok Build and Cline CLI integration is **approved for development, not implemented**.
 
 See the [documentation index](https://github.com/sharpninja/frenemy/blob/main/docs/README.md), [current architecture](https://github.com/sharpninja/frenemy/blob/main/docs/architecture/overview.md),
 [validation status](https://github.com/sharpninja/frenemy/blob/main/docs/testing/validation.md), and [integration plan](https://github.com/sharpninja/frenemy/blob/main/docs/plans/grok-cline-integration.md).
-The plan is tracked in QBrain as high-priority `PLAN-FRENEMY-001`, pending implementation approval.
+The plan is tracked in QBrain as high-priority `PLAN-FRENEMY-001`, with architecture acceptance required before executable TDD.
 
 Version identifiers currently differ: `.version` contains `0.0.1-3`, while the MCP
 initialization response advertises `1.4.0`. No version-2 release is present.

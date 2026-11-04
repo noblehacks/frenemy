@@ -10,4 +10,5 @@
 - [Documentation](Documentation)
 - [Current Architecture](Current-Architecture)
 - [Validation Status](Validation-Status)
-- [Proposed Grok Build and Cline CLI Integration](Grok-Cline-Integration-Plan)
+- [Approved Grok Build and Cline CLI Integration](Grok-Cline-Integration-Plan)
+- [C4 Baseline and Target Architecture](C4-Architecture)

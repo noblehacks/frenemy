@@ -1,0 +1,118 @@
+@startuml
+!pragma layout smetana
+title <size:24>Component View: Frenemy TARGET v2 DESIGN - Per-user job service</size>
+
+set separator none
+top to bottom direction
+skinparam ranksep 20
+skinparam nodesep 5
+hide stereotype
+
+<style>
+  root {
+    BackgroundColor: #ffffff;
+    FontColor: #444444;
+  }
+  // Element,Added
+  .Element-RWxlbWVudCxBZGRlZA== {
+    BackgroundColor: #166534;
+    LineColor: #0f4624;
+    LineStyle: 0;
+    LineThickness: 2;
+    RoundCorner: 20;
+    FontColor: #ffffff;
+    FontSize: 24;
+    HorizontalAlignment: center;
+    Shadowing: 0;
+    MaximumWidth: 450;
+  }
+  // Element,Modified
+  .Element-RWxlbWVudCxNb2RpZmllZA== {
+    BackgroundColor: #92400e;
+    LineColor: #662c09;
+    LineStyle: 0;
+    LineThickness: 2;
+    RoundCorner: 20;
+    FontColor: #ffffff;
+    FontSize: 24;
+    HorizontalAlignment: center;
+    Shadowing: 0;
+    MaximumWidth: 450;
+  }
+  // Relationship,Added
+  .Relationship-UmVsYXRpb25zaGlwLEFkZGVk {
+    LineThickness: 2;
+    LineStyle: 10-10;
+    LineColor: #166534;
+    FontColor: #166534;
+    FontSize: 24;
+    MaximumWidth: 200;
+  }
+  // Relationship,Modified
+  .Relationship-UmVsYXRpb25zaGlwLE1vZGlmaWVk {
+    LineThickness: 2;
+    LineStyle: 10-10;
+    LineColor: #92400e;
+    FontColor: #92400e;
+    FontSize: 24;
+    MaximumWidth: 200;
+  }
+  // Frenemy TARGET v2 DESIGN
+  .Boundary-RnJlbmVteSBUQVJHRVQgdjIgREVTSUdO {
+    BackgroundColor: #ffffff;
+    LineColor: #0f4624;
+    LineStyle: 0;
+    LineThickness: 2;
+    FontColor: #ffffff;
+    FontSize: 24;
+    HorizontalAlignment: center;
+    Shadowing: 0;
+  }
+  // Per-user job service
+  .Boundary-UGVyLXVzZXIgam9iIHNlcnZpY2U= {
+    BackgroundColor: #ffffff;
+    LineColor: #0f4624;
+    LineStyle: 0;
+    LineThickness: 2;
+    FontColor: #ffffff;
+    FontSize: 24;
+    HorizontalAlignment: center;
+    Shadowing: 0;
+  }
+</style>
+
+rectangle "Frenemy TARGET v2 DESIGN\n<size:16>[Software System]</size>" <<Boundary-RnJlbmVteSBUQVJHRVQgdjIgREVTSUdO>> {
+  rectangle "Per-user job service\n<size:16>[Container: Node.js DESIGN]</size>" <<Boundary-UGVyLXVzZXIgam9iIHNlcnZpY2U=>> {
+    rectangle "==Job API and discovery\n<size:16>[Component: job-api.mjs DESIGN]</size>\n\nValidates contracts, versions, capabilities, idempotency and workspace ownership." <<Element-RWxlbWVudCxBZGRlZA==>> as FrenemyTARGETv2DESIGN.Peruserjobservice.JobAPIanddiscovery
+    rectangle "==Scheduler\n<size:16>[Component: scheduler.mjs DESIGN]</size>\n\nFour active jobs per host; one active turn/session; reject delegated recursion." <<Element-RWxlbWVudCxBZGRlZA==>> as FrenemyTARGETv2DESIGN.Peruserjobservice.Scheduler
+    rectangle "==Durable repository\n<size:16>[Component: job-store.mjs DESIGN]</size>\n\nPersist accepted requests before launch; ordered events, attempts, artifacts." <<Element-RWxlbWVudCxBZGRlZA==>> as FrenemyTARGETv2DESIGN.Peruserjobservice.Durablerepository
+    rectangle "==Permission enforcement\n<size:16>[Component: permissions.mjs DESIGN]</size>\n\nRead/write policy and capability checks; fail closed; explicit permission decisions bound to job/attempt." <<Element-RWxlbWVudCxBZGRlZA==>> as FrenemyTARGETv2DESIGN.Peruserjobservice.Permissionenforcement
+    rectangle "==Owned process supervisor\n<size:16>[Component: process-supervisor.mjs DESIGN]</size>\n\nResolved executable and argv without shell; cancellation affects owned tree only." <<Element-RWxlbWVudCxBZGRlZA==>> as FrenemyTARGETv2DESIGN.Peruserjobservice.Ownedprocesssupervisor
+    rectangle "==Event and result retrieval\n<size:16>[Component: events.mjs DESIGN]</size>\n\nCredential redaction before persistence; monotonic cursors; complete retained streams and artifacts." <<Element-RWxlbWVudCxNb2RpZmllZA==>> as FrenemyTARGETv2DESIGN.Peruserjobservice.Eventandresultretrieval
+    rectangle "==Recovery and resume\n<size:16>[Component: recovery.mjs DESIGN]</size>\n\nInterrupted history after restart; explicit exact-session continuation; no silent write replay." <<Element-RWxlbWVudCxBZGRlZA==>> as FrenemyTARGETv2DESIGN.Peruserjobservice.Recoveryandresume
+  }
+
+  rectangle "==MCP client bridge\n<size:16>[Container: Node.js DESIGN]</size>\n\nOne stdio process per caller; disconnect does not own job lifetime." <<Element-RWxlbWVudCxNb2RpZmllZA==>> as FrenemyTARGETv2DESIGN.MCPclientbridge
+  rectangle "==Durable job data\n<size:16>[Container: Local durable storage DESIGN]</size>\n\nPer-user private storage: requests, states, attempts, complete redacted events, artifacts." <<Element-RWxlbWVudCxBZGRlZA==>> as FrenemyTARGETv2DESIGN.Durablejobdata
+  rectangle "==Caller workspace\n<size:16>[Container: Filesystem]</size>\n\nConfigured execution directory; write jobs edit caller files directly." <<Element-RWxlbWVudCxNb2RpZmllZA==>> as FrenemyTARGETv2DESIGN.Callerworkspace
+}
+
+FrenemyTARGETv2DESIGN.MCPclientbridge --> FrenemyTARGETv2DESIGN.Peruserjobservice.JobAPIanddiscovery <<Relationship-UmVsYXRpb25zaGlwLEFkZGVk>> : "Sends commands and queries\n<size:16>[Named pipe / Unix socket]</size>"
+FrenemyTARGETv2DESIGN.Peruserjobservice.JobAPIanddiscovery --> FrenemyTARGETv2DESIGN.Peruserjobservice.Durablerepository <<Relationship-UmVsYXRpb25zaGlwLEFkZGVk>> : "Commits accepted request or returns existing idempotent result\n<size:16>[Durable transaction]</size>"
+FrenemyTARGETv2DESIGN.Peruserjobservice.JobAPIanddiscovery --> FrenemyTARGETv2DESIGN.Peruserjobservice.Scheduler <<Relationship-UmVsYXRpb25zaGlwLEFkZGVk>> : "Queues accepted job\n<size:16>[Job ID]</size>"
+FrenemyTARGETv2DESIGN.Peruserjobservice.JobAPIanddiscovery --> FrenemyTARGETv2DESIGN.Peruserjobservice.Eventandresultretrieval <<Relationship-UmVsYXRpb25zaGlwLEFkZGVk>> : "Retrieves status and cursor pages\n<size:16>[Job ID / cursor]</size>"
+FrenemyTARGETv2DESIGN.Peruserjobservice.JobAPIanddiscovery --> FrenemyTARGETv2DESIGN.Peruserjobservice.Recoveryandresume <<Relationship-UmVsYXRpb25zaGlwLEFkZGVk>> : "Requests explicit resume\n<size:16>[Recorded session ID]</size>"
+FrenemyTARGETv2DESIGN.Peruserjobservice.JobAPIanddiscovery --> FrenemyTARGETv2DESIGN.Peruserjobservice.Ownedprocesssupervisor <<Relationship-UmVsYXRpb25zaGlwLEFkZGVk>> : "Requests owned cancellation\n<size:16>[Job ID / attempt ID]</size>"
+FrenemyTARGETv2DESIGN.Peruserjobservice.Scheduler --> FrenemyTARGETv2DESIGN.Peruserjobservice.Permissionenforcement <<Relationship-UmVsYXRpb25zaGlwLEFkZGVk>> : "Checks access mode and permission capability\n<size:16>[Job contract]</size>"
+FrenemyTARGETv2DESIGN.Peruserjobservice.Permissionenforcement --> FrenemyTARGETv2DESIGN.Peruserjobservice.Durablerepository <<Relationship-UmVsYXRpb25zaGlwLEFkZGVk>> : "Records decision or awaiting_permission\n<size:16>[Job / attempt / permission ID]</size>"
+FrenemyTARGETv2DESIGN.Peruserjobservice.Permissionenforcement --> FrenemyTARGETv2DESIGN.Peruserjobservice.Ownedprocesssupervisor <<Relationship-UmVsYXRpb25zaGlwLEFkZGVk>> : "Allows enforceable launch or fails closed\n<size:16>[Permission policy]</size>"
+FrenemyTARGETv2DESIGN.Peruserjobservice.Ownedprocesssupervisor --> FrenemyTARGETv2DESIGN.Callerworkspace <<Relationship-UmVsYXRpb25zaGlwLE1vZGlmaWVk>> : "Uses configured workspace for read or authorized write\n<size:16>[Filesystem cwd]</size>"
+FrenemyTARGETv2DESIGN.Peruserjobservice.Permissionenforcement --> FrenemyTARGETv2DESIGN.MCPclientbridge <<Relationship-UmVsYXRpb25zaGlwLEFkZGVk>> : "Requests authenticated caller permission; unsupported callback fails\n<size:16>[Bound permission callback]</size>"
+FrenemyTARGETv2DESIGN.MCPclientbridge --> FrenemyTARGETv2DESIGN.Peruserjobservice.Permissionenforcement <<Relationship-UmVsYXRpb25zaGlwLEFkZGVk>> : "Returns explicit current decision or denial\n<size:16>[Job / attempt / permission ID]</size>"
+FrenemyTARGETv2DESIGN.Peruserjobservice.Eventandresultretrieval --> FrenemyTARGETv2DESIGN.Peruserjobservice.Durablerepository <<Relationship-UmVsYXRpb25zaGlwLEFkZGVk>> : "Appends complete redacted events and result\n<size:16>[Ordered sequence]</size>"
+FrenemyTARGETv2DESIGN.Peruserjobservice.Durablerepository --> FrenemyTARGETv2DESIGN.Durablejobdata <<Relationship-UmVsYXRpb25zaGlwLEFkZGVk>> : "Persists state and evidence\n<size:16>[Local storage]</size>"
+FrenemyTARGETv2DESIGN.Peruserjobservice.Recoveryandresume --> FrenemyTARGETv2DESIGN.Peruserjobservice.Durablerepository <<Relationship-UmVsYXRpb25zaGlwLEFkZGVk>> : "Marks unfinished attempts interrupted and reads exact session\n<size:16>[Durable state]</size>"
+FrenemyTARGETv2DESIGN.Peruserjobservice.Recoveryandresume --> FrenemyTARGETv2DESIGN.Peruserjobservice.Scheduler <<Relationship-UmVsYXRpb25zaGlwLEFkZGVk>> : "Queues explicitly requested continuation only\n<size:16>[New attempt / same session]</size>"
+FrenemyTARGETv2DESIGN.Peruserjobservice.Ownedprocesssupervisor --> FrenemyTARGETv2DESIGN.Peruserjobservice.Durablerepository <<Relationship-UmVsYXRpb25zaGlwLEFkZGVk>> : "Records owned cancellation outcome\n<size:16>[Terminal transition]</size>"
+
+@enduml

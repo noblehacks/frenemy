@@ -1,0 +1,1324 @@
+{
+  "functional": [
+    {
+      "priority": "medium",
+      "body": "Expose installed versions, capabilities and configuration status through list_agents, and support all 12 directed caller/target routes among Claude Code, Codex, Grok Build and Cline CLI on Windows and Linux.",
+      "notes": "Source: docs/plans/grok-cline-integration.md:9-15,26-41,99. docs/plans/grok-cline-integration.md SHA256 3EEE11CEED26538066DFA6872670AD00CBF1EB5E62D6831FBE0C37A98808E406. PROPOSED, pending operator approval; capture does not authorize implementation. Source's acceptance scenarios are planned coverage, not existing unit tests or test-derived AC. No unit-test AC attached. Priority medium is an administrative import default. Integration excludes image-helper changes, macOS and remote execution (lines 82). Operator follow-up authorizes AC derived from repository docs and code. Attached AC are source-derived candidates, not unit-test-derived or satisfied. Source discrepancies are preserved explicitly.\nOperator approved PLAN-FRENEMY-001 on 2026-11-04T15:30:42 America/Chicago: \"I approve the plan\". Approval authorizes the defined BDPv4 phases; requirements and AC remain unsatisfied until implementation evidence and the required review gates pass.\nCurrent authority: operator approved the integration and Phase 2 architecture amendment on 2026-11-04. Historical proposed/unapproved source labels above are provenance only. Canonical five-phase order: docs/plans/grok-cline-integration.md. TDD is deferred until architecture acceptance.\nScope corrected by explicit operator direction 2026-11-04: remove product agent-plugin/QBrain audit integration and Git/worktree orchestration. Current plan supersedes earlier source text.",
+      "id": "FR-FRENEMY-101",
+      "workspaceId": "F:\\GitHub\\frenemy",
+      "title": "Four-agent discovery and routing",
+      "acceptanceCriteria": [
+        {
+          "isSatisfied": false,
+          "text": "list_agents reports installed CLI versions, capabilities and configuration status.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-101-01"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Each of four agents can call each other agent, covering 12 directed routes on both Windows and Linux.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-101-02"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Release validation covers each route in read and write mode on both operating systems, totaling 48 routing/access combinations; macOS and cross-machine execution remain excluded.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-101-03"
+        }
+      ],
+      "status": "in_progress",
+      "scopeStartLayerKey": "proposed-v2"
+    },
+    {
+      "priority": "medium",
+      "body": "Expose start_read_job and start_write_job with immediate job IDs; accept target, prompt, optional model/effort and Cline provider. Derive workspace and caller identity from the configured MCP connection. Persist accepted requests before launch and prevent duplicate launches for retried request IDs. Retain ask_claude and ask_claude_write names with explicitly documented v2 job-handle semantics. Write jobs execute in the configured caller workspace; Frenemy performs no Git orchestration.",
+      "notes": "Source: docs/plans/grok-cline-integration.md:16,22-24,55. docs/plans/grok-cline-integration.md SHA256 3EEE11CEED26538066DFA6872670AD00CBF1EB5E62D6831FBE0C37A98808E406. PROPOSED, pending operator approval; capture does not authorize implementation. Source's acceptance scenarios are planned coverage, not existing unit tests or test-derived AC. No unit-test AC attached. Priority medium is an administrative import default. Integration excludes image-helper changes, macOS and remote execution (lines 82). Operator follow-up authorizes AC derived from repository docs and code. Attached AC are source-derived candidates, not unit-test-derived or satisfied. Source discrepancies are preserved explicitly.\nOperator approved PLAN-FRENEMY-001 on 2026-11-04T15:30:42 America/Chicago: \"I approve the plan\". Approval authorizes the defined BDPv4 phases; requirements and AC remain unsatisfied until implementation evidence and the required review gates pass.\nCurrent authority: operator approved the integration and Phase 2 architecture amendment on 2026-11-04. Historical proposed/unapproved source labels above are provenance only. Canonical five-phase order: docs/plans/grok-cline-integration.md. TDD is deferred until architecture acceptance.\nScope corrected by explicit operator direction 2026-11-04: remove product agent-plugin/QBrain audit integration and Git/worktree orchestration. Current plan supersedes earlier source text.",
+      "id": "FR-FRENEMY-102",
+      "workspaceId": "F:\\GitHub\\frenemy",
+      "title": "Submit durable read and write jobs",
+      "acceptanceCriteria": [
+        {
+          "isSatisfied": false,
+          "text": "start_read_job and start_write_job return a job ID immediately for accepted work.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-102-01"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Submission accepts target, prompt, optional model/effort/Cline provider; caller and workspace are obtained from MCP connection configuration. No Git base-revision input is accepted.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-102-02"
+        },
+        {
+          "isSatisfied": false,
+          "text": "The accepted request is durably retained before agent launch; retrying its request ID does not launch duplicate jobs.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-102-03"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Legacy ask_claude and ask_claude_write return job handles in v2 with explicit migration documentation. Write jobs execute in the configured caller workspace.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-102-04"
+        }
+      ],
+      "status": "in_progress",
+      "scopeStartLayerKey": "proposed-v2"
+    },
+    {
+      "priority": "medium",
+      "body": "Expose get_job for status, answer, artifacts, execution identity, plus cursor-based read_job_events. Retain complete credential-redacted request, response, progress and error streams without a total transcript-size cutoff. Distinguish queued, running, awaiting permission, succeeded, failed, cancelled and interrupted states.",
+      "notes": "Source: docs/plans/grok-cline-integration.md:17-18,56-58,62. docs/plans/grok-cline-integration.md SHA256 3EEE11CEED26538066DFA6872670AD00CBF1EB5E62D6831FBE0C37A98808E406. PROPOSED, pending operator approval; capture does not authorize implementation. Source's acceptance scenarios are planned coverage, not existing unit tests or test-derived AC. No unit-test AC attached. Priority medium is an administrative import default. Integration excludes image-helper changes, macOS and remote execution (lines 82). Operator follow-up authorizes AC derived from repository docs and code. Attached AC are source-derived candidates, not unit-test-derived or satisfied. Source discrepancies are preserved explicitly.\nOperator approved PLAN-FRENEMY-001 on 2026-11-04T15:30:42 America/Chicago: \"I approve the plan\". Approval authorizes the defined BDPv4 phases; requirements and AC remain unsatisfied until implementation evidence and the required review gates pass.\nCurrent authority: operator approved the integration and Phase 2 architecture amendment on 2026-11-04. Historical proposed/unapproved source labels above are provenance only. Canonical five-phase order: docs/plans/grok-cline-integration.md. TDD is deferred until architecture acceptance.\nScope corrected by explicit operator direction 2026-11-04: remove product agent-plugin/QBrain audit integration and Git/worktree orchestration. Current plan supersedes earlier source text.",
+      "id": "FR-FRENEMY-103",
+      "workspaceId": "F:\\GitHub\\frenemy",
+      "title": "Retrieve job results and retained events",
+      "acceptanceCriteria": [
+        {
+          "isSatisfied": false,
+          "text": "get_job returns lifecycle state, final answer when available, artifacts and execution identity. No external audit-delivery status is exposed.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-103-01"
+        },
+        {
+          "isSatisfied": false,
+          "text": "read_job_events uses continuation cursors and allows retrieval of the complete retained credential-redacted request/response/progress/error streams without truncating them.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-103-02"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Job state distinguishes queued, running, awaiting permission, succeeded, failed, cancelled and interrupted.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-103-03"
+        },
+        {
+          "isSatisfied": false,
+          "text": "No total transcript-size or fixed job-duration cutoff discards required evidence or terminates otherwise active jobs.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-103-04"
+        }
+      ],
+      "status": "in_progress",
+      "scopeStartLayerKey": "proposed-v2"
+    },
+    {
+      "priority": "medium",
+      "body": "Expose cancel_job to cancel a selected job and terminate its owned process tree without affecting unrelated agent sessions.",
+      "notes": "Source: docs/plans/grok-cline-integration.md:19,60. docs/plans/grok-cline-integration.md SHA256 3EEE11CEED26538066DFA6872670AD00CBF1EB5E62D6831FBE0C37A98808E406. PROPOSED, pending operator approval; capture does not authorize implementation. Source's acceptance scenarios are planned coverage, not existing unit tests or test-derived AC. No unit-test AC attached. Priority medium is an administrative import default. Integration excludes image-helper changes, macOS and remote execution (lines 82). Operator follow-up authorizes AC derived from repository docs and code. Attached AC are source-derived candidates, not unit-test-derived or satisfied. Source discrepancies are preserved explicitly.\nOperator approved PLAN-FRENEMY-001 on 2026-11-04T15:30:42 America/Chicago: \"I approve the plan\". Approval authorizes the defined BDPv4 phases; requirements and AC remain unsatisfied until implementation evidence and the required review gates pass.\nCurrent authority: operator approved the integration and Phase 2 architecture amendment on 2026-11-04. Historical proposed/unapproved source labels above are provenance only. Canonical five-phase order: docs/plans/grok-cline-integration.md. TDD is deferred until architecture acceptance.\nScope corrected by explicit operator direction 2026-11-04: remove product agent-plugin/QBrain audit integration and Git/worktree orchestration. Current plan supersedes earlier source text.",
+      "id": "FR-FRENEMY-104",
+      "workspaceId": "F:\\GitHub\\frenemy",
+      "title": "Cancel an owned job",
+      "acceptanceCriteria": [
+        {
+          "isSatisfied": false,
+          "text": "cancel_job targets the specified job ID and terminates that job's owned process tree.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-104-01"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Cancellation leaves unrelated agent sessions running; release validation includes cancellation races.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-104-02"
+        }
+      ],
+      "status": "in_progress",
+      "scopeStartLayerKey": "proposed-v2"
+    },
+    {
+      "priority": "medium",
+      "body": "Continue jobs when the caller disconnects. After reboot retain history and mark unfinished execution interrupted. Expose separate resume_read_job and resume_write_job with a new prompt and exact recorded session; never silently restart write work.",
+      "notes": "Source: docs/plans/grok-cline-integration.md:20,28,59. docs/plans/grok-cline-integration.md SHA256 3EEE11CEED26538066DFA6872670AD00CBF1EB5E62D6831FBE0C37A98808E406. PROPOSED, pending operator approval; capture does not authorize implementation. Source's acceptance scenarios are planned coverage, not existing unit tests or test-derived AC. No unit-test AC attached. Priority medium is an administrative import default. Integration excludes image-helper changes, macOS and remote execution (lines 82). Operator follow-up authorizes AC derived from repository docs and code. Attached AC are source-derived candidates, not unit-test-derived or satisfied. Source discrepancies are preserved explicitly.\nOperator approved PLAN-FRENEMY-001 on 2026-11-04T15:30:42 America/Chicago: \"I approve the plan\". Approval authorizes the defined BDPv4 phases; requirements and AC remain unsatisfied until implementation evidence and the required review gates pass.\nCurrent authority: operator approved the integration and Phase 2 architecture amendment on 2026-11-04. Historical proposed/unapproved source labels above are provenance only. Canonical five-phase order: docs/plans/grok-cline-integration.md. TDD is deferred until architecture acceptance.\nScope corrected by explicit operator direction 2026-11-04: remove product agent-plugin/QBrain audit integration and Git/worktree orchestration. Current plan supersedes earlier source text.",
+      "id": "FR-FRENEMY-105",
+      "workspaceId": "F:\\GitHub\\frenemy",
+      "title": "Recover and explicitly resume sessions",
+      "acceptanceCriteria": [
+        {
+          "isSatisfied": false,
+          "text": "A caller disconnect does not stop its running job.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-105-01"
+        },
+        {
+          "isSatisfied": false,
+          "text": "After reboot job history remains available and unfinished execution is marked interrupted.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-105-02"
+        },
+        {
+          "isSatisfied": false,
+          "text": "resume_read_job and resume_write_job accept a new prompt and continue the exact recorded session only after an explicit request.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-105-03"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Recovery does not silently restart write jobs or substitute a different CLI session.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-105-04"
+        }
+      ],
+      "status": "in_progress",
+      "scopeStartLayerKey": "proposed-v2"
+    },
+    {
+      "priority": "medium",
+      "body": "Prevent agent-directed source edits and unrestricted command execution in read jobs, enforce each adapter's supported permission controls, and fail explicitly when a requested mode cannot be enforced. Do not treat Grok's sandbox flag alone as evidence of Windows protection.",
+      "notes": "Source: docs/plans/grok-cline-integration.md:43-45,100. docs/plans/grok-cline-integration.md SHA256 3EEE11CEED26538066DFA6872670AD00CBF1EB5E62D6831FBE0C37A98808E406. PROPOSED, pending operator approval; capture does not authorize implementation. Source's acceptance scenarios are planned coverage, not existing unit tests or test-derived AC. No unit-test AC attached. Priority medium is an administrative import default. Integration excludes image-helper changes, macOS and remote execution (lines 82). Operator follow-up authorizes AC derived from repository docs and code. Attached AC are source-derived candidates, not unit-test-derived or satisfied. Source discrepancies are preserved explicitly.\nOperator approved PLAN-FRENEMY-001 on 2026-11-04T15:30:42 America/Chicago: \"I approve the plan\". Approval authorizes the defined BDPv4 phases; requirements and AC remain unsatisfied until implementation evidence and the required review gates pass.\nCurrent authority: operator approved the integration and Phase 2 architecture amendment on 2026-11-04. Historical proposed/unapproved source labels above are provenance only. Canonical five-phase order: docs/plans/grok-cline-integration.md. TDD is deferred until architecture acceptance.\nScope corrected by explicit operator direction 2026-11-04: remove product agent-plugin/QBrain audit integration and Git/worktree orchestration. Current plan supersedes earlier source text.",
+      "id": "FR-FRENEMY-106",
+      "workspaceId": "F:\\GitHub\\frenemy",
+      "title": "Enforce read-job permissions",
+      "acceptanceCriteria": [
+        {
+          "isSatisfied": false,
+          "text": "Read jobs prevent agent-directed source edits and unrestricted command execution through adapter-supported controls.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-106-01"
+        },
+        {
+          "isSatisfied": false,
+          "text": "When an adapter cannot enforce the requested mode, reject it explicitly rather than proceeding under weaker permissions.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-106-02"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Permission validation includes direct edits, command execution, MCP-tool escapes and escalation through continuation; Grok's sandbox flag alone does not establish Windows protection.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-106-03"
+        }
+      ],
+      "status": "in_progress",
+      "scopeStartLayerKey": "proposed-v2"
+    },
+    {
+      "priority": "medium",
+      "body": "Reuse existing CLI authentication without collecting credentials or silently changing providers or models. Distinguish requested and observed execution identity and leave missing evidence unknown; retain attribution and artifact hashes.",
+      "notes": "Source: docs/plans/grok-cline-integration.md:37-39,57. docs/plans/grok-cline-integration.md SHA256 3EEE11CEED26538066DFA6872670AD00CBF1EB5E62D6831FBE0C37A98808E406. PROPOSED, pending operator approval; capture does not authorize implementation. Source's acceptance scenarios are planned coverage, not existing unit tests or test-derived AC. No unit-test AC attached. Priority medium is an administrative import default. Integration excludes image-helper changes, macOS and remote execution (lines 82). Operator follow-up authorizes AC derived from repository docs and code. Attached AC are source-derived candidates, not unit-test-derived or satisfied. Source discrepancies are preserved explicitly.\nOperator approved PLAN-FRENEMY-001 on 2026-11-04T15:30:42 America/Chicago: \"I approve the plan\". Approval authorizes the defined BDPv4 phases; requirements and AC remain unsatisfied until implementation evidence and the required review gates pass.\nCurrent authority: operator approved the integration and Phase 2 architecture amendment on 2026-11-04. Historical proposed/unapproved source labels above are provenance only. Canonical five-phase order: docs/plans/grok-cline-integration.md. TDD is deferred until architecture acceptance.\nScope corrected by explicit operator direction 2026-11-04: remove product agent-plugin/QBrain audit integration and Git/worktree orchestration. Current plan supersedes earlier source text.",
+      "id": "FR-FRENEMY-108",
+      "workspaceId": "F:\\GitHub\\frenemy",
+      "title": "Preserve authentication and execution identity",
+      "acceptanceCriteria": [
+        {
+          "isSatisfied": false,
+          "text": "Reuse existing CLI authentication without collecting credentials or silently changing selected providers or models.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-108-01"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Record requested and observed model/effort/provider identity separately; when observed identity is unavailable report unknown.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-108-02"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Retain parent/caller IDs, workspace, job ID, attempt ID, CLI session ID, versions, model, effort and artifact hashes.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-108-03"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Launch resolved executables with argument arrays and no shell; resolve Cline's native Windows executable instead of a .cmd shim.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-108-04"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Validation includes missing credentials, provider errors and unsupported model/effort selections without inventing successful execution evidence.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-108-05"
+        }
+      ],
+      "status": "in_progress",
+      "scopeStartLayerKey": "proposed-v2"
+    },
+    {
+      "priority": "medium",
+      "body": "Default to four active jobs per host, queue additional jobs, and permit one active turn per recorded agent session. Every agent may initiate delegation, but delegated jobs cannot recursively delegate in this release.",
+      "notes": "Source: docs/plans/grok-cline-integration.md:41. docs/plans/grok-cline-integration.md SHA256 3EEE11CEED26538066DFA6872670AD00CBF1EB5E62D6831FBE0C37A98808E406. PROPOSED, pending operator approval; capture does not authorize implementation. Source's acceptance scenarios are planned coverage, not existing unit tests or test-derived AC. No unit-test AC attached. Priority medium is an administrative import default. Integration excludes image-helper changes, macOS and remote execution (lines 82). Operator follow-up authorizes AC derived from repository docs and code. Attached AC are source-derived candidates, not unit-test-derived or satisfied. Source discrepancies are preserved explicitly.\nOperator approved PLAN-FRENEMY-001 on 2026-11-04T15:30:42 America/Chicago: \"I approve the plan\". Approval authorizes the defined BDPv4 phases; requirements and AC remain unsatisfied until implementation evidence and the required review gates pass.\nCurrent authority: operator approved the integration and Phase 2 architecture amendment on 2026-11-04. Historical proposed/unapproved source labels above are provenance only. Canonical five-phase order: docs/plans/grok-cline-integration.md. TDD is deferred until architecture acceptance.\nScope corrected by explicit operator direction 2026-11-04: remove product agent-plugin/QBrain audit integration and Git/worktree orchestration. Current plan supersedes earlier source text.",
+      "id": "FR-FRENEMY-109",
+      "workspaceId": "F:\\GitHub\\frenemy",
+      "title": "Schedule bounded concurrency without recursive delegation",
+      "acceptanceCriteria": [
+        {
+          "isSatisfied": false,
+          "text": "Default active capacity is four jobs per host; excess submissions queue.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-109-01"
+        },
+        {
+          "isSatisfied": false,
+          "text": "At most one turn is active per recorded agent session.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-109-02"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Each agent may initiate a job, but a delegated job cannot recursively delegate in the first release.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-109-03"
+        }
+      ],
+      "status": "in_progress",
+      "scopeStartLayerKey": "proposed-v2"
+    },
+    {
+      "priority": "medium",
+      "body": "Retain complete credential-redacted findings and verdicts as local job events, retrievable by the caller. Preserve review attempts and reviewer-reported progress/ETA, and apply the documented stall-and-relaunch rule without general job duration limits. No external audit delivery integration is required.",
+      "notes": "Source: docs/plans/grok-cline-integration.md:62-64,104. docs/plans/grok-cline-integration.md SHA256 3EEE11CEED26538066DFA6872670AD00CBF1EB5E62D6831FBE0C37A98808E406. PROPOSED, pending operator approval; capture does not authorize implementation. Source's acceptance scenarios are planned coverage, not existing unit tests or test-derived AC. No unit-test AC attached. Priority medium is an administrative import default. Integration excludes image-helper changes, macOS and remote execution (lines 82). Operator follow-up authorizes AC derived from repository docs and code. Attached AC are source-derived candidates, not unit-test-derived or satisfied. Source discrepancies are preserved explicitly.\nOperator approved PLAN-FRENEMY-001 on 2026-11-04T15:30:42 America/Chicago: \"I approve the plan\". Approval authorizes the defined BDPv4 phases; requirements and AC remain unsatisfied until implementation evidence and the required review gates pass.\nCurrent authority: operator approved the integration and Phase 2 architecture amendment on 2026-11-04. Historical proposed/unapproved source labels above are provenance only. Canonical five-phase order: docs/plans/grok-cline-integration.md. TDD is deferred until architecture acceptance.\nScope corrected by explicit operator direction 2026-11-04: remove product agent-plugin/QBrain audit integration and Git/worktree orchestration. Current plan supersedes earlier source text.",
+      "id": "FR-FRENEMY-110",
+      "workspaceId": "F:\\GitHub\\frenemy",
+      "title": "Retain local review output",
+      "acceptanceCriteria": [
+        {
+          "isSatisfied": false,
+          "text": "Retain complete credential-redacted review findings and verdicts in local job events under the job, attempt and executing agent identity.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-110-01"
+        },
+        {
+          "isSatisfied": false,
+          "text": "The caller can retrieve retained findings and verdicts through read_job_events without requiring an external audit plugin or service.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-110-02"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Reviewer runs are not bounded by fixed time or size; after more than 30 minutes without reviewer output, preserve the stopped attempt and record a relaunch as a separate attempt.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-110-03"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Progress percentages and ETAs come from the reviewer rather than being invented by Frenemy.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-110-04"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Validation includes long transcripts, complete local verdict retention and paginated retrieval without truncation.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-110-05"
+        }
+      ],
+      "status": "in_progress",
+      "scopeStartLayerKey": "proposed-v2"
+    },
+    {
+      "priority": "medium",
+      "body": "Register the shared MCP interface for selected clients and require only their CLIs. Preview changes, preserve unrelated configuration and original backups, avoid automatic approval of write/resume-write/escalation tools, remain repeatable without duplicates, and support rollback preserving later unrelated edits. Replace delegation instructions and document v2 behavior changes and recovery.",
+      "notes": "Source: docs/plans/grok-cline-integration.md:66-80,105. docs/plans/grok-cline-integration.md SHA256 3EEE11CEED26538066DFA6872670AD00CBF1EB5E62D6831FBE0C37A98808E406. PROPOSED, pending operator approval; capture does not authorize implementation. Source's acceptance scenarios are planned coverage, not existing unit tests or test-derived AC. No unit-test AC attached. Priority medium is an administrative import default. Integration excludes image-helper changes, macOS and remote execution (lines 82). Operator follow-up authorizes AC derived from repository docs and code. Attached AC are source-derived candidates, not unit-test-derived or satisfied. Source discrepancies are preserved explicitly.\nOperator approved PLAN-FRENEMY-001 on 2026-11-04T15:30:42 America/Chicago: \"I approve the plan\". Approval authorizes the defined BDPv4 phases; requirements and AC remain unsatisfied until implementation evidence and the required review gates pass.\nCurrent authority: operator approved the integration and Phase 2 architecture amendment on 2026-11-04. Historical proposed/unapproved source labels above are provenance only. Canonical five-phase order: docs/plans/grok-cline-integration.md. TDD is deferred until architecture acceptance.\nScope corrected by explicit operator direction 2026-11-04: remove product agent-plugin/QBrain audit integration and Git/worktree orchestration. Current plan supersedes earlier source text.",
+      "id": "FR-FRENEMY-111",
+      "workspaceId": "F:\\GitHub\\frenemy",
+      "title": "Install and migrate selected agent clients safely",
+      "acceptanceCriteria": [
+        {
+          "isSatisfied": false,
+          "text": "Install only selected clients and require only their installed CLIs, checking versions and capabilities.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-111-01"
+        },
+        {
+          "isSatisfied": false,
+          "text": "-WhatIf previews configuration changes without applying them.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-111-02"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Before modification copy and hash-verify configuration backups and retain originals.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-111-03"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Preserve unrelated settings and change only Frenemy-managed entries.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-111-04"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Do not automatically approve write, resume-write or permission-escalation tools.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-111-05"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Repeated installation creates no duplicate registrations or instruction sections.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-111-06"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Rollback restores managed changes without overwriting later unrelated edits.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-111-07"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Provide common job-interface instructions and explicit v2 migration/recovery documentation; validate fresh install, repeat, upgrade, conflicts and rollback.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-111-08"
+        }
+      ],
+      "status": "in_progress",
+      "scopeStartLayerKey": "proposed-v2"
+    },
+    {
+      "priority": "medium",
+      "body": "Deliver requirements/contracts, job runtime, agent integration and installation/release validation in five gated phases. Cover 100% of increment AC with independent green mocks and negative controls before implementation, then bind the same cases to production. Validate both hosts and all documented routing, isolation, fault, recovery, local evidence and installation scenarios. Require the specified independent review at each phase exit. Phase 1 defines requirements/contracts; Phase 2 completes source-pinned C4 architecture and independent acceptance before executable fixtures/TDD. Phases 3-5 implement runtime, adapters and release with independent green mocks then same-assertion production binding. Phase 2 uses architecture validator/render/traceability evidence; product TRX is not fabricated before tests exist.",
+      "notes": "Source: docs/plans/grok-cline-integration.md:84-107. docs/plans/grok-cline-integration.md SHA256 3EEE11CEED26538066DFA6872670AD00CBF1EB5E62D6831FBE0C37A98808E406. PROPOSED, pending operator approval; capture does not authorize implementation. Source's acceptance scenarios are planned coverage, not existing unit tests or test-derived AC. No unit-test AC attached. Priority medium is an administrative import default. Integration excludes image-helper changes, macOS and remote execution (lines 82). Operator follow-up authorizes AC derived from repository docs and code. Attached AC are source-derived candidates, not unit-test-derived or satisfied. Source discrepancies are preserved explicitly.\nOperator approved PLAN-FRENEMY-001 on 2026-11-04T15:30:42 America/Chicago: \"I approve the plan\". Approval authorizes the defined BDPv4 phases; requirements and AC remain unsatisfied until implementation evidence and the required review gates pass.\nCurrent authority: operator approved the integration and Phase 2 architecture amendment on 2026-11-04. Historical proposed/unapproved source labels above are provenance only. Canonical five-phase order: docs/plans/grok-cline-integration.md. TDD is deferred until architecture acceptance.\nScope corrected by explicit operator direction 2026-11-04: remove product agent-plugin/QBrain audit integration and Git/worktree orchestration. Current plan supersedes earlier source text.",
+      "id": "FR-FRENEMY-112",
+      "workspaceId": "F:\\GitHub\\frenemy",
+      "title": "Validate the proposed release through gated delivery",
+      "acceptanceCriteria": [
+        {
+          "isSatisfied": false,
+          "text": "Before implementation of an increment, independent mocks and negative controls demonstrate that tests cover 100% of its AC and reject deliberately wrong responses within a passing suite.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-112-01"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Bind the same test cases/assertions to production behavior after the green mock gate.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-112-02"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Use Nuke for Node tests, PowerShell validation and integration tests; retain original output and validated TRX reports.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-112-03"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Run targeted checks after edits and the full applicable gate at each of five phase exits. Phase 1 establishes contracts; Phase 2 validates and independently accepts C4 architecture before executable TDD. Phases 3-5 require product suites on the required lab hosts. Source: approved Phase 2 amendment.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-112-04"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Release evidence covers the current plan scenarios, including malformed events, partial output, duplicate requests, errors, recovery, permissions, local artifacts and installation.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-112-05"
+        },
+        {
+          "isSatisfied": false,
+          "text": "At every phase exit verify Claude Opus 5.5 high identity and supply complete applicable evidence, including all existing unit and in-scope integration TRX. Phase 2 supplies architecture validation/render/traceability receipts; no product test suite exists yet. Reviewer never independently builds or runs tests.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-112-06"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Phase acceptance requires AGREE, accuracy >=98%, completeness >=98%, and no unresolved applicable FAIL or UNKNOWN.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-112-07"
+        }
+      ],
+      "status": "in_progress",
+      "scopeStartLayerKey": "proposed-v2"
+    },
+    {
+      "priority": "high",
+      "body": "Insert a complete Structurizr C4 architecture phase between requirements/contracts and executable TDD. Preserve source-pinned baseline, target design, changes, traceability, deployment/dynamic views and review gate.",
+      "notes": "Explicitly approved by the operator in the implement Phase 2 instruction on 2026-11-04. Governs architecture deliverables only; production tests and implementation remain gated.\nCurrent authority: operator approved the integration and Phase 2 architecture amendment on 2026-11-04. Historical proposed/unapproved source labels above are provenance only. Canonical five-phase order: docs/plans/grok-cline-integration.md. TDD is deferred until architecture acceptance.\nScope corrected by explicit operator direction 2026-11-04: remove product agent-plugin/QBrain audit integration and Git/worktree orchestration. Current plan supersedes earlier source text.",
+      "id": "FR-FRENEMY-113",
+      "workspaceId": "F:\\GitHub\\frenemy",
+      "title": "Document baseline and approved target architecture using C4",
+      "acceptanceCriteria": [
+        {
+          "isSatisfied": false,
+          "text": "A source-pinned baseline at c7338ad39b646e695e7c4b5fbd998d45be914c02 covers every Frenemy-owned executable/module and installer at C4 context, container, component and code levels; external CLI internals are outside ownership.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-113-01"
+        },
+        {
+          "isSatisfied": false,
+          "text": "A separately labelled target model covers the approved runtime, adapters, local storage, permissions, configured workspace execution and installation, with change categories and requirement traceability. Excluded external audit integrations and Git/worktree orchestration are absent.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-113-02"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Windows/Linux deployment and submission, execution, permission, cancellation, recovery/resume and installer rollback dynamic views exist and agree with static relationships and public contracts.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-113-03"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Every planned element and relationship change maps to FR/TR, relevant UC, AC, TEST and implementation phase; architecture decisions include consequences and exclusions.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-113-04"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Pinned local Structurizr and PlantUML tooling validates DSL, renders C4 code-level SVG image views and produces a browsable static site and diagram exports with version/hash receipts and readable navigable views.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-113-05"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Before TDD begins, independent verified Claude Opus 5.5 high review returns AGREE with accuracy/completeness at least 98 and no applicable unresolved FAIL/UNKNOWN; full paired streams and durable verdict readback are retained. Architecture approval does not satisfy production behavior AC.",
+          "evidence": "Specification: current docs/plans/grok-cline-integration.md after operator scope correction 2026-11-04. No implementation or test execution evidence.",
+          "id": "AC-FRENEMY-113-06"
+        }
+      ],
+      "status": "pending",
+      "scopeStartLayerKey": "proposed-v2"
+    },
+    {
+      "priority": "medium",
+      "body": "Placeholder requirement backfilled for TODO link FR-MCP-TRIAGE-002.",
+      "id": "FR-MCP-TRIAGE-002",
+      "workspaceId": "F:\\GitHub\\frenemy",
+      "title": "FR-MCP-TRIAGE-002",
+      "acceptanceCriteria": [],
+      "status": "pending",
+      "scopeStartLayerKey": "layer-1"
+    }
+  ],
+  "currentLayer": {
+    "createdAtUtc": {
+      "ticks": 639294150415680650,
+      "totalOffsetMinutes": 0,
+      "second": 41,
+      "timeOfDay": "18:50:41.5680650",
+      "utcDateTime": "2026-11-04T18:50:41.5680650Z",
+      "millisecond": 568,
+      "hour": 18,
+      "date": "2026-11-04T00:00:00.0000000",
+      "dateTime": "2026-11-04T18:50:41.5680650",
+      "month": 11,
+      "nanosecond": 0,
+      "utcTicks": 639294150415680650,
+      "year": 2026,
+      "localDateTime": "2026-11-04T12:50:41.5680650-06:00",
+      "dayOfWeek": "Wednesday",
+      "day": 4,
+      "microsecond": 65,
+      "dayOfYear": 308,
+      "minute": 50,
+      "offset": "00:00:00"
+    },
+    "description": "Unapproved integration design extracted from docs/plans/grok-cline-integration.md. Documentary capture only; does not authorize implementation or advance the active layer.",
+    "key": "proposed-v2",
+    "updatedAtUtc": {
+      "ticks": 639294150415680650,
+      "totalOffsetMinutes": 0,
+      "second": 41,
+      "timeOfDay": "18:50:41.5680650",
+      "utcDateTime": "2026-11-04T18:50:41.5680650Z",
+      "millisecond": 568,
+      "hour": 18,
+      "date": "2026-11-04T00:00:00.0000000",
+      "dateTime": "2026-11-04T18:50:41.5680650",
+      "month": 11,
+      "nanosecond": 0,
+      "utcTicks": 639294150415680650,
+      "year": 2026,
+      "localDateTime": "2026-11-04T12:50:41.5680650-06:00",
+      "dayOfWeek": "Wednesday",
+      "day": 4,
+      "microsecond": 65,
+      "dayOfYear": 308,
+      "minute": 50,
+      "offset": "00:00:00"
+    },
+    "workspaceId": "F:\\GitHub\\frenemy",
+    "order": 2,
+    "name": "Proposed Grok and Cline integration"
+  },
+  "testing": [
+    {
+      "priority": "high",
+      "condition": "Prove all acceptance criteria of FR-FRENEMY-101 through independent correct mocks and negative controls before production edits, then bind the same cases and assertions to production and retain Windows/Linux phase-exit evidence.",
+      "notes": "Authorized by PLAN-FRENEMY-001 approval 2026-11-04T15:30:42 America/Chicago. Covers AC-FRENEMY-101-01, AC-FRENEMY-101-02, AC-FRENEMY-101-03. Full tests, TRX evidence and independent Claude Opus 5.5 high review are required at the applicable phase gate. Requirements remain unsatisfied.\nCurrent authority: operator approved the integration and Phase 2 architecture amendment on 2026-11-04. Historical proposed/unapproved source labels above are provenance only. Canonical five-phase order: docs/plans/grok-cline-integration.md. TDD is deferred until architecture acceptance.\nCurrent scope correction 2026-11-04 applies; removed external delivery and worktree scenarios are not acceptance criteria.",
+      "id": "TEST-FRENEMY-101",
+      "workspaceId": "F:\\GitHub\\frenemy",
+      "title": "Validate Four-agent discovery and routing",
+      "acceptanceCriteria": [
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-101-01: list_agents reports installed CLI versions, capabilities and configuration status.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-101-01"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-101-02: Each of four agents can call each other agent, covering 12 directed routes on both Windows and Linux.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-101-02"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-101-03: Release validation covers each route in read and write mode on both operating systems, totaling 48 routing/access combinations; macOS and cross-machine execution remain excluded.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-101-03"
+        }
+      ],
+      "status": "pending",
+      "scopeStartLayerKey": "proposed-v2"
+    },
+    {
+      "priority": "high",
+      "condition": "Prove all acceptance criteria of FR-FRENEMY-102 through independent correct mocks and negative controls before production edits, then bind the same cases and assertions to production and retain Windows/Linux phase-exit evidence.",
+      "notes": "Authorized by PLAN-FRENEMY-001 approval 2026-11-04T15:30:42 America/Chicago. Covers AC-FRENEMY-102-01, AC-FRENEMY-102-02, AC-FRENEMY-102-03, AC-FRENEMY-102-04. Full tests, TRX evidence and independent Claude Opus 5.5 high review are required at the applicable phase gate. Requirements remain unsatisfied.\nCurrent authority: operator approved the integration and Phase 2 architecture amendment on 2026-11-04. Historical proposed/unapproved source labels above are provenance only. Canonical five-phase order: docs/plans/grok-cline-integration.md. TDD is deferred until architecture acceptance.\nCurrent scope correction 2026-11-04 applies; removed external delivery and worktree scenarios are not acceptance criteria.",
+      "id": "TEST-FRENEMY-102",
+      "workspaceId": "F:\\GitHub\\frenemy",
+      "title": "Validate Submit durable read and write jobs",
+      "acceptanceCriteria": [
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-102-01: start_read_job and start_write_job return a job ID immediately for accepted work.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-102-01"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-102-02: Submission accepts target, prompt, optional model/effort/Cline provider; caller and workspace are obtained from MCP connection configuration. No Git base-revision input is accepted.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-102-02"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-102-03: The accepted request is durably retained before agent launch; retrying its request ID does not launch duplicate jobs.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-102-03"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-102-04: Legacy ask_claude and ask_claude_write return job handles in v2 with explicit migration documentation. Write jobs execute in the configured caller workspace.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-102-04"
+        }
+      ],
+      "status": "pending",
+      "scopeStartLayerKey": "proposed-v2"
+    },
+    {
+      "priority": "high",
+      "condition": "Prove all acceptance criteria of FR-FRENEMY-103 through independent correct mocks and negative controls before production edits, then bind the same cases and assertions to production and retain Windows/Linux phase-exit evidence.",
+      "notes": "Authorized by PLAN-FRENEMY-001 approval 2026-11-04T15:30:42 America/Chicago. Covers AC-FRENEMY-103-01, AC-FRENEMY-103-02, AC-FRENEMY-103-03, AC-FRENEMY-103-04. Full tests, TRX evidence and independent Claude Opus 5.5 high review are required at the applicable phase gate. Requirements remain unsatisfied.\nCurrent authority: operator approved the integration and Phase 2 architecture amendment on 2026-11-04. Historical proposed/unapproved source labels above are provenance only. Canonical five-phase order: docs/plans/grok-cline-integration.md. TDD is deferred until architecture acceptance.\nCurrent scope correction 2026-11-04 applies; removed external delivery and worktree scenarios are not acceptance criteria.",
+      "id": "TEST-FRENEMY-103",
+      "workspaceId": "F:\\GitHub\\frenemy",
+      "title": "Validate Retrieve job results and retained events",
+      "acceptanceCriteria": [
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-103-01: get_job returns lifecycle state, final answer when available, artifacts and execution identity. No external audit-delivery status is exposed.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-103-01"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-103-02: read_job_events uses continuation cursors and allows retrieval of the complete retained credential-redacted request/response/progress/error streams without truncating them.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-103-02"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-103-03: Job state distinguishes queued, running, awaiting permission, succeeded, failed, cancelled and interrupted.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-103-03"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-103-04: No total transcript-size or fixed job-duration cutoff discards required evidence or terminates otherwise active jobs.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-103-04"
+        }
+      ],
+      "status": "pending",
+      "scopeStartLayerKey": "proposed-v2"
+    },
+    {
+      "priority": "high",
+      "condition": "Prove all acceptance criteria of FR-FRENEMY-104 through independent correct mocks and negative controls before production edits, then bind the same cases and assertions to production and retain Windows/Linux phase-exit evidence.",
+      "notes": "Authorized by PLAN-FRENEMY-001 approval 2026-11-04T15:30:42 America/Chicago. Covers AC-FRENEMY-104-01, AC-FRENEMY-104-02. Full tests, TRX evidence and independent Claude Opus 5.5 high review are required at the applicable phase gate. Requirements remain unsatisfied.\nCurrent authority: operator approved the integration and Phase 2 architecture amendment on 2026-11-04. Historical proposed/unapproved source labels above are provenance only. Canonical five-phase order: docs/plans/grok-cline-integration.md. TDD is deferred until architecture acceptance.\nCurrent scope correction 2026-11-04 applies; removed external delivery and worktree scenarios are not acceptance criteria.",
+      "id": "TEST-FRENEMY-104",
+      "workspaceId": "F:\\GitHub\\frenemy",
+      "title": "Validate Cancel an owned job",
+      "acceptanceCriteria": [
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-104-01: cancel_job targets the specified job ID and terminates that job's owned process tree.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-104-01"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-104-02: Cancellation leaves unrelated agent sessions running; release validation includes cancellation races.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-104-02"
+        }
+      ],
+      "status": "pending",
+      "scopeStartLayerKey": "proposed-v2"
+    },
+    {
+      "priority": "high",
+      "condition": "Prove all acceptance criteria of FR-FRENEMY-105 through independent correct mocks and negative controls before production edits, then bind the same cases and assertions to production and retain Windows/Linux phase-exit evidence.",
+      "notes": "Authorized by PLAN-FRENEMY-001 approval 2026-11-04T15:30:42 America/Chicago. Covers AC-FRENEMY-105-01, AC-FRENEMY-105-02, AC-FRENEMY-105-03, AC-FRENEMY-105-04. Full tests, TRX evidence and independent Claude Opus 5.5 high review are required at the applicable phase gate. Requirements remain unsatisfied.\nCurrent authority: operator approved the integration and Phase 2 architecture amendment on 2026-11-04. Historical proposed/unapproved source labels above are provenance only. Canonical five-phase order: docs/plans/grok-cline-integration.md. TDD is deferred until architecture acceptance.\nCurrent scope correction 2026-11-04 applies; removed external delivery and worktree scenarios are not acceptance criteria.",
+      "id": "TEST-FRENEMY-105",
+      "workspaceId": "F:\\GitHub\\frenemy",
+      "title": "Validate Recover and explicitly resume sessions",
+      "acceptanceCriteria": [
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-105-01: A caller disconnect does not stop its running job.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-105-01"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-105-02: After reboot job history remains available and unfinished execution is marked interrupted.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-105-02"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-105-03: resume_read_job and resume_write_job accept a new prompt and continue the exact recorded session only after an explicit request.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-105-03"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-105-04: Recovery does not silently restart write jobs or substitute a different CLI session.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-105-04"
+        }
+      ],
+      "status": "pending",
+      "scopeStartLayerKey": "proposed-v2"
+    },
+    {
+      "priority": "high",
+      "condition": "Prove all acceptance criteria of FR-FRENEMY-106 through independent correct mocks and negative controls before production edits, then bind the same cases and assertions to production and retain Windows/Linux phase-exit evidence.",
+      "notes": "Authorized by PLAN-FRENEMY-001 approval 2026-11-04T15:30:42 America/Chicago. Covers AC-FRENEMY-106-01, AC-FRENEMY-106-02, AC-FRENEMY-106-03. Full tests, TRX evidence and independent Claude Opus 5.5 high review are required at the applicable phase gate. Requirements remain unsatisfied.\nCurrent authority: operator approved the integration and Phase 2 architecture amendment on 2026-11-04. Historical proposed/unapproved source labels above are provenance only. Canonical five-phase order: docs/plans/grok-cline-integration.md. TDD is deferred until architecture acceptance.\nCurrent scope correction 2026-11-04 applies; removed external delivery and worktree scenarios are not acceptance criteria.",
+      "id": "TEST-FRENEMY-106",
+      "workspaceId": "F:\\GitHub\\frenemy",
+      "title": "Validate Enforce read-job permissions",
+      "acceptanceCriteria": [
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-106-01: Read jobs prevent agent-directed source edits and unrestricted command execution through adapter-supported controls.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-106-01"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-106-02: When an adapter cannot enforce the requested mode, reject it explicitly rather than proceeding under weaker permissions.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-106-02"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-106-03: Permission validation includes direct edits, command execution, MCP-tool escapes and escalation through continuation; Grok's sandbox flag alone does not establish Windows protection.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-106-03"
+        }
+      ],
+      "status": "pending",
+      "scopeStartLayerKey": "proposed-v2"
+    },
+    {
+      "priority": "high",
+      "condition": "Prove all acceptance criteria of FR-FRENEMY-108 through independent correct mocks and negative controls before production edits, then bind the same cases and assertions to production and retain Windows/Linux phase-exit evidence.",
+      "notes": "Authorized by PLAN-FRENEMY-001 approval 2026-11-04T15:30:42 America/Chicago. Covers AC-FRENEMY-108-01, AC-FRENEMY-108-02, AC-FRENEMY-108-03, AC-FRENEMY-108-04, AC-FRENEMY-108-05. Full tests, TRX evidence and independent Claude Opus 5.5 high review are required at the applicable phase gate. Requirements remain unsatisfied.\nCurrent authority: operator approved the integration and Phase 2 architecture amendment on 2026-11-04. Historical proposed/unapproved source labels above are provenance only. Canonical five-phase order: docs/plans/grok-cline-integration.md. TDD is deferred until architecture acceptance.\nCurrent scope correction 2026-11-04 applies; removed external delivery and worktree scenarios are not acceptance criteria.",
+      "id": "TEST-FRENEMY-108",
+      "workspaceId": "F:\\GitHub\\frenemy",
+      "title": "Validate Preserve authentication and execution identity",
+      "acceptanceCriteria": [
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-108-01: Reuse existing CLI authentication without collecting credentials or silently changing selected providers or models.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-108-01"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-108-02: Record requested and observed model/effort/provider identity separately; when observed identity is unavailable report unknown.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-108-02"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-108-03: Retain parent/caller IDs, workspace, job ID, attempt ID, CLI session ID, versions, model, effort and artifact hashes.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-108-03"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-108-04: Launch resolved executables with argument arrays and no shell; resolve Cline's native Windows executable instead of a .cmd shim.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-108-04"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-108-05: Validation includes missing credentials, provider errors and unsupported model/effort selections without inventing successful execution evidence.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-108-05"
+        }
+      ],
+      "status": "pending",
+      "scopeStartLayerKey": "proposed-v2"
+    },
+    {
+      "priority": "high",
+      "condition": "Prove all acceptance criteria of FR-FRENEMY-109 through independent correct mocks and negative controls before production edits, then bind the same cases and assertions to production and retain Windows/Linux phase-exit evidence.",
+      "notes": "Authorized by PLAN-FRENEMY-001 approval 2026-11-04T15:30:42 America/Chicago. Covers AC-FRENEMY-109-01, AC-FRENEMY-109-02, AC-FRENEMY-109-03. Full tests, TRX evidence and independent Claude Opus 5.5 high review are required at the applicable phase gate. Requirements remain unsatisfied.\nCurrent authority: operator approved the integration and Phase 2 architecture amendment on 2026-11-04. Historical proposed/unapproved source labels above are provenance only. Canonical five-phase order: docs/plans/grok-cline-integration.md. TDD is deferred until architecture acceptance.\nCurrent scope correction 2026-11-04 applies; removed external delivery and worktree scenarios are not acceptance criteria.",
+      "id": "TEST-FRENEMY-109",
+      "workspaceId": "F:\\GitHub\\frenemy",
+      "title": "Validate Schedule bounded concurrency without recursive delegation",
+      "acceptanceCriteria": [
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-109-01: Default active capacity is four jobs per host; excess submissions queue.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-109-01"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-109-02: At most one turn is active per recorded agent session.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-109-02"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-109-03: Each agent may initiate a job, but a delegated job cannot recursively delegate in the first release.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-109-03"
+        }
+      ],
+      "status": "pending",
+      "scopeStartLayerKey": "proposed-v2"
+    },
+    {
+      "priority": "high",
+      "condition": "Prove all acceptance criteria of FR-FRENEMY-110 through independent correct mocks and negative controls before production edits, then bind the same cases and assertions to production and retain Windows/Linux phase-exit evidence.",
+      "notes": "Authorized by PLAN-FRENEMY-001 approval 2026-11-04T15:30:42 America/Chicago. Covers AC-FRENEMY-110-01, AC-FRENEMY-110-02, AC-FRENEMY-110-03, AC-FRENEMY-110-04, AC-FRENEMY-110-05. Full tests, TRX evidence and independent Claude Opus 5.5 high review are required at the applicable phase gate. Requirements remain unsatisfied.\nCurrent authority: operator approved the integration and Phase 2 architecture amendment on 2026-11-04. Historical proposed/unapproved source labels above are provenance only. Canonical five-phase order: docs/plans/grok-cline-integration.md. TDD is deferred until architecture acceptance.\nCurrent scope correction 2026-11-04 applies; removed external delivery and worktree scenarios are not acceptance criteria.",
+      "id": "TEST-FRENEMY-110",
+      "workspaceId": "F:\\GitHub\\frenemy",
+      "title": "Validate local review output retention",
+      "acceptanceCriteria": [
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-110-01: Retain complete credential-redacted review findings and verdicts in local job events under the job, attempt and executing agent identity.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-110-01"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-110-02: The caller can retrieve retained findings and verdicts through read_job_events without requiring an external audit plugin or service.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-110-02"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-110-03: Reviewer runs are not bounded by fixed time or size; after more than 30 minutes without reviewer output, preserve the stopped attempt and record a relaunch as a separate attempt.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-110-03"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-110-04: Progress percentages and ETAs come from the reviewer rather than being invented by Frenemy.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-110-04"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-110-05: Validation includes long transcripts, complete local verdict retention and paginated retrieval without truncation.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-110-05"
+        }
+      ],
+      "status": "pending",
+      "scopeStartLayerKey": "proposed-v2"
+    },
+    {
+      "priority": "high",
+      "condition": "Prove all acceptance criteria of FR-FRENEMY-111 through independent correct mocks and negative controls before production edits, then bind the same cases and assertions to production and retain Windows/Linux phase-exit evidence.",
+      "notes": "Authorized by PLAN-FRENEMY-001 approval 2026-11-04T15:30:42 America/Chicago. Covers AC-FRENEMY-111-01, AC-FRENEMY-111-02, AC-FRENEMY-111-03, AC-FRENEMY-111-04, AC-FRENEMY-111-05, AC-FRENEMY-111-06, AC-FRENEMY-111-07, AC-FRENEMY-111-08. Full tests, TRX evidence and independent Claude Opus 5.5 high review are required at the applicable phase gate. Requirements remain unsatisfied.\nCurrent authority: operator approved the integration and Phase 2 architecture amendment on 2026-11-04. Historical proposed/unapproved source labels above are provenance only. Canonical five-phase order: docs/plans/grok-cline-integration.md. TDD is deferred until architecture acceptance.\nCurrent scope correction 2026-11-04 applies; removed external delivery and worktree scenarios are not acceptance criteria.",
+      "id": "TEST-FRENEMY-111",
+      "workspaceId": "F:\\GitHub\\frenemy",
+      "title": "Validate Install and migrate selected agent clients safely",
+      "acceptanceCriteria": [
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-111-01: Install only selected clients and require only their installed CLIs, checking versions and capabilities.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-111-01"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-111-02: -WhatIf previews configuration changes without applying them.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-111-02"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-111-03: Before modification copy and hash-verify configuration backups and retain originals.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-111-03"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-111-04: Preserve unrelated settings and change only Frenemy-managed entries.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-111-04"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-111-05: Do not automatically approve write, resume-write or permission-escalation tools.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-111-05"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-111-06: Repeated installation creates no duplicate registrations or instruction sections.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-111-06"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-111-07: Rollback restores managed changes without overwriting later unrelated edits.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-111-07"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-111-08: Provide common job-interface instructions and explicit v2 migration/recovery documentation; validate fresh install, repeat, upgrade, conflicts and rollback.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-111-08"
+        }
+      ],
+      "status": "pending",
+      "scopeStartLayerKey": "proposed-v2"
+    },
+    {
+      "priority": "high",
+      "condition": "Prove all acceptance criteria of FR-FRENEMY-112 through independent correct mocks and negative controls before production edits, then bind the same cases and assertions to production and retain Windows/Linux phase-exit evidence. Five phases: requirements/contracts, accepted architecture before executable TDD, runtime, adapters, installation/release. Architecture phase validates documents and rendering before product fixtures exist.",
+      "notes": "Authorized by PLAN-FRENEMY-001 approval 2026-11-04T15:30:42 America/Chicago. Covers AC-FRENEMY-112-01, AC-FRENEMY-112-02, AC-FRENEMY-112-03, AC-FRENEMY-112-04, AC-FRENEMY-112-05, AC-FRENEMY-112-06, AC-FRENEMY-112-07. Full tests, TRX evidence and independent Claude Opus 5.5 high review are required at the applicable phase gate. Requirements remain unsatisfied.\nCurrent authority: operator approved the integration and Phase 2 architecture amendment on 2026-11-04. Historical proposed/unapproved source labels above are provenance only. Canonical five-phase order: docs/plans/grok-cline-integration.md. TDD is deferred until architecture acceptance.\nCurrent scope correction 2026-11-04 applies; removed external delivery and worktree scenarios are not acceptance criteria.",
+      "id": "TEST-FRENEMY-112",
+      "workspaceId": "F:\\GitHub\\frenemy",
+      "title": "Validate Validate the proposed release through gated delivery",
+      "acceptanceCriteria": [
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-112-01: Before implementation of an increment, independent mocks and negative controls demonstrate that tests cover 100% of its AC and reject deliberately wrong responses within a passing suite.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-112-01"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-112-02: Bind the same test cases/assertions to production behavior after the green mock gate.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-112-02"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-112-03: Use Nuke for Node tests, PowerShell validation and integration tests; retain original output and validated TRX reports.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-112-03"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-112-04: Run targeted checks after edits and the full applicable gate at each of five phase exits. Phase 1 establishes contracts; Phase 2 validates and independently accepts C4 architecture before executable TDD. Phases 3-5 require product suites on the required lab hosts. Source: approved Phase 2 amendment.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-112-04"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-112-05: Release evidence covers the current plan scenarios, including malformed events, partial output, duplicate requests, errors, recovery, permissions, local artifacts and installation.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-112-05"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-112-06: At every phase exit verify Claude Opus 5.5 high identity and supply complete applicable evidence, including all existing unit and in-scope integration TRX. Phase 2 supplies architecture validation/render/traceability receipts; no product test suite exists yet. Reviewer never independently builds or runs tests.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-112-06"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-112-07: Phase acceptance requires AGREE, accuracy >=98%, completeness >=98%, and no unresolved applicable FAIL or UNKNOWN.",
+          "evidence": "Planned test contract. No mock, production, host or review pass claimed.",
+          "id": "AC-TEST-FRENEMY-112-07"
+        }
+      ],
+      "status": "pending",
+      "scopeStartLayerKey": "proposed-v2"
+    },
+    {
+      "priority": "high",
+      "condition": "Validate DSL and local renders, check owned component/C4 coverage, pinned source facts, complete per-change FR/TR/UC/AC/TEST/phase mapping, all required flows and Windows/Linux deployments, rendering readability and navigation. Supply evidence to Claude Opus 5.5 high for independent >=98/98 AGREE with no applicable FAIL/UNKNOWN before TDD.",
+      "notes": "Architecture documentation checks, not new product TDD. No repository unit suite exists at phase entry; do not fabricate TRX or product pass evidence.\nCurrent authority: operator approved the integration and Phase 2 architecture amendment on 2026-11-04. Historical proposed/unapproved source labels above are provenance only. Canonical five-phase order: docs/plans/grok-cline-integration.md. TDD is deferred until architecture acceptance.\nCurrent scope correction 2026-11-04 applies; removed external delivery and worktree scenarios are not acceptance criteria.",
+      "id": "TEST-FRENEMY-113",
+      "workspaceId": "F:\\GitHub\\frenemy",
+      "title": "Validate complete architecture before TDD",
+      "acceptanceCriteria": [
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-113-01: A source-pinned baseline at c7338ad39b646e695e7c4b5fbd998d45be914c02 covers every Frenemy-owned executable/module and installer at C4 context, container, component and code levels; external CLI internals are outside ownership.",
+          "id": "AC-TEST-FRENEMY-113-01"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-113-02: A separately labelled target model covers the approved runtime, adapters, local storage, permissions, configured workspace execution and installation, with change categories and requirement traceability. Excluded external audit integrations and Git/worktree orchestration are absent.",
+          "id": "AC-TEST-FRENEMY-113-02"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-113-03: Windows/Linux deployment and submission, execution, permission, cancellation, recovery/resume and installer rollback dynamic views exist and agree with static relationships and public contracts.",
+          "id": "AC-TEST-FRENEMY-113-03"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-113-04: Every planned element and relationship change maps to FR/TR, relevant UC, AC, TEST and implementation phase; architecture decisions include consequences and exclusions.",
+          "id": "AC-TEST-FRENEMY-113-04"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-113-05: Pinned local Structurizr and PlantUML tooling validates DSL, renders C4 code-level SVG image views and produces a browsable static site and diagram exports with version/hash receipts and readable navigable views.",
+          "id": "AC-TEST-FRENEMY-113-05"
+        },
+        {
+          "isSatisfied": false,
+          "text": "Verify AC-FRENEMY-113-06: Before TDD begins, independent verified Claude Opus 5.5 high review returns AGREE with accuracy/completeness at least 98 and no applicable unresolved FAIL/UNKNOWN; full paired streams and durable verdict readback are retained. Architecture approval does not satisfy production behavior AC.",
+          "id": "AC-TEST-FRENEMY-113-06"
+        }
+      ],
+      "status": "pending",
+      "scopeStartLayerKey": "proposed-v2"
+    }
+  ],
+  "technical": [
+    {
+      "priority": "medium",
+      "body": "Hide agent-specific invocation and parsing behind adapters. Claude uses headless streaming JSON, explicit model/effort, permission configuration and session ID. Codex uses codex exec --json, stdin prompts, explicit sandbox and exact session IDs for continuation.",
+      "notes": "Source: docs/plans/grok-cline-integration.md:30-33. PROPOSED v2, unapproved; no implementation authorization. No unit-test evidence or test-derived acceptance criteria exists in the inspected checkout. Priority medium is an import default.\nCurrent authority: operator approved the integration and Phase 2 architecture amendment on 2026-11-04. Historical proposed/unapproved source labels above are provenance only. Canonical five-phase order: docs/plans/grok-cline-integration.md. TDD is deferred until architecture acceptance.\nScope corrected 2026-11-04; product audit delivery and Git/worktree orchestration excluded.",
+      "id": "TR-FRENEMY-ADAPTER-103",
+      "workspaceId": "F:\\GitHub\\frenemy",
+      "title": "Claude and Codex adapters",
+      "acceptanceCriteria": [],
+      "status": "pending",
+      "scopeStartLayerKey": "proposed-v2"
+    },
+    {
+      "priority": "medium",
+      "body": "Grok uses headless streaming JSON, prompt files, explicit model/effort and recorded session IDs. Cline uses cline --acp --auto-approve false with ACP prompts, progress, permissions, cancellation and session loading. Treat these as proposed adapter contracts awaiting implementation validation.",
+      "notes": "Source: docs/plans/grok-cline-integration.md:34-35. PROPOSED v2, unapproved; no implementation authorization. No unit-test evidence or test-derived acceptance criteria exists in the inspected checkout. Priority medium is an import default.\nCurrent authority: operator approved the integration and Phase 2 architecture amendment on 2026-11-04. Historical proposed/unapproved source labels above are provenance only. Canonical five-phase order: docs/plans/grok-cline-integration.md. TDD is deferred until architecture acceptance.\nScope corrected 2026-11-04; product audit delivery and Git/worktree orchestration excluded.",
+      "id": "TR-FRENEMY-ADAPTER-104",
+      "workspaceId": "F:\\GitHub\\frenemy",
+      "title": "Grok and Cline adapters",
+      "acceptanceCriteria": [],
+      "status": "pending",
+      "scopeStartLayerKey": "proposed-v2"
+    },
+    {
+      "priority": "medium",
+      "body": "Expose list_agents, start_read_job, start_write_job, get_job, read_job_events, cancel_job, resume_read_job and resume_write_job. Submission fields include target/prompt/model/effort/provider; caller and workspace come from connection configuration. Legacy ask_claude names return job handles in v2 and require explicit migration documentation.",
+      "notes": "Source: docs/plans/grok-cline-integration.md:13-24. PROPOSED v2, unapproved; no implementation authorization. No unit-test evidence or test-derived acceptance criteria exists in the inspected checkout. Priority medium is an import default.\nCurrent authority: operator approved the integration and Phase 2 architecture amendment on 2026-11-04. Historical proposed/unapproved source labels above are provenance only. Canonical five-phase order: docs/plans/grok-cline-integration.md. TDD is deferred until architecture acceptance.\nScope corrected 2026-11-04; product audit delivery and Git/worktree orchestration excluded.",
+      "id": "TR-FRENEMY-API-102",
+      "workspaceId": "F:\\GitHub\\frenemy",
+      "title": "Common MCP tool contracts",
+      "acceptanceCriteria": [],
+      "status": "pending",
+      "scopeStartLayerKey": "proposed-v2"
+    },
+    {
+      "priority": "medium",
+      "body": "Use Node for the relay under the repository exception, PowerShell for installation/build/operations, and one job service per OS user. Connect stdio MCP servers through a Windows named pipe or Linux Unix-domain socket. Target Windows and Linux; exclude macOS, cross-machine execution and image-helper changes from v2 acceptance.",
+      "notes": "Source: docs/plans/grok-cline-integration.md:11,26-28,82. PROPOSED v2, unapproved; no implementation authorization. No unit-test evidence or test-derived acceptance criteria exists in the inspected checkout. Priority medium is an import default.\nCurrent authority: operator approved the integration and Phase 2 architecture amendment on 2026-11-04. Historical proposed/unapproved source labels above are provenance only. Canonical five-phase order: docs/plans/grok-cline-integration.md. TDD is deferred until architecture acceptance.\nScope corrected 2026-11-04; product audit delivery and Git/worktree orchestration excluded.",
+      "id": "TR-FRENEMY-ARCH-101",
+      "workspaceId": "F:\\GitHub\\frenemy",
+      "title": "Local service and transport boundaries",
+      "acceptanceCriteria": [],
+      "status": "pending",
+      "scopeStartLayerKey": "proposed-v2"
+    },
+    {
+      "priority": "high",
+      "body": "Keep source in docs/architecture/structurizr. Use native Structurizr levels 1-3 and locally rendered PlantUML SVG image views for level 4. Pin baseline c7338ad39b646e695e7c4b5fbd998d45be914c02, tool versions and hashes; separate baseline/target with stable identifiers, labelled change categories, source and requirement links, deployment and dynamic views. Retain generated site, exports and evidence.",
+      "notes": "Architecture validation is a documentation gate before product TDD; no production implementation authorized by its pass alone.\nCurrent authority: operator approved the integration and Phase 2 architecture amendment on 2026-11-04. Historical proposed/unapproved source labels above are provenance only. Canonical five-phase order: docs/plans/grok-cline-integration.md. TDD is deferred until architecture acceptance.\nScope corrected 2026-11-04; product audit delivery and Git/worktree orchestration excluded.",
+      "id": "TR-FRENEMY-ARCH-117",
+      "workspaceId": "F:\\GitHub\\frenemy",
+      "title": "Structurizr model and local reproducible rendering",
+      "acceptanceCriteria": [],
+      "status": "pending",
+      "scopeStartLayerKey": "proposed-v2"
+    },
+    {
+      "priority": "medium",
+      "body": "Retain credential-redacted request/response/progress/error streams, cursor retrieval without truncating retained evidence, and parent/caller/workspace/job/attempt/session IDs, CLI versions, model, effort and artifact hashes. Storage and retrieval are local to Frenemy; no agent-specific audit plugin or QBrain product dependency.",
+      "notes": "Source: docs/plans/grok-cline-integration.md:17-18,56-57. PROPOSED v2, unapproved; no implementation authorization. No unit-test evidence or test-derived acceptance criteria exists in the inspected checkout. Priority medium is an import default.\nCurrent authority: operator approved the integration and Phase 2 architecture amendment on 2026-11-04. Historical proposed/unapproved source labels above are provenance only. Canonical five-phase order: docs/plans/grok-cline-integration.md. TDD is deferred until architecture acceptance.\nScope corrected 2026-11-04; product audit delivery and Git/worktree orchestration excluded.",
+      "id": "TR-FRENEMY-AUDIT-110",
+      "workspaceId": "F:\\GitHub\\frenemy",
+      "title": "Retain local job evidence",
+      "acceptanceCriteria": [],
+      "status": "pending",
+      "scopeStartLayerKey": "proposed-v2"
+    },
+    {
+      "priority": "medium",
+      "body": "Cancel only the selected job's process tree and preserve unrelated agent sessions; include cancellation races in release validation.",
+      "notes": "Source: docs/plans/grok-cline-integration.md:60,103. PROPOSED v2, unapproved; no implementation authorization. No unit-test evidence or test-derived acceptance criteria exists in the inspected checkout. Priority medium is an import default.\nCurrent authority: operator approved the integration and Phase 2 architecture amendment on 2026-11-04. Historical proposed/unapproved source labels above are provenance only. Canonical five-phase order: docs/plans/grok-cline-integration.md. TDD is deferred until architecture acceptance.\nScope corrected 2026-11-04; product audit delivery and Git/worktree orchestration excluded.",
+      "id": "TR-FRENEMY-EXEC-111",
+      "workspaceId": "F:\\GitHub\\frenemy",
+      "title": "Owned process cancellation",
+      "acceptanceCriteria": [],
+      "status": "pending",
+      "scopeStartLayerKey": "proposed-v2"
+    },
+    {
+      "priority": "medium",
+      "body": "Check selected clients' CLI versions and capabilities; provide -WhatIf, copy/hash-verified retained backups, preserve unrelated settings, change only managed entries, prevent duplicate registrations/instructions and avoid automatic write/resume-write/escalation approvals. Rollback preserves later unrelated edits; update common delegation and recovery instructions.",
+      "notes": "Source: docs/plans/grok-cline-integration.md:66-80. PROPOSED v2, unapproved; no implementation authorization. No unit-test evidence or test-derived acceptance criteria exists in the inspected checkout. Priority medium is an import default.\nCurrent authority: operator approved the integration and Phase 2 architecture amendment on 2026-11-04. Historical proposed/unapproved source labels above are provenance only. Canonical five-phase order: docs/plans/grok-cline-integration.md. TDD is deferred until architecture acceptance.\nScope corrected 2026-11-04; product audit delivery and Git/worktree orchestration excluded.",
+      "id": "TR-FRENEMY-INSTALL-114",
+      "workspaceId": "F:\\GitHub\\frenemy",
+      "title": "Selective transactional configuration migration",
+      "acceptanceCriteria": [],
+      "status": "pending",
+      "scopeStartLayerKey": "proposed-v2"
+    },
+    {
+      "priority": "medium",
+      "body": "Do not impose fixed job wall-clock or transcript-size limits. Stop hostile-review execution only after more than 30 minutes without output, preserve that attempt and relaunch as a separately recorded attempt. Use reviewer-produced progress percentages and ETAs.",
+      "notes": "Source: docs/plans/grok-cline-integration.md:62. PROPOSED v2, unapproved; no implementation authorization. No unit-test evidence or test-derived acceptance criteria exists in the inspected checkout. Priority medium is an import default.\nCurrent authority: operator approved the integration and Phase 2 architecture amendment on 2026-11-04. Historical proposed/unapproved source labels above are provenance only. Canonical five-phase order: docs/plans/grok-cline-integration.md. TDD is deferred until architecture acceptance.\nScope corrected 2026-11-04; product audit delivery and Git/worktree orchestration excluded.",
+      "id": "TR-FRENEMY-REVIEW-112",
+      "workspaceId": "F:\\GitHub\\frenemy",
+      "title": "Unbounded jobs and reviewer stall handling",
+      "acceptanceCriteria": [],
+      "status": "pending",
+      "scopeStartLayerKey": "proposed-v2"
+    },
+    {
+      "priority": "medium",
+      "body": "At each phase exit give complete evidence to Claude Opus 5.5 high, verify identity via runtime receipts, and supply tests/TRX without inviting reviewer builds or test execution. Require AGREE, accuracy and completeness each at least 98%, with no unresolved applicable FAIL or UNKNOWN.",
+      "notes": "Source: docs/plans/grok-cline-integration.md:107. PROPOSED v2, unapproved; no implementation authorization. No unit-test evidence or test-derived acceptance criteria exists in the inspected checkout. Priority medium is an import default.\nCurrent authority: operator approved the integration and Phase 2 architecture amendment on 2026-11-04. Historical proposed/unapproved source labels above are provenance only. Canonical five-phase order: docs/plans/grok-cline-integration.md. TDD is deferred until architecture acceptance.\nScope corrected 2026-11-04; product audit delivery and Git/worktree orchestration excluded.",
+      "id": "TR-FRENEMY-REVIEW-116",
+      "workspaceId": "F:\\GitHub\\frenemy",
+      "title": "Independent phase-exit acceptance",
+      "acceptanceCriteria": [],
+      "status": "pending",
+      "scopeStartLayerKey": "proposed-v2"
+    },
+    {
+      "priority": "medium",
+      "body": "Default to four active jobs per host and queue excess work; serialize active turns per recorded CLI session and prevent delegated jobs from recursively delegating.",
+      "notes": "Source: docs/plans/grok-cline-integration.md:41. PROPOSED v2, unapproved; no implementation authorization. No unit-test evidence or test-derived acceptance criteria exists in the inspected checkout. Priority medium is an import default.\nCurrent authority: operator approved the integration and Phase 2 architecture amendment on 2026-11-04. Historical proposed/unapproved source labels above are provenance only. Canonical five-phase order: docs/plans/grok-cline-integration.md. TDD is deferred until architecture acceptance.\nScope corrected 2026-11-04; product audit delivery and Git/worktree orchestration excluded.",
+      "id": "TR-FRENEMY-SCHED-106",
+      "workspaceId": "F:\\GitHub\\frenemy",
+      "title": "Queue and recursion limits",
+      "acceptanceCriteria": [],
+      "status": "pending",
+      "scopeStartLayerKey": "proposed-v2"
+    },
+    {
+      "priority": "medium",
+      "body": "Resolve executables during setup and launch with argument arrays and no intermediate shell. On Windows resolve Cline's native binary instead of a .cmd shim. Reuse CLI auth; never silently substitute provider/model. Record requested and observed identity separately, with unknown for missing evidence.",
+      "notes": "Source: docs/plans/grok-cline-integration.md:37-39. PROPOSED v2, unapproved; no implementation authorization. No unit-test evidence or test-derived acceptance criteria exists in the inspected checkout. Priority medium is an import default.\nCurrent authority: operator approved the integration and Phase 2 architecture amendment on 2026-11-04. Historical proposed/unapproved source labels above are provenance only. Canonical five-phase order: docs/plans/grok-cline-integration.md. TDD is deferred until architecture acceptance.\nScope corrected 2026-11-04; product audit delivery and Git/worktree orchestration excluded.",
+      "id": "TR-FRENEMY-SEC-105",
+      "workspaceId": "F:\\GitHub\\frenemy",
+      "title": "Executable resolution and identity preservation",
+      "acceptanceCriteria": [],
+      "status": "pending",
+      "scopeStartLayerKey": "proposed-v2"
+    },
+    {
+      "priority": "medium",
+      "body": "Use adapter-supported controls to prevent source edits and unrestricted commands and fail explicitly for unenforceable access modes. Validate permission escalation and MCP-tool escape paths, including continuation; Grok's flag alone does not establish Windows confinement.",
+      "notes": "Source: docs/plans/grok-cline-integration.md:45,100. PROPOSED v2, unapproved; no implementation authorization. No unit-test evidence or test-derived acceptance criteria exists in the inspected checkout. Priority medium is an import default.\nCurrent authority: operator approved the integration and Phase 2 architecture amendment on 2026-11-04. Historical proposed/unapproved source labels above are provenance only. Canonical five-phase order: docs/plans/grok-cline-integration.md. TDD is deferred until architecture acceptance.\nScope corrected 2026-11-04; product audit delivery and Git/worktree orchestration excluded.",
+      "id": "TR-FRENEMY-SEC-107",
+      "workspaceId": "F:\\GitHub\\frenemy",
+      "title": "Fail-closed read permissions",
+      "acceptanceCriteria": [],
+      "status": "pending",
+      "scopeStartLayerKey": "proposed-v2"
+    },
+    {
+      "priority": "medium",
+      "body": "Persist accepted requests before launch and deduplicate retries by request ID. Store the documented job states; on reboot preserve history and label unfinished execution interrupted. Continue disconnected-caller jobs and resume only on explicit request with the exact session; do not silently relaunch writes.",
+      "notes": "Source: docs/plans/grok-cline-integration.md:28,55,58-59. PROPOSED v2, unapproved; no implementation authorization. No unit-test evidence or test-derived acceptance criteria exists in the inspected checkout. Priority medium is an import default.\nCurrent authority: operator approved the integration and Phase 2 architecture amendment on 2026-11-04. Historical proposed/unapproved source labels above are provenance only. Canonical five-phase order: docs/plans/grok-cline-integration.md. TDD is deferred until architecture acceptance.\nScope corrected 2026-11-04; product audit delivery and Git/worktree orchestration excluded.",
+      "id": "TR-FRENEMY-STORE-109",
+      "workspaceId": "F:\\GitHub\\frenemy",
+      "title": "Request durability and lifecycle states",
+      "acceptanceCriteria": [],
+      "status": "pending",
+      "scopeStartLayerKey": "proposed-v2"
+    },
+    {
+      "priority": "medium",
+      "body": "Use five named gated phases, 100% AC coverage through independent green mock suites and deliberate negative controls before implementation, then production-bind the same cases. Nuke orchestrates Node tests, PowerShell validation and integration runs; retain original output and validated TRX. Run targeted tests per edit and full applicable suites at phase exits. Cover 48 route/access/OS combinations and all isolation, duplicate/malformed/error, recovery, cancellation, long-transcript, local evidence and installation scenarios listed by the plan. These are planned tests, not existing tests or extracted test AC. Phase 1 defines requirements/contracts; Phase 2 completes source-pinned C4 architecture and independent acceptance before executable fixtures/TDD. Phases 3-5 implement runtime, adapters and release with independent green mocks then same-assertion production binding. Phase 2 uses architecture validator/render/traceability evidence; product TRX is not fabricated before tests exist.",
+      "notes": "Source: docs/plans/grok-cline-integration.md:84-105. PROPOSED v2, unapproved; no implementation authorization. No unit-test evidence or test-derived acceptance criteria exists in the inspected checkout. Priority medium is an import default.\nCurrent authority: operator approved the integration and Phase 2 architecture amendment on 2026-11-04. Historical proposed/unapproved source labels above are provenance only. Canonical five-phase order: docs/plans/grok-cline-integration.md. TDD is deferred until architecture acceptance.\nScope corrected 2026-11-04; product audit delivery and Git/worktree orchestration excluded.",
+      "id": "TR-FRENEMY-TEST-115",
+      "workspaceId": "F:\\GitHub\\frenemy",
+      "title": "Contract-first validation and release coverage",
+      "acceptanceCriteria": [],
+      "status": "pending",
+      "scopeStartLayerKey": "proposed-v2"
+    },
+    {
+      "priority": "medium",
+      "body": "Placeholder requirement backfilled for TODO link TR-MCP-TRIAGE-004.",
+      "id": "TR-MCP-TRIAGE-004",
+      "workspaceId": "F:\\GitHub\\frenemy",
+      "title": "TR-MCP-TRIAGE-004",
+      "acceptanceCriteria": [],
+      "status": "pending",
+      "scopeStartLayerKey": "layer-1"
+    }
+  ],
+  "mappings": [
+    {
+      "testIds": [
+        "TEST-FRENEMY-101"
+      ],
+      "frId": "FR-FRENEMY-101",
+      "trIds": [
+        "TR-FRENEMY-ADAPTER-103",
+        "TR-FRENEMY-ADAPTER-104",
+        "TR-FRENEMY-API-102",
+        "TR-FRENEMY-ARCH-101"
+      ],
+      "workspaceId": "F:\\GitHub\\frenemy"
+    },
+    {
+      "testIds": [
+        "TEST-FRENEMY-102"
+      ],
+      "frId": "FR-FRENEMY-102",
+      "trIds": [
+        "TR-FRENEMY-ADAPTER-103",
+        "TR-FRENEMY-ADAPTER-104",
+        "TR-FRENEMY-API-102",
+        "TR-FRENEMY-ARCH-101",
+        "TR-FRENEMY-SCHED-106",
+        "TR-FRENEMY-STORE-109"
+      ],
+      "workspaceId": "F:\\GitHub\\frenemy"
+    },
+    {
+      "testIds": [
+        "TEST-FRENEMY-103"
+      ],
+      "frId": "FR-FRENEMY-103",
+      "trIds": [
+        "TR-FRENEMY-ADAPTER-104",
+        "TR-FRENEMY-API-102",
+        "TR-FRENEMY-AUDIT-110",
+        "TR-FRENEMY-REVIEW-112",
+        "TR-FRENEMY-STORE-109"
+      ],
+      "workspaceId": "F:\\GitHub\\frenemy"
+    },
+    {
+      "testIds": [
+        "TEST-FRENEMY-104"
+      ],
+      "frId": "FR-FRENEMY-104",
+      "trIds": [
+        "TR-FRENEMY-ADAPTER-104",
+        "TR-FRENEMY-API-102",
+        "TR-FRENEMY-EXEC-111"
+      ],
+      "workspaceId": "F:\\GitHub\\frenemy"
+    },
+    {
+      "testIds": [
+        "TEST-FRENEMY-105"
+      ],
+      "frId": "FR-FRENEMY-105",
+      "trIds": [
+        "TR-FRENEMY-ADAPTER-103",
+        "TR-FRENEMY-ADAPTER-104",
+        "TR-FRENEMY-API-102",
+        "TR-FRENEMY-ARCH-101",
+        "TR-FRENEMY-STORE-109"
+      ],
+      "workspaceId": "F:\\GitHub\\frenemy"
+    },
+    {
+      "testIds": [
+        "TEST-FRENEMY-106"
+      ],
+      "frId": "FR-FRENEMY-106",
+      "trIds": [
+        "TR-FRENEMY-ADAPTER-103",
+        "TR-FRENEMY-ADAPTER-104",
+        "TR-FRENEMY-SEC-107"
+      ],
+      "workspaceId": "F:\\GitHub\\frenemy"
+    },
+    {
+      "testIds": [
+        "TEST-FRENEMY-108"
+      ],
+      "frId": "FR-FRENEMY-108",
+      "trIds": [
+        "TR-FRENEMY-ADAPTER-103",
+        "TR-FRENEMY-ADAPTER-104",
+        "TR-FRENEMY-AUDIT-110",
+        "TR-FRENEMY-SEC-105"
+      ],
+      "workspaceId": "F:\\GitHub\\frenemy"
+    },
+    {
+      "testIds": [
+        "TEST-FRENEMY-109"
+      ],
+      "frId": "FR-FRENEMY-109",
+      "trIds": [
+        "TR-FRENEMY-SCHED-106"
+      ],
+      "workspaceId": "F:\\GitHub\\frenemy"
+    },
+    {
+      "testIds": [
+        "TEST-FRENEMY-110"
+      ],
+      "frId": "FR-FRENEMY-110",
+      "trIds": [
+        "TR-FRENEMY-AUDIT-110",
+        "TR-FRENEMY-REVIEW-112"
+      ],
+      "workspaceId": "F:\\GitHub\\frenemy"
+    },
+    {
+      "testIds": [
+        "TEST-FRENEMY-111"
+      ],
+      "frId": "FR-FRENEMY-111",
+      "trIds": [
+        "TR-FRENEMY-API-102",
+        "TR-FRENEMY-ARCH-101",
+        "TR-FRENEMY-INSTALL-114",
+        "TR-FRENEMY-SEC-105"
+      ],
+      "workspaceId": "F:\\GitHub\\frenemy"
+    },
+    {
+      "testIds": [
+        "TEST-FRENEMY-112"
+      ],
+      "frId": "FR-FRENEMY-112",
+      "trIds": [
+        "TR-FRENEMY-REVIEW-116",
+        "TR-FRENEMY-TEST-115"
+      ],
+      "workspaceId": "F:\\GitHub\\frenemy"
+    },
+    {
+      "testIds": [
+        "TEST-FRENEMY-113"
+      ],
+      "frId": "FR-FRENEMY-113",
+      "trIds": [
+        "TR-FRENEMY-ARCH-117"
+      ],
+      "workspaceId": "F:\\GitHub\\frenemy"
+    }
+  ]
+}

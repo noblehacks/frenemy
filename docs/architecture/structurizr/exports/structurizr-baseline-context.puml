@@ -1,0 +1,100 @@
+@startuml
+!pragma layout smetana
+title <size:24>System Context View: Frenemy BASELINE c7338ad</size>
+
+set separator none
+left to right direction
+skinparam ranksep 20
+skinparam nodesep 5
+hide stereotype
+
+<style>
+  root {
+    BackgroundColor: #ffffff;
+    FontColor: #444444;
+  }
+  // Element
+  .Element-RWxlbWVudA== {
+    BackgroundColor: #334155;
+    LineColor: #232d3b;
+    LineStyle: 0;
+    LineThickness: 2;
+    RoundCorner: 20;
+    FontColor: #ffffff;
+    FontSize: 24;
+    HorizontalAlignment: center;
+    Shadowing: 0;
+    MaximumWidth: 450;
+  }
+  // Element,Person,Unchanged
+  .Element-RWxlbWVudCxQZXJzb24sVW5jaGFuZ2Vk {
+    BackgroundColor: #475569;
+    LineColor: #313b49;
+    LineStyle: 0;
+    LineThickness: 2;
+    FontColor: #ffffff;
+    FontSize: 24;
+    HorizontalAlignment: center;
+    Shadowing: 0;
+    MaximumWidth: 450;
+  }
+  // Element,Unchanged
+  .Element-RWxlbWVudCxVbmNoYW5nZWQ= {
+    BackgroundColor: #475569;
+    LineColor: #313b49;
+    LineStyle: 0;
+    LineThickness: 2;
+    RoundCorner: 20;
+    FontColor: #ffffff;
+    FontSize: 24;
+    HorizontalAlignment: center;
+    Shadowing: 0;
+    MaximumWidth: 450;
+  }
+  // Relationship,Modified
+  .Relationship-UmVsYXRpb25zaGlwLE1vZGlmaWVk {
+    LineThickness: 2;
+    LineStyle: 10-10;
+    LineColor: #92400e;
+    FontColor: #92400e;
+    FontSize: 24;
+    MaximumWidth: 200;
+  }
+  // Relationship,Replaced
+  .Relationship-UmVsYXRpb25zaGlwLFJlcGxhY2Vk {
+    LineThickness: 2;
+    LineStyle: 10-10;
+    LineColor: #991b1b;
+    FontColor: #991b1b;
+    FontSize: 24;
+    MaximumWidth: 200;
+  }
+  // Relationship,Unchanged
+  .Relationship-UmVsYXRpb25zaGlwLFVuY2hhbmdlZA== {
+    LineThickness: 2;
+    LineStyle: 10-10;
+    LineColor: #475569;
+    FontColor: #475569;
+    FontSize: 24;
+    MaximumWidth: 200;
+  }
+</style>
+
+person "==Operator\n<size:16>[Person]</size>\n\nOwns repositories, permissions and agent subscriptions." <<Element-RWxlbWVudCxQZXJzb24sVW5jaGFuZ2Vk>> as Operator
+rectangle "==Claude Code CLI\n<size:16>[Software System]</size>\n\nExternal agent client and delegated process; internals not owned." <<Element-RWxlbWVudCxVbmNoYW5nZWQ=>> as ClaudeCodeCLI
+rectangle "==Codex CLI\n<size:16>[Software System]</size>\n\nExternal agent client and delegated process; internals not owned." <<Element-RWxlbWVudCxVbmNoYW5nZWQ=>> as CodexCLI
+rectangle "==CLI authentication and providers\n<size:16>[Software System]</size>\n\nExisting CLI credential stores and upstream providers. Frenemy never collects credentials." <<Element-RWxlbWVudCxVbmNoYW5nZWQ=>> as CLIauthenticationandproviders
+rectangle "==Frenemy BASELINE c7338ad\n<size:16>[Software System]</size>\n\nObserved source at c7338ad39b646e695e7c4b5fbd998d45be914c02." <<Element-RWxlbWVudA==>> as FrenemyBASELINEc7338ad
+
+Operator --> ClaudeCodeCLI <<Relationship-UmVsYXRpb25zaGlwLFVuY2hhbmdlZA==>> : "Uses and authorizes\n<size:16>[CLI]</size>"
+Operator --> CodexCLI <<Relationship-UmVsYXRpb25zaGlwLFVuY2hhbmdlZA==>> : "Uses and authorizes\n<size:16>[CLI]</size>"
+ClaudeCodeCLI --> CLIauthenticationandproviders <<Relationship-UmVsYXRpb25zaGlwLFVuY2hhbmdlZA==>> : "Uses existing authentication\n<size:16>[Provider protocol]</size>"
+CodexCLI --> CLIauthenticationandproviders <<Relationship-UmVsYXRpb25zaGlwLFVuY2hhbmdlZA==>> : "Uses existing authentication\n<size:16>[Provider protocol]</size>"
+CodexCLI --> FrenemyBASELINEc7338ad <<Relationship-UmVsYXRpb25zaGlwLFJlcGxhY2Vk>> : "Calls two tools\n<size:16>[stdio JSON-RPC]</size>"
+FrenemyBASELINEc7338ad --> ClaudeCodeCLI <<Relationship-UmVsYXRpb25zaGlwLE1vZGlmaWVk>> : "Spawns headless process\n<size:16>[stdin / JSON stdout]</size>"
+Operator --> FrenemyBASELINEc7338ad <<Relationship-UmVsYXRpb25zaGlwLE1vZGlmaWVk>> : "Runs installer\n<size:16>[PowerShell]</size>"
+FrenemyBASELINEc7338ad --> CodexCLI <<Relationship-UmVsYXRpb25zaGlwLE1vZGlmaWVk>> : "Configures Node relay and read tool approval\n<size:16>[TOML]</size>"
+ClaudeCodeCLI --> CodexCLI <<Relationship-UmVsYXRpb25zaGlwLFJlcGxhY2Vk>> : "Delegates per instructions\n<size:16>[codex exec]</size>"
+ClaudeCodeCLI --> FrenemyBASELINEc7338ad <<Relationship-UmVsYXRpb25zaGlwLFVuY2hhbmdlZA==>> : "Uses optional installed script\n<size:16>[genimg.sh]</size>"
+
+@enduml

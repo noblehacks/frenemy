@@ -76,9 +76,16 @@ documents:
     platforms:
       - github
       - azure
-    title: Proposed Grok Build and Cline CLI Integration
+    title: Approved Grok Build and Cline CLI Integration
     id: plan-grok-cline
     target: Grok-Cline-Integration-Plan.md
+  - title: C4 Baseline and Target Architecture
+    platforms:
+      - github
+      - azure
+    id: c4-architecture
+    target: C4-Architecture.md
+    source: docs/architecture/structurizr/wiki.md
 navigation:
   - document: home
   - document: functional
@@ -91,3 +98,4 @@ navigation:
   - document: arch-overview
   - document: testing-status
   - document: plan-grok-cline
+  - document: c4-architecture
