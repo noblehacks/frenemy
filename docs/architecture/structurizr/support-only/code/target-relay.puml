@@ -1,0 +1,72 @@
+@startuml
+!pragma layout smetana
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+title TARGET DESIGN: extend the existing blocking relay
+class "ask-claude-mcp.mjs" as module {
+ existing stdin framing / handle / send / reply
+ TOOLS: existing Claude tools retained
+ + ask_grok(prompt) / ask_grok_write(prompt)
+ + ask_cline(prompt) / ask_cline_write(prompt)
+}
+class "runClaude({prompt}, write)" as claude <<existing>>
+class "runGrok({prompt}, write)" as grok <<DESIGN>> {
+ headless JSON result
+ native executable and per-OS argument array
+ prompt via supported non-shell input
+ startup cwd / native auth
+ answer/error within existing relay policies
+}
+class "runCline({prompt}, write)" as cline <<DESIGN>> {
+ one native session and prompt
+ native ACP exchange inside blocking call
+ access mode derived from explicit tool
+ final answer/error within existing relay policies
+}
+class "NativeInvocationConfig" as config <<DESIGN>> {
+ grokExecutable / clineExecutable : optional absolute native path
+ resolveNativePath(): PATH or absolute override
+ shared existing MAX_CONCURRENT = 4
+}
+class "Grok prompt transport" as temp <<DESIGN>> {
+ owned temp directory / exclusive prompt file
+ Linux 0700/0600; Windows PowerShell ACL helper
+ protect before write; finally cleanup
+}
+class "InvocationResult" as result <<DESIGN follows existing>> {
+ ok : boolean
+ text : string
+}
+class "sanitize(text)" as clean <<existing>>
+class "External native CLI processes" as native <<external>>
+module --> claude : unchanged invocation
+module --> config : startup options / existing capacity
+config --> grok : resolved native path
+config --> cline : resolved native path
+class "Protect-GrokPrompt.ps1" as acl <<Added Windows child DESIGN>>
+class "Native pwsh.exe" as pwsh <<external runtime>>
+grok --> temp : prompt file lifecycle
+grok --> pwsh : Windows fixed helper / owned path only
+pwsh --> acl : -NoProfile -NonInteractive -File
+acl --> temp : protect ACL before parent writes
+module --> grok : await
+module --> cline : await
+claude --> result
+cline --> result
+grok --> result
+result --> clean : existing response cleanup
+grok --> native : Grok Build
+cline --> native : Cline
+note bottom of module
+Public input remains prompt; output remains MCP text/error.
+New symbol names are design, not implemented modules.
+No new public job lifecycle or permission API.
+Native bindings must be qualified before production changes.
+end note
+legend bottom
+Gray/existing: retained Claude path and framing.
+DESIGN/added: Grok and Cline invocation.
+Modified: TOOLS dispatch only as needed for new agents.
+No existing product capability removed/replaced.
+endlegend
+@enduml

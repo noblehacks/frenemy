@@ -1,0 +1,44 @@
+[
+  {
+    "file": "ask-claude-mcp.mjs",
+    "lineCount": 285,
+    "sha256": "075AA86362E6C37C6C17F7CD75F71BA5E87EE7DDAE0EF30B70F380A0286F520F",
+    "gitBlob": "4c36441dc35140bf0f84e281231cc66c9b1a3240",
+    "commit": "c7338ad39b646e695e7c4b5fbd998d45be914c02"
+  },
+  {
+    "file": "install.ps1",
+    "lineCount": 179,
+    "sha256": "69E316D0A8F885CFF85AF1788BB978DCCD351ABB8FA6F743E2709BB5AB544AB2",
+    "gitBlob": "3524d96ec106d73a03faafa22fbcec253bc02cf8",
+    "commit": "c7338ad39b646e695e7c4b5fbd998d45be914c02"
+  },
+  {
+    "file": "install.sh",
+    "lineCount": 155,
+    "sha256": "1087D32506FC86D179DD4BA7F41C874C343D7233E85D13A92977622DD0BF0685",
+    "gitBlob": "a8d742f77aa7cf129f0eaab45edc76dba9ba79d0",
+    "commit": "c7338ad39b646e695e7c4b5fbd998d45be914c02"
+  },
+  {
+    "file": "CLAUDE-codex-section.md",
+    "lineCount": 53,
+    "sha256": "E4882BF81146481C43D09B2977C8613BC4AB8A62293BB9E7B724782B61BB6057",
+    "gitBlob": "807cf7b33f4ff345f644637fc5ce044e8205f52a",
+    "commit": "c7338ad39b646e695e7c4b5fbd998d45be914c02"
+  },
+  {
+    "file": "genimg.sh",
+    "lineCount": 68,
+    "sha256": "D70937612F7BDFE61BD80A960F488A3310F496F471EA843A31F96E506C43D002",
+    "gitBlob": "9ca884a2f98be30a013579cf325ac16489dd3a44",
+    "commit": "c7338ad39b646e695e7c4b5fbd998d45be914c02"
+  },
+  {
+    "file": ".version",
+    "lineCount": 1,
+    "sha256": "C235DF2319D0638E26EABDC366B6E68C87290081AE1AAC1C629E0E4303350E47",
+    "gitBlob": "f081046ced8e1dd4fc9b3676d630c1edb02086cd",
+    "commit": "c7338ad39b646e695e7c4b5fbd998d45be914c02"
+  }
+]
