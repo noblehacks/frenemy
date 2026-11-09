@@ -48,8 +48,8 @@ No transactional backup/rollback or WhatIf.
 Source version comment is an upstream claim, not a test receipt.
 end note
 legend bottom
-Windows and Unix installers: unchanged in target; separate setup added.
-New selected-agent setup uses PowerShell; existing behavior retained.
-Existing macOS behavior retained as excluded baseline scope.
+Windows and Unix installers are unchanged in the target.
+No selected-agent setup or installer change is part of the target.
+Existing macOS behavior is retained as excluded baseline context.
 endlegend
 @enduml

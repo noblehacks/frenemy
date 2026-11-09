@@ -34,3 +34,9 @@ Inspection PNG SHA-256 receipts:
 At 2026-11-06T18:45:00, the pinned renderer produced [render 20261106T184320](renders/20261106T184320/site/index.html). All nine recorded tool commands exited zero, the validator accepted the workspace, and the receipt records 117 generated files. Its SHA-256 is `EBD94DC6F5D09A5C7DC95B6C7D327C86EE4AE43A1D443D2A4CCD931824F9E8AD`.
 
 I opened the static site through the authorized loopback preview and inspected the target containers, relay components, relay code, and Cline dynamic call flow, then verified navigation to the remaining baseline, deployment, code, and dynamic views. The vector labels remain readable under zoom. The target now shows the product-owned selector configuration and selector-resolution component, Claude/Grok argv mapping, and Cline's child-only provider/model environment plus `--thinking` mapping. No job service, QBrain, plugin, workstation, or client-registration integration appears in the active target. Architecture rendering evidence is not product correctness evidence.
+
+## R13 installer-legend correction
+
+At 2026-11-09T08:14:54, the pinned renderer produced [render 20261109T081454](renders/20261109T081454/site/index.html). All nine recorded commands exited zero, the Structurizr validator accepted the workspace, and the receipt records 117 generated files. The receipt SHA-256 is `43EFD7703E910A9D11BE4BF2D6447DE8580C14C05BA8AEE5D7ED546FA9206CE6`.
+
+I rendered and directly inspected the corrected baseline-installer PNG. Its SHA-256 is `8566323C793CCFD61D756079F7F60FD3B9F68D87066CF10ED0C3CF90D3EE4AF0`. The diagram is readable and states that the Windows and Unix installers are unchanged, no selected-agent setup or installer change is part of the target, and macOS behavior is excluded baseline context. The retained SVG SHA-256 is `7A9905996AAAA5558395BC1354C373660B51590BE7CA93C01AFEE2C456ABB40A`; the obsolete `separate setup added` text occurs zero times in the fresh render.

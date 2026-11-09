@@ -42,3 +42,8 @@ The Windows launch and a LAB-OMARCHY retry against the same dirty workspace both
 - The F-R10-01 statement above was inaccurate: the Post-R10 section in the R9 self-review had been inserted before its original conclusion rather than appended. The R9 file now restores the original conclusion before later dated corrections and explicitly corrects its earlier F-R9-04 overclaim.
 - The F-R10-02 statement above was incomplete: 14 directly reachable assertion sites still relied on unsupported redundancy reasons. Direct negative controls were added for all 14 sites and the unsupported reasons were removed. Focused receipt: `TestResults/20261109T045102-four-agent-r12-direct-controls/`, 155 passed, 0 failed, 0 skipped.
 - The requirement-readback SHA-256 above was truncated to 62 hexadecimal characters. The complete hash recorded by the R12 review is `F8DF55F39CA3D49C70A8203E9F5638F9AC752B165B7DDAB5DFA475FA7B00F4A4`.
+
+## Post-R13 corrections, 2026-11-09
+
+- The Post-R12 statement that all unsupported redundancy reasons were removed was incomplete. R13 found that contract line 449 still depended on an invalid redundancy reason for `reviewer judgment count is wrong`. A direct sequence control now mutates a Q01 judgment to Q99 and proves that exact assertion rejects the evidence.
+- The Post-R12 statement that the R9 conclusion order had been restored was false. The R9 conclusion is now restored immediately after `Task state entering R9`, before every post-round correction section.

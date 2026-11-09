@@ -22,6 +22,8 @@
  * @change 2026-11-09 TEST-FRENEMY-117, AC-TEST-FRENEMY-117-06 and 07: Added
  * direct negative controls for every previously justified but directly reachable
  * session, transcript, per-question participant, effort, and manifest assertion.
+ * @change 2026-11-09 TEST-FRENEMY-117, AC-TEST-FRENEMY-117-07: Added the
+ * direct wrong-question judgment-count control identified by R13.
  */
 import assert from "node:assert/strict";
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
@@ -278,6 +280,7 @@ const sequenceControls = [
   ["missing Q01 answer", /^Q01 answer set is incomplete$/u, ({ answers }) => { answers.pop(); }],
   ["missing Q01 review session", /^Q01 review sessions are incomplete$/u, ({ sessions }) => { const index = sessions.findIndex(({ role }) => role === "review"); sessions.splice(index, 1); }],
   ["only 11 Q01 judgments", /^Q01 judgment set is incomplete$/u, ({ judgments }) => { judgments.pop(); }],
+  ["Q01 reviewer has judgment for wrong question", /^Q01 reviewer judgment count is wrong$/u, ({ judgments }) => { judgments[0].questionId = "Q99"; judgments[0].reviewerAgent = "grok"; }],
   ["Q01 answer session identity mismatch", /^Q01 answer sessionId does not match its session$/u, ({ answers }) => { answers[0].sessionId = "wrong"; }],
   ["Q01 answer wrong question identity", /^Q01 answer has wrong question identity$/u, ({ answers }) => { answers[0].questionId = "Q99"; }],
   ["Q01 answer high effort", /^Q01 answer effort is not medium$/u, ({ answers }) => { answers[0].effort = "high"; }],
@@ -311,7 +314,7 @@ const loaderControls = [
 const justifiedRedundantAssertionPatterns = [
   { pattern: /canonical rubric is missing/u, reason: "Both loader and core missing-rubric sites are dominated by their preceding expected-hash and computed-hash checks, so changing the projected AC text to remove the rubric is rejected before either site can execute." },
   { pattern: /answer session has no retained answer/u, reason: "The complete answer-set and answer-to-session identity controls cover the same missing relationship." },
-  { pattern: /answer has no matching session|reviewer judgment count is wrong/u, reason: "The direct answer-to-session identity and reviewer-session judgment equality controls reject the same missing relationship before advancement." },
+  { pattern: /answer has no matching session/u, reason: "The direct answer-to-session identity control rejects the same missing relationship before advancement." },
   { pattern: /required retained core member is missing/u, reason: "The six core members are required by retained-evidence equality assertions, session-inventory controls, and exact archive-member controls." },
 ];
 

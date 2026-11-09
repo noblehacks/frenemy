@@ -1,0 +1,10 @@
+{
+  "originalFile": "response.jsonl",
+  "originalSha256": "2156DC459B2D6FE646B39992794B48C687074CD3EF200BD95A052AC1F6635D65",
+  "publicFile": "response.public.jsonl",
+  "publicSha256": "99B46D38A0151EB05A0C03E0942CFC20283EAF988AA65777A9E3C2761242BAB9",
+  "redactionCount": 6,
+  "redaction": "workspace API key only",
+  "originalRetainedLocally": true,
+  "reviewInputWasUnredacted": true
+}

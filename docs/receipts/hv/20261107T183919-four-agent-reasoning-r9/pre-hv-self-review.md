@@ -39,6 +39,10 @@ Date: 2026-11-07
 - Task 4 is open and requires full R9 adjudication.
 - The MCP TODO remains `done: false`. R9 AGREE at 98/98 or higher, zero unresolved applicable FAIL or UNKNOWN, and in-scope task AGREE verdicts are required before any done-state change.
 
+## Self-review conclusion
+
+The current evidence is ready for R9. I found no remaining known in-scope product or test defect after the current full, deliberate-failure, and live gates. This is an implementer self-review, not acceptance. R9 must independently verify every claim and may return DISAGREE.
+
 ## Post-R9 corrections, 2026-11-07
 
 - R9 returned DISAGREE at 95 accuracy and 94 completeness with 44 PASS, 5 FAIL, and 0 UNKNOWN. The complete verdict is retained as `verdict.md` with SHA-256 `7848E29382A9FDB0828660EF53E64AF2ACEC9845AFD02F421DF1D7FE4817F0F2`.
@@ -53,10 +57,6 @@ Date: 2026-11-07
 - Current full gate: `TestResults/20261107T191700-four-agent-r9-final-validate-r2/`, 40 integration, 211 unit, 211 independent-mock, and 7 native qualification executions, all passed with 0 failed and 0 skipped. The `191200` run is retained as non-acceptance evidence for the omitted Cline LF byte.
 - Current live receipt: `TestResults/20261107T192600-four-agent-r9-final-live/`, 139 prerequisite mocks, live integration 1/1, archive integration 1/1, 5 questions, 20 answers, 40 sessions and transcripts, 60 judgments, and minimum accuracy 84. The 110-file ZIP SHA-256 is `4EFCB50435CF29463E6E474B561C24845D2F2E7B1046555F580DE2C1C29B01CD`; manifest SHA-256 is `9C8C2449C10483B1A61421AF85E89FF05024633D71297878A41C2087CA27E21F`.
 
-## Self-review conclusion
-
-The current evidence is ready for R9. I found no remaining known in-scope product or test defect after the current full, deliberate-failure, and live gates. This is an implementer self-review, not acceptance. R9 must independently verify every claim and may return DISAGREE.
-
 ## Post-R10 corrections, 2026-11-07
 
 - The original R8 dispositions above and original chat-export statement are restored word for word. They are superseded by the dated R9 and R10 corrections because R9 found nine cross-site message pairs, two additional missing chat timestamps, and the omitted `180252` non-acceptance run.
@@ -65,3 +65,7 @@ The current evidence is ready for R9. I found no remaining known in-scope produc
 ## Post-R12 correction, 2026-11-09
 
 - The F-R9-04 statement above that historical overclaims carried dated corrections was itself incomplete. The Post-R10 section was inserted before the original conclusion instead of appended after it, and this file did not explicitly correct that F-R9-04 overclaim. The original conclusion now precedes all later correction sections, and this dated entry records the correction without replacing the historical statement.
+
+## Post-R13 correction, 2026-11-09
+
+- The Post-R12 statement above was still inaccurate because the original conclusion remained below the Post-R9 section. The original conclusion is now restored directly after `Task state entering R9`, where the R9 response stream showed it, and every post-round correction follows it in chronological order.
