@@ -1,7 +1,7 @@
 {
   "schema": "mcp-requirements-wiki/v1",
   "platform": "github",
-  "generatedAtUtc": "2026-11-09T13:18:22.9988466+00:00",
+  "generatedAtUtc": "2026-11-09T14:55:37.3458897+00:00",
   "documents": [
     "Home.md",
     "Functional-Requirements.md",
@@ -17,6 +17,8 @@
     "C4-Architecture.md",
     "Grok-Cline-Relay-Contract.md",
     "Grok-Cline-Native-Qualification.md",
-    "Grok-Cline-Test-Design.md"
+    "Grok-Cline-Test-Design.md",
+    "Grok-Cline-Use-Cases.md",
+    "Four-Agent-Reasoning-Integration-Test.md"
   ]
 }

@@ -1,7 +1,8 @@
-# Frenemy: Claude ↔ Codex
+# Frenemy: Claude, Codex, Grok, and Cline
 
-Lets Claude and Codex call each other, so you never copy/paste between them.
-Uses your existing Claude and Codex CLI sign-ins. The relay does not collect API keys.
+Lets Codex delegate to Claude Code, Grok Build, and Cline CLI while preserving the
+existing Claude-to-Codex instructions, so you do not have to copy/paste between them.
+It uses each native CLI's existing authentication. The relay does not collect API keys.
 
 This is the [sharpninja fork](https://github.com/sharpninja/frenemy) of
 [noblehacks/frenemy](https://github.com/noblehacks/frenemy). The current relay supports
@@ -9,7 +10,8 @@ Claude Code, Codex, Grok Build, and Cline CLI. Grok and Cline calls retain the e
 
 See the [documentation index](https://github.com/sharpninja/frenemy/blob/main/docs/README.md), [current architecture](https://github.com/sharpninja/frenemy/blob/main/docs/architecture/overview.md),
 [validation status](https://github.com/sharpninja/frenemy/blob/main/docs/testing/validation.md), and [integration plan](https://github.com/sharpninja/frenemy/blob/main/docs/plans/grok-cline-integration.md).
-The plan is tracked in QBrain as high-priority `PLAN-FRENEMY-001`, with architecture acceptance required before executable TDD.
+`PLAN-FRENEMY-001` is complete. The separate test-only `PLAN-FRENEMY-002` tracks the
+four-agent reasoning integration and awaits its final hostile-validation gate.
 
 Version identifiers currently differ: `.version` contains `0.0.1-3`, while the MCP
 initialization response advertises `1.4.0`. The expanded version-2 job-service design is superseded; the active plan adds only Grok/Cline support to the existing relay.
@@ -22,8 +24,8 @@ Created by **Zakariya Syed**:
 
 Not affiliated with OpenAI or Anthropic. MIT licensed (see LICENSE).
 
-Both directions in one tiny file, no dependencies. Read-only by default. File edits live in
-a separate tool that is never auto approved.
+The relay remains dependency-free JavaScript. Read-only delegation is the default. File edits
+use separate explicit-write tools that are never auto approved by Frenemy.
 
 **Prerequisites:** `node` (18 or newer), the `claude` CLI, and the `codex` CLI, all
 installed, on `PATH`, and signed in (run `claude` and `codex` once each to log in).
@@ -49,6 +51,8 @@ That's it.
 | Piece | What it does |
 |---|---|
 | `ask-claude-mcp.mjs` (this folder) | Frenemy itself. Gives Codex read and explicit-write tools for Claude Code, Grok Build, and Cline CLI. |
+| `frenemy.config.json` and `frenemy.config.schema.json` | Optional per-agent provider, model, and effort defaults with a versioned schema. They never contain credentials. |
+| `Protect-GrokPrompt.ps1` | Windows helper that protects Frenemy's owned Grok prompt file before prompt bytes are written. |
 | `install.sh` / `install.ps1` (this folder) | One-command installers (Mac/Linux and Windows). They do the config wiring for you. |
 | `codex` CLI (tested with v0.144.1) | `codex exec` is how Claude drives Codex. |
 | `codex-plugin-cc` (optional) | OpenAI's official Claude Code plugin: `/codex:review`, `/codex:transfer`, `/codex:rescue`. Not included. Install it via Claude Code's plugin marketplace. |

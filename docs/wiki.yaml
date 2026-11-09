@@ -85,7 +85,7 @@ documents:
       - azure
     id: c4-architecture
     target: C4-Architecture.md
-    source: docs/architecture/structurizr/wiki.md
+    source: docs/architecture/structurizr/support-only/README.md
   - platforms:
       - github
       - azure
@@ -107,6 +107,20 @@ documents:
     title: Grok and Cline Test Design
     id: grok-cline-test-design
     target: Grok-Cline-Test-Design.md
+  - platforms:
+      - github
+      - azure
+    source: docs/requirements/grok-cline-use-cases.md
+    title: Grok and Cline Use Cases
+    id: grok-cline-use-cases
+    target: Grok-Cline-Use-Cases.md
+  - platforms:
+      - github
+      - azure
+    source: docs/plans/four-agent-reasoning-integration.md
+    title: Four-Agent Reasoning Integration Test
+    id: plan-four-agent-reasoning
+    target: Four-Agent-Reasoning-Integration-Test.md
 navigation:
   - document: home
   - document: functional
@@ -119,7 +133,9 @@ navigation:
   - document: arch-overview
   - document: testing-status
   - document: grok-cline-test-design
+  - document: grok-cline-use-cases
   - document: plan-grok-cline
+  - document: plan-four-agent-reasoning
   - document: grok-cline-binding
   - document: grok-cline-native-validation
   - document: c4-architecture

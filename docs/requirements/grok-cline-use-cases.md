@@ -31,4 +31,4 @@ These use cases belong only to the approved extension of the existing Frenemy st
 
 ## Live-store persistence receipt
 
-The source-controlled IDs above are the canonical architecture aliases. On November 6, 2026, live UC creation first rejected valid FR-FRENEMY-113/114 links as the wrong requirement kind, then failed unlinked creation because a legacy workspace update attempted to write an overlength historical scope value. The three exact create requests are retained through the supported Codex MCP failsafe queue. Per the operator's instruction, this QBrain persistence defect does not block the scoped Frenemy documentation and architecture work. No failed call was reported as saved.
+The source-controlled IDs above are the canonical architecture aliases.
