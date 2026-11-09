@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NukeRootDirectory>..</NukeRootDirectory>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- 2026-11-06, TR-FRENEMY-ADAPTER-118, AC-FRENEMY-114-06 and AC-FRENEMY-115-06:
+         Pin patched transitive build dependencies so the Nuke gate retains NuGet audit enforcement. -->
+    <PackageReference Include="Nuke.Common" Version="10.1.0" />
+    <PackageReference Include="NuGet.Packaging" Version="7.9.0" PrivateAssets="all" />
+    <PackageReference Include="System.Security.Cryptography.Pkcs" Version="10.0.14" PrivateAssets="all" />
+    <PackageReference Include="System.Security.Cryptography.Xml" Version="10.0.14" PrivateAssets="all" />
+  </ItemGroup>
+</Project>

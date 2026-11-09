@@ -1,0 +1,217 @@
+{
+  "schemaVersion": 1,
+  "runId": "20261106T205700-phase4-windows-release",
+  "phase": "PLAN-FRENEMY-001 Phase 4",
+  "scope": "Existing Frenemy JavaScript relay support for Grok Build and Cline CLI only",
+  "host": {
+    "name": "PAYTON-LEGION2",
+    "os": "Microsoft Windows 10.0.26300",
+    "architecture": "X64"
+  },
+  "timing": {
+    "startedAtLocal": "2026-11-06T20:56:38.155-06:00",
+    "finishedAtLocal": "2026-11-06T21:06:23.014-06:00",
+    "duration": "00:09:44.859"
+  },
+  "command": ".\\build.ps1 Validate --test-run-id '20261106T205700-phase4-windows-release' --grok-executable 'C:\\Users\\kingd\\.grok\\bin\\grok.exe' --cline-executable 'C:\\nvm4w\\nodejs\\node_modules\\cline\\node_modules\\@cline\\cli-windows-x64\\bin\\cline.exe'",
+  "tools": {
+    "powerShell": "7.6.5",
+    "dotnet": "10.0.403",
+    "node": "v20.20.2",
+    "grok": "grok 1.0.70 (f50904eaee6c) [stable]",
+    "cline": "3.0.74"
+  },
+  "source": {
+    "gitHead": "6150c512ae43026cbbabc4629b85bf44dae9863e",
+    "manifestPath": "F:\\GitHub\\frenemy\\.mcpServer\\tmp\\phase4\\source-20261106T210700\\source-manifest.json",
+    "manifestSha256": "12662B626263F6B83A970EA0B2F8B2432CC1970270707AD8191ECDCC0B9BA668",
+    "archivePath": "F:\\GitHub\\frenemy\\.mcpServer\\tmp\\phase4\\frenemy-phase4-source-20261106T210700.zip",
+    "archiveSha256": "4279EA3CD3BF96C466D94F70BC98CE05660CAC221C9C4D1DC7E11B30E27547EE"
+  },
+  "result": {
+    "exitCode": 0,
+    "status": "Passed",
+    "totals": {
+      "total": 191,
+      "executed": 191,
+      "passed": 191,
+      "failed": 0,
+      "skipped": 0
+    },
+    "trx": [
+      {
+        "path": "integration/Frenemy.Relay.IntegrationTests/Frenemy.Relay.IntegrationTests.trx",
+        "total": 40,
+        "executed": 40,
+        "passed": 40,
+        "failed": 0,
+        "notExecuted": 0,
+        "sha256": "DE0B0AC1FE82108167DAE57D4F27CB9A80B325B4AEF20B130E6714CABCAB65EF"
+      },
+      {
+        "path": "native/Frenemy.Relay.NativeQualification/Frenemy.Relay.NativeQualification.trx",
+        "total": 7,
+        "executed": 7,
+        "passed": 7,
+        "failed": 0,
+        "notExecuted": 0,
+        "sha256": "0BC262DFA2F1B172B0820CBDBEF14B469969E7C7E4E1BA65CD19818CD33CF21B"
+      },
+      {
+        "path": "unit/Frenemy.Relay.UnitTests/Frenemy.Relay.UnitTests.trx",
+        "total": 72,
+        "executed": 72,
+        "passed": 72,
+        "failed": 0,
+        "notExecuted": 0,
+        "sha256": "9A195B1B83D50EA31A9FA0D1FE1C40F52B12776CE798F03CC2F501EF5052497C"
+      },
+      {
+        "path": "verify-mocks/Frenemy.Relay.UnitTests/Frenemy.Relay.UnitTests.trx",
+        "total": 72,
+        "executed": 72,
+        "passed": 72,
+        "failed": 0,
+        "notExecuted": 0,
+        "sha256": "4050332C249E623B5753BB73F0E49D257849ABAA452E8CD73606581501B42A46"
+      }
+    ]
+  },
+  "artifacts": [
+    {
+      "path": "integration/Frenemy.Relay.IntegrationTests/Frenemy.Relay.IntegrationTests.node.junit.xml",
+      "length": 4613,
+      "sha256": "601857312365968C2E21C589E6F26FF590E23FF483425C88BFD601B0A35D3B27"
+    },
+    {
+      "path": "integration/Frenemy.Relay.IntegrationTests/Frenemy.Relay.IntegrationTests.node.stderr.log",
+      "length": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "integration/Frenemy.Relay.IntegrationTests/Frenemy.Relay.IntegrationTests.trx",
+      "length": 40965,
+      "sha256": "DE0B0AC1FE82108167DAE57D4F27CB9A80B325B4AEF20B130E6714CABCAB65EF"
+    },
+    {
+      "path": "native/Frenemy.Relay.NativeQualification/fixtures/cline-session-identity.json",
+      "length": 618,
+      "sha256": "63CE43BD28BE6320118C87458E5B6457A65BBFAE66380A982C1AF5B7253A735E"
+    },
+    {
+      "path": "native/Frenemy.Relay.NativeQualification/fixtures/cline-workspace/cline-editor.txt",
+      "length": 13,
+      "sha256": "AEB83515C355E510884165012AE8108092201EC4185ED26B4EFD37ECBA32AF84"
+    },
+    {
+      "path": "native/Frenemy.Relay.NativeQualification/fixtures/cline-workspace/cline-patch.txt",
+      "length": 12,
+      "sha256": "CD217C120F79147AA35485AD31288362F30DB9607C4D8280E501B036B46EB10A"
+    },
+    {
+      "path": "native/Frenemy.Relay.NativeQualification/fixtures/cline-workspace/sentinel.txt",
+      "length": 18,
+      "sha256": "3B74169B942C2B389FA5502DBC6403EA55357B8516F66AB2FFAF0BF54EF8BFAB"
+    },
+    {
+      "path": "native/Frenemy.Relay.NativeQualification/fixtures/grok-workspace/grok-write.txt",
+      "length": 11,
+      "sha256": "AECB49DF429D207B2EF4BBE064E08580D4EEE624F9FDAFEBD659665A4F282FF2"
+    },
+    {
+      "path": "native/Frenemy.Relay.NativeQualification/fixtures/grok-workspace/sentinel.txt",
+      "length": 18,
+      "sha256": "3B74169B942C2B389FA5502DBC6403EA55357B8516F66AB2FFAF0BF54EF8BFAB"
+    },
+    {
+      "path": "native/Frenemy.Relay.NativeQualification/fixtures/product-cline-workspace/cline-editor.txt",
+      "length": 13,
+      "sha256": "AEB83515C355E510884165012AE8108092201EC4185ED26B4EFD37ECBA32AF84"
+    },
+    {
+      "path": "native/Frenemy.Relay.NativeQualification/fixtures/product-cline-workspace/cline-patch.txt",
+      "length": 12,
+      "sha256": "CD217C120F79147AA35485AD31288362F30DB9607C4D8280E501B036B46EB10A"
+    },
+    {
+      "path": "native/Frenemy.Relay.NativeQualification/fixtures/product-cline-workspace/sentinel.txt",
+      "length": 18,
+      "sha256": "3B74169B942C2B389FA5502DBC6403EA55357B8516F66AB2FFAF0BF54EF8BFAB"
+    },
+    {
+      "path": "native/Frenemy.Relay.NativeQualification/fixtures/product-grok-workspace/grok-write.txt",
+      "length": 11,
+      "sha256": "AECB49DF429D207B2EF4BBE064E08580D4EEE624F9FDAFEBD659665A4F282FF2"
+    },
+    {
+      "path": "native/Frenemy.Relay.NativeQualification/fixtures/product-grok-workspace/sentinel.txt",
+      "length": 18,
+      "sha256": "3B74169B942C2B389FA5502DBC6403EA55357B8516F66AB2FFAF0BF54EF8BFAB"
+    },
+    {
+      "path": "native/Frenemy.Relay.NativeQualification/Frenemy.Relay.NativeQualification.node.junit.xml",
+      "length": 519,
+      "sha256": "063FCE9B28CF30C34F10ABFD602A58885E674E5094EFA4E8F19D41A564F01D1E"
+    },
+    {
+      "path": "native/Frenemy.Relay.NativeQualification/Frenemy.Relay.NativeQualification.node.stderr.log",
+      "length": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "native/Frenemy.Relay.NativeQualification/Frenemy.Relay.NativeQualification.pester.nunit.xml",
+      "length": 2351,
+      "sha256": "82822278D68CD3ADA0E8B2D1334C301E77BD11186577B78879F28430672BFEE4"
+    },
+    {
+      "path": "native/Frenemy.Relay.NativeQualification/Frenemy.Relay.NativeQualification.trx",
+      "length": 9326,
+      "sha256": "0BC262DFA2F1B172B0820CBDBEF14B469969E7C7E4E1BA65CD19818CD33CF21B"
+    },
+    {
+      "path": "nuke-build.log",
+      "length": 2636,
+      "sha256": "12ED7303C598E4CA8A76AB96E2935BBD2F978C4E67C15637805A5431E7947D94"
+    },
+    {
+      "path": "unit/Frenemy.Relay.UnitTests/Frenemy.Relay.UnitTests.node.junit.xml",
+      "length": 6156,
+      "sha256": "4E5F36F6D2CCBF618E42B26B553D16EDE3F3ECA85FCF4F1251CFF620BA54558B"
+    },
+    {
+      "path": "unit/Frenemy.Relay.UnitTests/Frenemy.Relay.UnitTests.node.stderr.log",
+      "length": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "unit/Frenemy.Relay.UnitTests/Frenemy.Relay.UnitTests.pester.nunit.xml",
+      "length": 2284,
+      "sha256": "C0657F483B1368EBC3968E87C3A806D984DB408E9B1C8EF30B876F7233D136BC"
+    },
+    {
+      "path": "unit/Frenemy.Relay.UnitTests/Frenemy.Relay.UnitTests.trx",
+      "length": 69433,
+      "sha256": "9A195B1B83D50EA31A9FA0D1FE1C40F52B12776CE798F03CC2F501EF5052497C"
+    },
+    {
+      "path": "verify-mocks/Frenemy.Relay.UnitTests/Frenemy.Relay.UnitTests.node.junit.xml",
+      "length": 6157,
+      "sha256": "807F818959C4D1B2C67D27799092F7233C4559BE9EB714D69F6AC5DA82C92446"
+    },
+    {
+      "path": "verify-mocks/Frenemy.Relay.UnitTests/Frenemy.Relay.UnitTests.node.stderr.log",
+      "length": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "path": "verify-mocks/Frenemy.Relay.UnitTests/Frenemy.Relay.UnitTests.pester.nunit.xml",
+      "length": 2285,
+      "sha256": "CE070E2048D4FBED7B45F336017C5C9F2E60417BFB84DE9F5B9FC72BDF113A75"
+    },
+    {
+      "path": "verify-mocks/Frenemy.Relay.UnitTests/Frenemy.Relay.UnitTests.trx",
+      "length": 69433,
+      "sha256": "4050332C249E623B5753BB73F0E49D257849ABAA452E8CD73606581501B42A46"
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "generatedAtLocal": "2026-11-06T22:20:39.1358403-06:00",
+  "planId": "PLAN-FRENEMY-001",
+  "phase": 4,
+  "scope": "Grok Build and Cline CLI support in the existing Frenemy JavaScript stdio relay only",
+  "sourceArchiveSha256": "4279EA3CD3BF96C466D94F70BC98CE05660CAC221C9C4D1DC7E11B30E27547EE",
+  "windows": {
+    "runId": "20261106T205700-phase4-windows-release",
+    "passed": 191,
+    "failed": 0,
+    "skipped": 0,
+    "originalResults": "TestResults/20261106T205700-phase4-windows-release/"
+  },
+  "linux": {
+    "runId": "20261106T210700-phase4-linux-release",
+    "passed": 188,
+    "failed": 0,
+    "skipped": 0,
+    "originalResults": "TestResults/20261106T210700-phase4-linux-release-receipts/",
+    "resultsArchiveSha256": "354AD0A4C6986B8CF5DD5DA34A2478BD70737B778FEED7985908ECC4C101C645"
+  },
+  "files": [
+    {
+      "path": "summary.md",
+      "length": 3194,
+      "sha256": "5B831261265558FF9F7D079CD635CF15FF4745339D9EBF0C0B079577A7D38404"
+    },
+    {
+      "path": "windows-release-receipt.json",
+      "length": 8775,
+      "sha256": "DA37EEB75A28EFB4529541FE2D83D8476FEA4DDD642E08890E289275589DDAA5"
+    },
+    {
+      "path": "linux-release-receipt.json",
+      "length": 9159,
+      "sha256": "9442C6222A86CD2D78C4E5FABD9013D7E9A8B9CCAA100C1509378C154EDA2290"
+    },
+    {
+      "path": "source-manifest.json",
+      "length": 6670,
+      "sha256": "12662B626263F6B83A970EA0B2F8B2432CC1970270707AD8191ECDCC0B9BA668"
+    }
+  ],
+  "independentReview": {
+    "path": "../../hv/20261106T220747-phase4-release-r3",
+    "verdict": "AGREE",
+    "accuracy": 99,
+    "completeness": 99,
+    "pass": 13,
+    "fail": 0,
+    "unknown": 0,
+    "verdictSha256": "CEED868DE85EA30183B5CA2207564625D0A8C2883A42CFFB7B8E98F0EE04E714",
+    "manifestSha256": "3FB87F0E15781D7C91758E0128610A11A35981EE623F08B9250A7F9E35190C5A",
+    "persistedVerdictSha256": "6656EA3479741E780CCF04BF916A79EC069E9BA35EC388129FAE3539AA1FEA9D"
+  }
+}

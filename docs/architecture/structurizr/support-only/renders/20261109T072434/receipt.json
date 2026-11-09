@@ -1,0 +1,608 @@
+{
+  "createdAt": "2026-11-09T07:24:45",
+  "scope": "Grok Build and Cline CLI support only",
+  "baseline": "c7338ad39b646e695e7c4b5fbd998d45be914c02",
+  "toolPins": {
+    "plantuml": {
+      "file": "plantuml.jar",
+      "hashSource": "Scoop extras plantuml manifest",
+      "url": "https://github.com/plantuml/plantuml/releases/download/v1.2026.9/plantuml-1.2026.9.jar",
+      "version": "1.2026.9",
+      "sha256": "AA4A1D06F8911C4B842BEFF4828DD955BE431692B631A312D04C0E9FAB9581DE"
+    },
+    "structurizr": {
+      "file": "structurizr.war",
+      "hashSource": "Locally measured official release download; retained pin",
+      "url": "https://download.structurizr.com/structurizr-2026.09.19.war",
+      "version": "2026.09.19",
+      "sha256": "AC1A2806E246364B88261A542A36CA7F3006EF48E5DE68830AFA8672F58690F1"
+    },
+    "java": {
+      "archive": "java21.zip",
+      "relativeExecutable": "java21/jdk-21.0.13+9-jre/bin/java.exe",
+      "url": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.13+9/OpenJDK21U-jre_x64_windows_hotspot_21.0.13_9.zip",
+      "sha256": "2332c0b4cff6bed722da3567c91d5e47568bcba863fa4945d0a8d6fc76158628",
+      "hashSource": "Scoop Java temurin21-jre manifest",
+      "version": "21.0.13+9"
+    }
+  },
+  "javaExecutableSha256": "F8DC082A7DEDBFD2924C3562405A5A1FD12EFD2641808C92E2DE819C76A58B7E",
+  "commands": [
+    {
+      "arguments": [
+        "-version"
+      ],
+      "exitCode": 0,
+      "output": "openjdk version \"21.0.13\" 2026-10-20 LTS\r\nOpenJDK Runtime Environment Temurin-21.0.13+9 (build 21.0.13+9-LTS)\r\nOpenJDK 64-Bit Server VM Temurin-21.0.13+9 (build 21.0.13+9-LTS, mixed mode, sharing)\r\n"
+    },
+    {
+      "arguments": [
+        "-jar",
+        "F:/GitHub/frenemy/cache/architecture-tools/structurizr.war",
+        "version"
+      ],
+      "exitCode": 0,
+      "output": "07:24:35.109 [main] INFO com.structurizr.command.VersionCommand -- structurizr: 2026.09.19\r\n07:24:35.139 [main] INFO com.structurizr.command.VersionCommand -- structurizr-*: 6.2.3\r\n07:24:35.139 [main] INFO com.structurizr.command.VersionCommand -- Java: 21.0.13/Eclipse Adoptium (F:\\GitHub\\frenemy\\cache\\architecture-tools\\java21\\jdk-21.0.13+9-jre)\r\n07:24:35.139 [main] INFO com.structurizr.command.VersionCommand -- OS: Windows 11 10.0 (amd64)\r\n"
+    },
+    {
+      "arguments": [
+        "-jar",
+        "F:/GitHub/frenemy/cache/architecture-tools/plantuml.jar",
+        "-version"
+      ],
+      "exitCode": 0,
+      "output": "PlantUML version 1.2026.9 / 18d0aae [2026-10-17 08:25:10 UTC]\r\n(GPL source distribution)\r\n\r\nBuild Version: 1.2026.9\r\nGit Commit: 18d0aae\r\nCompile Time: 2026-10-17 08:25:10 UTC\r\n\r\nJava Runtime: OpenJDK Runtime Environment\r\nJVM: OpenJDK 64-Bit Server VM\r\nDefault Encoding: UTF-8\r\nLanguage: en\r\nCountry: US\r\n \r\nPLANTUML_LIMIT_SIZE: 4096\r\n\r\nGraphViz: dot - graphviz version 2.44.1 (20200629.0846)\r\nInstallation seems OK. File generation OK\r\n"
+    },
+    {
+      "arguments": [
+        "-jar",
+        "F:/GitHub/frenemy/cache/architecture-tools/plantuml.jar",
+        "-tsvg",
+        "-charset",
+        "UTF-8",
+        "F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434/source/code/*.puml"
+      ],
+      "exitCode": 0,
+      "output": ""
+    },
+    {
+      "arguments": [
+        "-jar",
+        "F:/GitHub/frenemy/cache/architecture-tools/structurizr.war",
+        "validate",
+        "-workspace",
+        "F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434/source/workspace.dsl"
+      ],
+      "exitCode": 0,
+      "output": ""
+    },
+    {
+      "arguments": [
+        "-jar",
+        "F:/GitHub/frenemy/cache/architecture-tools/structurizr.war",
+        "export",
+        "-workspace",
+        "F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434/source/workspace.dsl",
+        "-format",
+        "json",
+        "-output",
+        "F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434/model"
+      ],
+      "exitCode": 0,
+      "output": "07:24:39.866 [main] INFO com.structurizr.command.ExportCommand -- Exporting workspace from F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434/source/workspace.dsl\r\n07:24:40.127 [main] INFO com.structurizr.command.ExportCommand -- Exporting with JsonWorkspaceExporter\r\n07:24:40.573 [main] INFO com.structurizr.command.ExportCommand -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\model\\workspace.json\r\n07:24:40.577 [main] INFO com.structurizr.command.ExportCommand -- Finished\r\n"
+    },
+    {
+      "arguments": [
+        "-jar",
+        "F:/GitHub/frenemy/cache/architecture-tools/structurizr.war",
+        "export",
+        "-workspace",
+        "F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434/source/workspace.dsl",
+        "-format",
+        "static",
+        "-output",
+        "F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434/site"
+      ],
+      "exitCode": 0,
+      "output": "07:24:41.563 [main] INFO com.structurizr.command.ExportCommand -- Exporting workspace from F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434/source/workspace.dsl\r\n07:24:41.822 [main] INFO com.structurizr.command.StaticSiteExporter -- Writing static site to F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\site\r\n07:24:42.249 [main] INFO com.structurizr.command.StaticSiteExporter -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\site\\workspace.js\r\n07:24:42.254 [main] INFO com.structurizr.command.ExportCommand -- Finished\r\n"
+    },
+    {
+      "arguments": [
+        "-jar",
+        "F:/GitHub/frenemy/cache/architecture-tools/structurizr.war",
+        "export",
+        "-workspace",
+        "F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434/source/workspace.dsl",
+        "-format",
+        "plantuml",
+        "-output",
+        "F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434/exports"
+      ],
+      "exitCode": 0,
+      "output": "07:24:43.076 [main] INFO com.structurizr.command.ExportCommand -- Exporting workspace from F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434/source/workspace.dsl\r\n07:24:43.347 [main] INFO com.structurizr.command.ExportCommand -- Exporting with StructurizrPlantUMLExporter\r\n07:24:43.520 [main] INFO com.structurizr.command.ExportCommand -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\exports\\structurizr-baseline-context.puml\r\n07:24:43.523 [main] INFO com.structurizr.command.ExportCommand -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\exports\\structurizr-baseline-context-key.puml\r\n07:24:43.524 [main] INFO com.structurizr.command.ExportCommand -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\exports\\structurizr-target-context.puml\r\n07:24:43.525 [main] INFO com.structurizr.command.ExportCommand -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\exports\\structurizr-target-context-key.puml\r\n07:24:43.527 [main] INFO com.structurizr.command.ExportCommand -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\exports\\structurizr-baseline-containers.puml\r\n07:24:43.528 [main] INFO com.structurizr.command.ExportCommand -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\exports\\structurizr-baseline-containers-key.puml\r\n07:24:43.530 [main] INFO com.structurizr.command.ExportCommand -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\exports\\structurizr-target-containers.puml\r\n07:24:43.531 [main] INFO com.structurizr.command.ExportCommand -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\exports\\structurizr-target-containers-key.puml\r\n07:24:43.532 [main] INFO com.structurizr.command.ExportCommand -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\exports\\structurizr-baseline-relay-components.puml\r\n07:24:43.534 [main] INFO com.structurizr.command.ExportCommand -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\exports\\structurizr-baseline-relay-components-key.puml\r\n07:24:43.535 [main] INFO com.structurizr.command.ExportCommand -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\exports\\structurizr-baseline-win-components.puml\r\n07:24:43.536 [main] INFO com.structurizr.command.ExportCommand -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\exports\\structurizr-baseline-win-components-key.puml\r\n07:24:43.537 [main] INFO com.structurizr.command.ExportCommand -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\exports\\structurizr-baseline-unix-components.puml\r\n07:24:43.538 [main] INFO com.structurizr.command.ExportCommand -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\exports\\structurizr-baseline-unix-components-key.puml\r\n07:24:43.539 [main] INFO com.structurizr.command.ExportCommand -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\exports\\structurizr-baseline-helper-components.puml\r\n07:24:43.540 [main] INFO com.structurizr.command.ExportCommand -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\exports\\structurizr-baseline-helper-components-key.puml\r\n07:24:43.541 [main] INFO com.structurizr.command.ExportCommand -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\exports\\structurizr-target-relay-components.puml\r\n07:24:43.543 [main] INFO com.structurizr.command.ExportCommand -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\exports\\structurizr-target-relay-components-key.puml\r\n07:24:43.544 [main] INFO com.structurizr.command.ExportCommand -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\exports\\structurizr-target-win-components.puml\r\n07:24:43.545 [main] INFO com.structurizr.command.ExportCommand -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\exports\\structurizr-target-win-components-key.puml\r\n07:24:43.546 [main] INFO com.structurizr.command.ExportCommand -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\exports\\structurizr-target-unix-components.puml\r\n07:24:43.546 [main] INFO com.structurizr.command.ExportCommand -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\exports\\structurizr-target-unix-components-key.puml\r\n07:24:43.547 [main] INFO com.structurizr.command.ExportCommand -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\exports\\structurizr-target-acl-components.puml\r\n07:24:43.548 [main] INFO com.structurizr.command.ExportCommand -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\exports\\structurizr-target-acl-components-key.puml\r\n07:24:43.549 [main] INFO com.structurizr.command.ExportCommand -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\exports\\structurizr-target-helper-components.puml\r\n07:24:43.550 [main] INFO com.structurizr.command.ExportCommand -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\exports\\structurizr-target-helper-components-key.puml\r\n07:24:43.551 [main] INFO com.structurizr.command.ExportCommand -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\exports\\structurizr-target-grok-call.puml\r\n07:24:43.552 [main] INFO com.structurizr.command.ExportCommand -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\exports\\structurizr-target-grok-call-key.puml\r\n07:24:43.553 [main] INFO com.structurizr.command.ExportCommand -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\exports\\structurizr-target-cline-call.puml\r\n07:24:43.554 [main] INFO com.structurizr.command.ExportCommand -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\exports\\structurizr-target-cline-call-key.puml\r\n07:24:43.555 [main] INFO com.structurizr.command.ExportCommand -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\exports\\structurizr-baseline-Windows-deployment.puml\r\n07:24:43.556 [main] INFO com.structurizr.command.ExportCommand -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\exports\\structurizr-baseline-Windows-deployment-key.puml\r\n07:24:43.557 [main] INFO com.structurizr.command.ExportCommand -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\exports\\structurizr-baseline-Linux-deployment.puml\r\n07:24:43.558 [main] INFO com.structurizr.command.ExportCommand -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\exports\\structurizr-baseline-Linux-deployment-key.puml\r\n07:24:43.558 [main] INFO com.structurizr.command.ExportCommand -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\exports\\structurizr-baseline-macOS-deployment.puml\r\n07:24:43.559 [main] INFO com.structurizr.command.ExportCommand -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\exports\\structurizr-baseline-macOS-deployment-key.puml\r\n07:24:43.560 [main] INFO com.structurizr.command.ExportCommand -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\exports\\structurizr-target-Windows-deployment.puml\r\n07:24:43.561 [main] INFO com.structurizr.command.ExportCommand -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\exports\\structurizr-target-Windows-deployment-key.puml\r\n07:24:43.562 [main] INFO com.structurizr.command.ExportCommand -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\exports\\structurizr-target-Linux-deployment.puml\r\n07:24:43.563 [main] INFO com.structurizr.command.ExportCommand -- Writing F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434\\exports\\structurizr-target-Linux-deployment-key.puml\r\n07:24:43.564 [main] INFO com.structurizr.command.ExportCommand -- Finished\r\n"
+    },
+    {
+      "arguments": [
+        "-jar",
+        "F:/GitHub/frenemy/cache/architecture-tools/plantuml.jar",
+        "-tsvg",
+        "-charset",
+        "UTF-8",
+        "F:\\GitHub\\frenemy\\docs\\architecture\\structurizr\\support-only\\renders\\20261109T072434/exports/*.puml"
+      ],
+      "exitCode": 0,
+      "output": ""
+    }
+  ],
+  "files": [
+    {
+      "path": "exports\\structurizr-baseline-containers-key.puml",
+      "sha256": "A259C780A5ED809CF5AF9C0F774B41955AC0E15D57A4159F9BB7B5649AEBDF39"
+    },
+    {
+      "path": "exports\\structurizr-baseline-containers-key.svg",
+      "sha256": "814CFD8C1F46A435C34DBB8BCC823CA92069770B1EC7536779AEADF2D427107A"
+    },
+    {
+      "path": "exports\\structurizr-baseline-containers.puml",
+      "sha256": "94457DB036A608BB9D2EFA26ADC3B26C36F9090FF705D850C114C0413A68D9B4"
+    },
+    {
+      "path": "exports\\structurizr-baseline-containers.svg",
+      "sha256": "FAF6319CF5D9E50D3FCF06CFD3F280A4D13BD91C382AC3A072562995555BBDA4"
+    },
+    {
+      "path": "exports\\structurizr-baseline-context-key.puml",
+      "sha256": "8C6DB71F3C97D3423DF0B5E72039A770D51B1E6456CDE54FFB53F3E5F3841E25"
+    },
+    {
+      "path": "exports\\structurizr-baseline-context-key.svg",
+      "sha256": "FEE19314AF9DEE1CE21F5FB04E0F115AD9D8048348AE20941AF91B2D49D18E5A"
+    },
+    {
+      "path": "exports\\structurizr-baseline-context.puml",
+      "sha256": "A2C768B75FCA00E9916951D506A92AB9309F894732A8DFABF721CC840259282C"
+    },
+    {
+      "path": "exports\\structurizr-baseline-context.svg",
+      "sha256": "725B5844E7D4DFF18F35D5E98D1E003C41145682A34ACB723018834CC02F2750"
+    },
+    {
+      "path": "exports\\structurizr-baseline-helper-components-key.puml",
+      "sha256": "63A68C8320321AD4821E65ABF30D3F7625941844F2C2C28C7C8E87D4F030749E"
+    },
+    {
+      "path": "exports\\structurizr-baseline-helper-components-key.svg",
+      "sha256": "7AE6CEE051B53704BF00FE6AE96F5EDC5C8763801D8657B0C0B5814CFACB8655"
+    },
+    {
+      "path": "exports\\structurizr-baseline-helper-components.puml",
+      "sha256": "8C21B9D3679DD6DA214DC907E9411C9C4429F15C31343E9D01E9438ECDDC99DC"
+    },
+    {
+      "path": "exports\\structurizr-baseline-helper-components.svg",
+      "sha256": "BA8BD9545BDAB86D7B06493D18BA65FCC46DAF58B60D05A6EAC374B7D2D5B632"
+    },
+    {
+      "path": "exports\\structurizr-baseline-Linux-deployment-key.puml",
+      "sha256": "9B3E3E72FF29E77F780B4A865BB2D0986D5658B1BEE099EC7CF2483DA2101874"
+    },
+    {
+      "path": "exports\\structurizr-baseline-Linux-deployment-key.svg",
+      "sha256": "9E52F8EDA6920CDC006833CA9344F7E7061DED4F2B4BA5899CEAEA1103DCE1A4"
+    },
+    {
+      "path": "exports\\structurizr-baseline-Linux-deployment.puml",
+      "sha256": "B28881E6BF4A2E3AC8A396911F85BC09272949257C4FB1FDE0F0020CC2CA5ED5"
+    },
+    {
+      "path": "exports\\structurizr-baseline-Linux-deployment.svg",
+      "sha256": "ED99EDC64E46FB28B21726C7579D75872CB4C39A9F875F7EE208FB82325ED092"
+    },
+    {
+      "path": "exports\\structurizr-baseline-macOS-deployment-key.puml",
+      "sha256": "9B3E3E72FF29E77F780B4A865BB2D0986D5658B1BEE099EC7CF2483DA2101874"
+    },
+    {
+      "path": "exports\\structurizr-baseline-macOS-deployment-key.svg",
+      "sha256": "9E52F8EDA6920CDC006833CA9344F7E7061DED4F2B4BA5899CEAEA1103DCE1A4"
+    },
+    {
+      "path": "exports\\structurizr-baseline-macOS-deployment.puml",
+      "sha256": "0844B7D780EBE124C21628F9F345EDD362ED8DB63ECF1474A6825D6511ABD43E"
+    },
+    {
+      "path": "exports\\structurizr-baseline-macOS-deployment.svg",
+      "sha256": "F2798C86713DF5C3EBF77397A39DF36CE472F30C9B6EB636AE5B2757F94A3191"
+    },
+    {
+      "path": "exports\\structurizr-baseline-relay-components-key.puml",
+      "sha256": "E50BA038DA6A3627BCD3A69DF4D8BAD56BE6C92A6D62D805FAFE2DC5D16AEB73"
+    },
+    {
+      "path": "exports\\structurizr-baseline-relay-components-key.svg",
+      "sha256": "F7BB8F1A500B160C1C616C83A9B7A7D0A2DA41601360E1F72B4AC8BD9839C5AE"
+    },
+    {
+      "path": "exports\\structurizr-baseline-relay-components.puml",
+      "sha256": "E5B5D9BA203D6C989B7E4D249B9D9A1FEA5C6416F105DBC1432A6FC001DC6F2C"
+    },
+    {
+      "path": "exports\\structurizr-baseline-relay-components.svg",
+      "sha256": "CB245A5035C57D06FDCE33596F0B33F1F4BAB60706E09D9B68F3DB8B7FCC4774"
+    },
+    {
+      "path": "exports\\structurizr-baseline-unix-components-key.puml",
+      "sha256": "543DDEFDA03CFBAC0210EBE2BE8AC8CA834AC8BED7D694D9D3C4B43EE372C1D3"
+    },
+    {
+      "path": "exports\\structurizr-baseline-unix-components-key.svg",
+      "sha256": "9733D45FF1AAB46CC29C3A8799546F5204494BD914F805865A18C50D31B5A1F7"
+    },
+    {
+      "path": "exports\\structurizr-baseline-unix-components.puml",
+      "sha256": "7156F93F3AD19FB13F86F6046DA8906021CF49E506D6616079B4BFE793C18D17"
+    },
+    {
+      "path": "exports\\structurizr-baseline-unix-components.svg",
+      "sha256": "225FFB7F4278CF6FAB39E02480541D2A4A49802F72D62DF9BA19991C42FE0B0C"
+    },
+    {
+      "path": "exports\\structurizr-baseline-win-components-key.puml",
+      "sha256": "10A6FC6524E383071A02EB5948176FC99F40B558358AB914297DF87CB35DF107"
+    },
+    {
+      "path": "exports\\structurizr-baseline-win-components-key.svg",
+      "sha256": "89431177DDDA7924160FD38055FA7CC28945C0FD6A383EA118F30A29D101BB0B"
+    },
+    {
+      "path": "exports\\structurizr-baseline-win-components.puml",
+      "sha256": "F24641D5219E2C62F78D66D01C6E9B0B06409BD775AB02E50FFF68B8690AFF90"
+    },
+    {
+      "path": "exports\\structurizr-baseline-win-components.svg",
+      "sha256": "B4E1762BAE5523775B5812ABDFD4CFA3F86650BED115F6157D254141687CEB06"
+    },
+    {
+      "path": "exports\\structurizr-baseline-Windows-deployment-key.puml",
+      "sha256": "9B3E3E72FF29E77F780B4A865BB2D0986D5658B1BEE099EC7CF2483DA2101874"
+    },
+    {
+      "path": "exports\\structurizr-baseline-Windows-deployment-key.svg",
+      "sha256": "9E52F8EDA6920CDC006833CA9344F7E7061DED4F2B4BA5899CEAEA1103DCE1A4"
+    },
+    {
+      "path": "exports\\structurizr-baseline-Windows-deployment.puml",
+      "sha256": "31B7EFD8B173E5D573A3E1FF176BB7321138BE749025B3191C116BEAC8161A7B"
+    },
+    {
+      "path": "exports\\structurizr-baseline-Windows-deployment.svg",
+      "sha256": "FB3A5018EDBF501B0CD5A5D4D95F83907C5DF2D1E3DD980F95647DE812BBBA35"
+    },
+    {
+      "path": "exports\\structurizr-target-acl-components-key.puml",
+      "sha256": "C6E9FEDCC5C5DA651050C90613E246736DD41A720B78BC30C3F9772C31A508D1"
+    },
+    {
+      "path": "exports\\structurizr-target-acl-components-key.svg",
+      "sha256": "734888D68827C4250C885D431232217A20C21D416D04D61D96F0D3AC9812BB03"
+    },
+    {
+      "path": "exports\\structurizr-target-acl-components.puml",
+      "sha256": "EE79E5C612C8BB800413E2EC61BC5BE8CE87316ACFAE37A4A5D7A365ED7E8793"
+    },
+    {
+      "path": "exports\\structurizr-target-acl-components.svg",
+      "sha256": "5215BE8B119BD5BE706D630ACFD45A14637E2B40D059ADB5C1FEA9FF42A048E7"
+    },
+    {
+      "path": "exports\\structurizr-target-cline-call-key.puml",
+      "sha256": "DA8BDE6CF718CAD89256C7DC713F0A0D3CBBE883CEC99E24973AE942C338B26A"
+    },
+    {
+      "path": "exports\\structurizr-target-cline-call-key.svg",
+      "sha256": "D8A7A4E1F907D3A26A5F0724FFF6C33E145016759D162CA5CD840ABF727FA94D"
+    },
+    {
+      "path": "exports\\structurizr-target-cline-call.puml",
+      "sha256": "9E2D4A648012AB0FC29FC90277A0211BC21B1CA03B72C860E20DDAE3FCD2355F"
+    },
+    {
+      "path": "exports\\structurizr-target-cline-call.svg",
+      "sha256": "3379419F341E1FD9F623B0043C64B49F5ACD4149A747716B77B102C3DED18051"
+    },
+    {
+      "path": "exports\\structurizr-target-containers-key.puml",
+      "sha256": "760B36224F3A120C4275504327DE6866782A056DA2E1FEE69BE7E2B55E0EA3A5"
+    },
+    {
+      "path": "exports\\structurizr-target-containers-key.svg",
+      "sha256": "A484105472C27F12C9E6F577B7E5E2705108832C14D3E684756291D2932374B6"
+    },
+    {
+      "path": "exports\\structurizr-target-containers.puml",
+      "sha256": "F0DD5C378DD7433F56F454481640654EB6D383A1D0B85B54DE0D41AB33096DAF"
+    },
+    {
+      "path": "exports\\structurizr-target-containers.svg",
+      "sha256": "B3C68A7DEC0CE48AAF833B94F91E7D8DAD1B376B372B00743D4FC2ACCC101C9E"
+    },
+    {
+      "path": "exports\\structurizr-target-context-key.puml",
+      "sha256": "74661E5B3064B968578D0DF0E77782C103FD8335F29B93DE20F71F298786B79F"
+    },
+    {
+      "path": "exports\\structurizr-target-context-key.svg",
+      "sha256": "FF361FDF25B0A21B9A0A44EC1E3A51AAC3430184EE0E12EBEC49C95B5B024240"
+    },
+    {
+      "path": "exports\\structurizr-target-context.puml",
+      "sha256": "1D6152F583DF373EE4A07880ECEBB5E74372875A3C54658F4F52FF0ABA357314"
+    },
+    {
+      "path": "exports\\structurizr-target-context.svg",
+      "sha256": "918254E1C7ED035C4AF03226AAC8088F19BCAA843347B8E008E8DEE0C6D2AE3D"
+    },
+    {
+      "path": "exports\\structurizr-target-grok-call-key.puml",
+      "sha256": "DA8BDE6CF718CAD89256C7DC713F0A0D3CBBE883CEC99E24973AE942C338B26A"
+    },
+    {
+      "path": "exports\\structurizr-target-grok-call-key.svg",
+      "sha256": "D8A7A4E1F907D3A26A5F0724FFF6C33E145016759D162CA5CD840ABF727FA94D"
+    },
+    {
+      "path": "exports\\structurizr-target-grok-call.puml",
+      "sha256": "33F21E98D34745AA18E9EB261D69C9B0EBD39AF269D02B0935C843A09F833BA9"
+    },
+    {
+      "path": "exports\\structurizr-target-grok-call.svg",
+      "sha256": "6138CAA66331CCEDE081A89EEE4F81C2F9B7C99C893CBBAD9146AB33373CFA08"
+    },
+    {
+      "path": "exports\\structurizr-target-helper-components-key.puml",
+      "sha256": "1199087E75B15C1C6ECFB11CE00D337F712A3F3B65B450335BAD6180A4EE8551"
+    },
+    {
+      "path": "exports\\structurizr-target-helper-components-key.svg",
+      "sha256": "F6BCDEDE99D39859777E5A7B21D84BB25215C9AD0D42B46F8020A19113C68EED"
+    },
+    {
+      "path": "exports\\structurizr-target-helper-components.puml",
+      "sha256": "731EE72E347899F2CDE98CF3225F228EE30ECACA5A015CF8BD11591EBF47D8C2"
+    },
+    {
+      "path": "exports\\structurizr-target-helper-components.svg",
+      "sha256": "27DDBB1E24566AE93EB399B07EAE7969964FC066050FBF43618A6271E0A50DC4"
+    },
+    {
+      "path": "exports\\structurizr-target-Linux-deployment-key.puml",
+      "sha256": "A133D117035BD28EE9DDE3F321385FE2BA63F5A41E6AA23705E6CD9E40EE0AD4"
+    },
+    {
+      "path": "exports\\structurizr-target-Linux-deployment-key.svg",
+      "sha256": "1C626E308D6524C28A25DE364FB49BBFAFC3045A99D64C9177B1B37995C8EB0B"
+    },
+    {
+      "path": "exports\\structurizr-target-Linux-deployment.puml",
+      "sha256": "C00BB6524EDB069B1D5AD4B164F31A6534C2E4BD0E9102E1879B4099BC3A6CCE"
+    },
+    {
+      "path": "exports\\structurizr-target-Linux-deployment.svg",
+      "sha256": "6C8FE019D9E26E7A1F6E8AB89B40C2F56F1E5C2E7292518CB1BD477330A7B1A8"
+    },
+    {
+      "path": "exports\\structurizr-target-relay-components-key.puml",
+      "sha256": "DA8BDE6CF718CAD89256C7DC713F0A0D3CBBE883CEC99E24973AE942C338B26A"
+    },
+    {
+      "path": "exports\\structurizr-target-relay-components-key.svg",
+      "sha256": "D8A7A4E1F907D3A26A5F0724FFF6C33E145016759D162CA5CD840ABF727FA94D"
+    },
+    {
+      "path": "exports\\structurizr-target-relay-components.puml",
+      "sha256": "DA29E8C405747DC7B28F37B976753E65ED49752C112C0EB91FE2908E5C8051C2"
+    },
+    {
+      "path": "exports\\structurizr-target-relay-components.svg",
+      "sha256": "046B00F90B6E593DC6CCF9185956C6CA088B3BB496625C9A49A41934BBA7A4BC"
+    },
+    {
+      "path": "exports\\structurizr-target-unix-components-key.puml",
+      "sha256": "5452C0CB32FB1C7E826175A8A1B7D6FE2DCB915271AB4CDFFC753F9E2B15575C"
+    },
+    {
+      "path": "exports\\structurizr-target-unix-components-key.svg",
+      "sha256": "4F69DAAF10089251B42391EA807CBACBAAE0D0B64E62A9D3574D9543900B3710"
+    },
+    {
+      "path": "exports\\structurizr-target-unix-components.puml",
+      "sha256": "F2C0193801BB71BE151340395F4E69D56ADC394B58CDF7D280377504757BD1D2"
+    },
+    {
+      "path": "exports\\structurizr-target-unix-components.svg",
+      "sha256": "6AB8B5EE1FB8DD849FEC26EA924007258C2F84A614091B152E6CCA3D7E20A36B"
+    },
+    {
+      "path": "exports\\structurizr-target-win-components-key.puml",
+      "sha256": "C3291D6DDA59646E5CA26A951A24E2DCFE91BB25C74628E23E96E5BF0AB008F1"
+    },
+    {
+      "path": "exports\\structurizr-target-win-components-key.svg",
+      "sha256": "6B0210386877028F5137A9614B0384A4D5E979E0D007E037F639D5BF7DB68279"
+    },
+    {
+      "path": "exports\\structurizr-target-win-components.puml",
+      "sha256": "0953AF2E72B85421ED29304660E051081E76CF140C42D4B2F29225C9177956AA"
+    },
+    {
+      "path": "exports\\structurizr-target-win-components.svg",
+      "sha256": "36D3E4CC3246BA57149E38BB7D145FE3065BA483284DDB5B5D81F0F1CD81348D"
+    },
+    {
+      "path": "exports\\structurizr-target-Windows-deployment-key.puml",
+      "sha256": "A133D117035BD28EE9DDE3F321385FE2BA63F5A41E6AA23705E6CD9E40EE0AD4"
+    },
+    {
+      "path": "exports\\structurizr-target-Windows-deployment-key.svg",
+      "sha256": "1C626E308D6524C28A25DE364FB49BBFAFC3045A99D64C9177B1B37995C8EB0B"
+    },
+    {
+      "path": "exports\\structurizr-target-Windows-deployment.puml",
+      "sha256": "5C5FEA1922197CCA924BDE1FFCF9999497A306E7B168F0748E8B61B415200CC7"
+    },
+    {
+      "path": "exports\\structurizr-target-Windows-deployment.svg",
+      "sha256": "EA4EF327F6B8CA838AA9BD373551E0AFD7AE6C9B12974FD13E901CB3F7A16EB6"
+    },
+    {
+      "path": "model\\workspace.json",
+      "sha256": "C43FB5D8C1AF19041C96CBB582F1C5FC2486F71E32E5BBA92891F052E231877C"
+    },
+    {
+      "path": "site\\index.html",
+      "sha256": "4D5D34BA5F2ED56E7D77AF14B45B919E1C921798E422FF328758252ED2995B3D"
+    },
+    {
+      "path": "site\\workspace.js",
+      "sha256": "D5F6EED14AC602AECFB6ED3AAE102D273F3ACF98BB2763F0D8B9A6E2CEA9430E"
+    },
+    {
+      "path": "site\\css\\bootstrap-5.3.7.min.css",
+      "sha256": "CD1826581E4F2B80AF4F1E05897B316C7698441063CFFAEFBBDEEC382EE4CD72"
+    },
+    {
+      "path": "site\\css\\structurizr-static-dark.css",
+      "sha256": "C6F321EF518FD66CCECBC607883D0D21E82DC28E2D64E6A20CA362ABB490AED6"
+    },
+    {
+      "path": "site\\css\\structurizr-static.css",
+      "sha256": "BF568937D1F6B463841C19DF42BCF1D857982A972127D6C24A4F4ADC2A9EB9E1"
+    },
+    {
+      "path": "site\\css\\structurizr.css",
+      "sha256": "C666AE875410A9E5E100885B9A845FA4B3CC12AF62ED370C49AB7AA98B9840E7"
+    },
+    {
+      "path": "site\\img\\favicon.png",
+      "sha256": "8D6ED136D1FA549FF645F8DFE9F32FB46C4E60EBBC8AD41023A266AF64289814"
+    },
+    {
+      "path": "site\\img\\structurizr-banner-dark.png",
+      "sha256": "EB808D7702FE2A36E1661A2CFA4F5BE7A986F2ED698ADC5E760AFE72F0E3E856"
+    },
+    {
+      "path": "site\\img\\structurizr-banner-light.png",
+      "sha256": "7349C271561DCC45F72CC0E845D3AC11AF407300ECC6B3810BF036D69EECD585"
+    },
+    {
+      "path": "site\\js\\bootstrap-5.3.7.min.js",
+      "sha256": "35F4547D9364111ACA4850347356BC5660A994F0D8B694D88F995098A7B547FA"
+    },
+    {
+      "path": "site\\js\\crypto-js-4.1.1.min.js",
+      "sha256": "8E3B0117F4DF4BE452C0B6AF5B8F0A0ACF9D4ADE23D08D55D7E312AF22077762"
+    },
+    {
+      "path": "site\\js\\dagre-1.1.8.js",
+      "sha256": "A320EDFD25EEC8705149C1A79AFABCBAC902D34753FB7C55A4208BE09FF37AB2"
+    },
+    {
+      "path": "site\\js\\graphlib-2.2.4.min.js",
+      "sha256": "A3D7212B653DC8E28D59CDC92B420E470E1B924EEA99BA0A8EF985AEC4589918"
+    },
+    {
+      "path": "site\\js\\jointjs-Core-4.1.3.js",
+      "sha256": "661BF5A94865819A6101B4472F0E440357D6F271B4E2193A6A27AD7B53D41C5A"
+    },
+    {
+      "path": "site\\js\\jointjs-DirectedGraph-4.1.3.min.js",
+      "sha256": "DAB86FA3878710FD5C37ED30928C3EC9A79430695416E9072E5ABDFAB5D4264C"
+    },
+    {
+      "path": "site\\js\\jquery-3.7.1.min.js",
+      "sha256": "FC9A93DD241F6B045CBFF0481CF4E1901BECD0E12FB45166A8F17F95823F0B1A"
+    },
+    {
+      "path": "site\\js\\structurizr-diagram.js",
+      "sha256": "3AB0AF1FDC491A137DCD8F7BE57762D24AD295AFD48EDD549AAAB76ED70AB7A0"
+    },
+    {
+      "path": "site\\js\\structurizr-embed.js",
+      "sha256": "3F182E78BBE6FECF3E1EFE479FFEF05453E415F08BA2F223EECBCB70C15BDA8E"
+    },
+    {
+      "path": "site\\js\\structurizr-navigation.js",
+      "sha256": "5315DE86ABB6A0B8479FC6AF5807CF63FDDAD5E77D9424E8214EAB0CD962F2B0"
+    },
+    {
+      "path": "site\\js\\structurizr-quick-navigation.js",
+      "sha256": "D470BF3AC8C5AB3638CA855DFC4853EF5A24778702E5B3A5060E5DF41C647D22"
+    },
+    {
+      "path": "site\\js\\structurizr-tooltip.js",
+      "sha256": "248036B6D09952CCB3729F8368544DBE6EB49A5804AAB8F155C403E0A670656D"
+    },
+    {
+      "path": "site\\js\\structurizr-ui.js",
+      "sha256": "17F59F1D9AC1B02873AD7F978E238E493A957BE602D68B9F459E241C0FAF0ED4"
+    },
+    {
+      "path": "site\\js\\structurizr-util.js",
+      "sha256": "5BE828C9A03D802537A2D9D5294C83376D9BED1DF8ECC44DBF65485259D0005A"
+    },
+    {
+      "path": "site\\js\\structurizr-workspace.js",
+      "sha256": "22BD48496681DC106A196515FC4C923DA8531A27685D557EB791DE803A88293B"
+    },
+    {
+      "path": "site\\js\\structurizr.js",
+      "sha256": "0F1B876CC092348FB86F68B6C9A959A0BF87045F1A3F46E2CCFB858879B0BDBC"
+    },
+    {
+      "path": "source\\workspace.dsl",
+      "sha256": "C4FCE40AFBA92D7CDAA972F04D66BEE329D1F5B404D0D0C3FE2AA6E357AF8554"
+    },
+    {
+      "path": "source\\code\\baseline-helper.puml",
+      "sha256": "59DE1856836B89A025772C57B330BBCAE8A7669ABA0E1D9A00F3874EEB393AB8"
+    },
+    {
+      "path": "source\\code\\baseline-helper.svg",
+      "sha256": "ED4C9BB407832425B066D217595D33E27A0DF9003ED8C3E45CDA0ECAC5890D45"
+    },
+    {
+      "path": "source\\code\\baseline-installers.puml",
+      "sha256": "924D47BAA61770284A9AA239FA932EAD05CCE66025A3A18DBBA78DEF9EA6F4D0"
+    },
+    {
+      "path": "source\\code\\baseline-installers.svg",
+      "sha256": "8CCB290308983F7CD23709AD5B04F8C82563ED98D35600EE71824D74FE0B8521"
+    },
+    {
+      "path": "source\\code\\baseline-relay.puml",
+      "sha256": "2D753280920725BFC1C8BA5573D1E5DDA47760CA6C420693A5D008453B21F91C"
+    },
+    {
+      "path": "source\\code\\baseline-relay.svg",
+      "sha256": "512C946FCF2928E9DE1AE51ACCBD69CE5512BD1B839519F291D2BBBBDFD316B9"
+    },
+    {
+      "path": "source\\code\\target-acl.puml",
+      "sha256": "DE6663E206EDCF473F5B892817F88DF08899B46AE5BE3FA4F15F2F8004DC18F1"
+    },
+    {
+      "path": "source\\code\\target-acl.svg",
+      "sha256": "C84B56023F08E224D3669187D16002F53B665042CD8D4B46476FB16B779FE059"
+    },
+    {
+      "path": "source\\code\\target-relay.puml",
+      "sha256": "9BA6ABDA5C969BFF2C9F02BFA328EA319E72E91A7AD38715ABD19EBB61006913"
+    },
+    {
+      "path": "source\\code\\target-relay.svg",
+      "sha256": "49A63DD9BB47172A2F5D2739C9B40BA653D51D8BEFDB481D5E6289F86732ADD0"
+    }
+  ],
+  "acceptance": "Architecture rendering evidence only; acceptance is recorded separately and does not establish product correctness"
+}

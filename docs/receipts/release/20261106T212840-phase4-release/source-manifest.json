@@ -1,0 +1,212 @@
+[
+  {
+    "path": ".nuke/.gitkeep",
+    "length": 1,
+    "sha256": "01BA4719C80B6FE911B091A7C05124B64EEECE964E09C058EF8F9805DACA546B"
+  },
+  {
+    "path": ".nuke/build.schema.json",
+    "length": 3502,
+    "sha256": "B114105039912B3B00DF851D346D7665A815D01F2A3AFCA01045D96B3535B40D"
+  },
+  {
+    "path": ".nuke/parameters.json",
+    "length": 39,
+    "sha256": "350A88DC9A193D4283DF18BD69605FA5F55BCCAFF68035F712D3741A012345A1"
+  },
+  {
+    "path": ".nuke/temp/build-attempt.log",
+    "length": 105,
+    "sha256": "65EF5BE676E9DB3C26A3FAB76B6FA089ADA081626863C75B457C2F0DF755F6B2"
+  },
+  {
+    "path": ".nuke/temp/build.2026-11-06_18-32-58.log",
+    "length": 1556,
+    "sha256": "F00BCDE573BD9F365B6557BDC4F40DB7F1CF2B3DB0044EB47EE98677993EEAFA"
+  },
+  {
+    "path": ".nuke/temp/build.2026-11-06_18-49-52.log",
+    "length": 2669,
+    "sha256": "7ED47B975E4A89ED569FA505E379F2437D0CAE94447640D2796B3FC5967FE7A3"
+  },
+  {
+    "path": ".nuke/temp/build.2026-11-06_18-54-09.log",
+    "length": 2022,
+    "sha256": "BB6DD03D34A3415FD97F09CA178433DA4A38A184A99C639885C1170DA45EDD81"
+  },
+  {
+    "path": ".nuke/temp/build.2026-11-06_18-57-52.log",
+    "length": 1556,
+    "sha256": "F00BCDE573BD9F365B6557BDC4F40DB7F1CF2B3DB0044EB47EE98677993EEAFA"
+  },
+  {
+    "path": ".nuke/temp/build.2026-11-06_19-00-41.log",
+    "length": 2186,
+    "sha256": "0DE0E1C91ADFFB69222CD12E8DC725647670B87EBE6997C42DE1AD20BCA307EC"
+  },
+  {
+    "path": ".nuke/temp/build.2026-11-06_20-56-38.log",
+    "length": 2186,
+    "sha256": "0DE0E1C91ADFFB69222CD12E8DC725647670B87EBE6997C42DE1AD20BCA307EC"
+  },
+  {
+    "path": ".nuke/temp/build.log",
+    "length": 2636,
+    "sha256": "12ED7303C598E4CA8A76AB96E2935BBD2F978C4E67C15637805A5431E7947D94"
+  },
+  {
+    "path": ".version",
+    "length": 9,
+    "sha256": "C235DF2319D0638E26EABDC366B6E68C87290081AE1AAC1C629E0E4303350E47"
+  },
+  {
+    "path": "ask-claude-mcp.mjs",
+    "length": 34686,
+    "sha256": "F1E6CB5694E8152A3B291A3E33F16625D84099BE8D773EBED9F319EF46E80A7A"
+  },
+  {
+    "path": "build.ps1",
+    "length": 904,
+    "sha256": "D1B7861C776E03E860C4D351E8E590FD04B0508968071A109384F84037FDE144"
+  },
+  {
+    "path": "build/_build.csproj",
+    "length": 962,
+    "sha256": "0C0DDF1045338CCCDB48E8179648CA04A08F64A0F27C97B76BCA87B22699E2F3"
+  },
+  {
+    "path": "build/Build.cs",
+    "length": 4474,
+    "sha256": "7586919C8498525F9DBCA458A2C5931DBB9FE8601C3E8454EF02874DF42592E8"
+  },
+  {
+    "path": "build/Convert-TestResultsToTrx.ps1",
+    "length": 7943,
+    "sha256": "30563F5277187249A7C5CF624BB53437F2A3127BA4F782874824600B61A01FB6"
+  },
+  {
+    "path": "build/Invoke-RelayTests.ps1",
+    "length": 15092,
+    "sha256": "C38C0A1A56B8C74E70B12A699BD3BCB4D5EEFDC6DCC5DCBB30F343A0980937D6"
+  },
+  {
+    "path": "CLAUDE-codex-section.md",
+    "length": 2943,
+    "sha256": "E4882BF81146481C43D09B2977C8613BC4AB8A62293BB9E7B724782B61BB6057"
+  },
+  {
+    "path": "frenemy.config.json",
+    "length": 133,
+    "sha256": "36B4406E78027A15F99871C4C008688C1C29F009CA12DF641EB7A06E43D93971"
+  },
+  {
+    "path": "frenemy.config.schema.json",
+    "length": 2035,
+    "sha256": "37D2401C70EFCAD2875D2161B18EC8EC47234EB5E90BDE808825D02F0E0DEE0E"
+  },
+  {
+    "path": "genimg.sh",
+    "length": 2155,
+    "sha256": "D70937612F7BDFE61BD80A960F488A3310F496F471EA843A31F96E506C43D002"
+  },
+  {
+    "path": "install.ps1",
+    "length": 7529,
+    "sha256": "69E316D0A8F885CFF85AF1788BB978DCCD351ABB8FA6F743E2709BB5AB544AB2"
+  },
+  {
+    "path": "install.sh",
+    "length": 6940,
+    "sha256": "1087D32506FC86D179DD4BA7F41C874C343D7233E85D13A92977622DD0BF0685"
+  },
+  {
+    "path": "LICENSE",
+    "length": 1134,
+    "sha256": "EEC5CD861914423E961B3777294B1870894216080D49A7F28C005807AE9E7800"
+  },
+  {
+    "path": "Protect-GrokPrompt.ps1",
+    "length": 4183,
+    "sha256": "AC0AFA47191D4C56093F105C1D49D5AF69AE354FF53F36E6B875EB76227EC344"
+  },
+  {
+    "path": "README.md",
+    "length": 16091,
+    "sha256": "9D3FC0C2B045714877F69F77D8E7A9E58EDA5449464A63D3BBC227F1ED6325CC"
+  },
+  {
+    "path": "tests/contracts/relay-contract.mjs",
+    "length": 17395,
+    "sha256": "D2B8856E9C3AD72ECDA23EF7C150AF2D2CC1D264123725BD8A88F08A7039E4D8"
+  },
+  {
+    "path": "tests/integration/package.json",
+    "length": 157,
+    "sha256": "78DDFEDD40BC0B2072F6D724355D252EF42036452E56C8102676EEEB80369AA9"
+  },
+  {
+    "path": "tests/integration/Protect-GrokPrompt.Tests.ps1",
+    "length": 2147,
+    "sha256": "EF9449A2CA6616F16A7F8AA8F54D7F42D8AC821CE8A9BC4090EAA434EFE94F83"
+  },
+  {
+    "path": "tests/integration/relay-provider-preload.mjs",
+    "length": 11144,
+    "sha256": "7CF3EE04D6DDE2935FB6498BEE2DC9600A335D5281B393B6BDF72E96E0667C39"
+  },
+  {
+    "path": "tests/integration/relay.contract.test.mjs",
+    "length": 31514,
+    "sha256": "B0387BAA308F2A9C67A0E8E33533D4D55A15BFAF818D23FA35F66194DA24C23D"
+  },
+  {
+    "path": "tests/native/cline-acp-client.mjs",
+    "length": 10337,
+    "sha256": "ED588346F35384EC6506DD2F91CB46CBE139BEAFA7BF95D58DE943FFE9445D9E"
+  },
+  {
+    "path": "tests/native/grok-native-client.mjs",
+    "length": 4344,
+    "sha256": "9AF1CA9A1E56093FD5324785FBDD072C15B7AE65A9C383F2FBC90A2667F0BF8B"
+  },
+  {
+    "path": "tests/native/native-qualification.test.mjs",
+    "length": 7957,
+    "sha256": "A8102F1BDDFB783CF3CD80B1D891F36892AEC01C5F044DB4F76DD4761CF95B0B"
+  },
+  {
+    "path": "tests/native/production-native-qualification.test.mjs",
+    "length": 9529,
+    "sha256": "605C8819712B860266EC6E3D46567540BBBA54E013F5EB96BFA9F378F176CEFD"
+  },
+  {
+    "path": "tests/native/Protect-GrokPrompt.ps1",
+    "length": 4248,
+    "sha256": "ACBB3CF74A575A274A50CF27EE3585EDB8B9FF48D9F2EB82E42FC4CF42CFF49C"
+  },
+  {
+    "path": "tests/unit/mock-relay-provider.mjs",
+    "length": 18768,
+    "sha256": "7199083CB919881CE3D70C408C60F2BFD4908E35B9DA5B2F06F95D13E61F79B9"
+  },
+  {
+    "path": "tests/unit/package.json",
+    "length": 150,
+    "sha256": "90D31E0FA3051E5E43DD6C862C3F8B54CCA877118BBC700444188F90C3E31E3C"
+  },
+  {
+    "path": "tests/unit/Protect-GrokPrompt.Mock.ps1",
+    "length": 881,
+    "sha256": "AC9A3A10079D3085FE5D3D2F13B5733835A3F611932F2793C18061D0C47A050D"
+  },
+  {
+    "path": "tests/unit/Protect-GrokPrompt.Tests.ps1",
+    "length": 1628,
+    "sha256": "F6A3F6EC022FC749550AA7A9A7047EA3F34C998FBF517F0484632C5140F1AC2F"
+  },
+  {
+    "path": "tests/unit/relay.contract.test.mjs",
+    "length": 7826,
+    "sha256": "89FC7225B7101A52611DA347A34343BC9CBD249A8E7401F265BC56ABB1655798"
+  }
+]

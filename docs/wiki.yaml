@@ -86,6 +86,27 @@ documents:
     id: c4-architecture
     target: C4-Architecture.md
     source: docs/architecture/structurizr/wiki.md
+  - platforms:
+      - github
+      - azure
+    source: docs/contracts/grok-cline-support.md
+    title: Grok and Cline Relay Contract
+    id: grok-cline-binding
+    target: Grok-Cline-Relay-Contract.md
+  - platforms:
+      - github
+      - azure
+    source: docs/contracts/native-binding-qualification.md
+    title: Grok and Cline Native Qualification
+    id: grok-cline-native-validation
+    target: Grok-Cline-Native-Qualification.md
+  - platforms:
+      - github
+      - azure
+    source: docs/testing/grok-cline-test-design.md
+    title: Grok and Cline Test Design
+    id: grok-cline-test-design
+    target: Grok-Cline-Test-Design.md
 navigation:
   - document: home
   - document: functional
@@ -97,5 +118,8 @@ navigation:
   - document: docs-index
   - document: arch-overview
   - document: testing-status
+  - document: grok-cline-test-design
   - document: plan-grok-cline
+  - document: grok-cline-binding
+  - document: grok-cline-native-validation
   - document: c4-architecture

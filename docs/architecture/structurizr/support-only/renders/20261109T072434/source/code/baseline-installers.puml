@@ -1,0 +1,55 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+title BASELINE c7338ad: installers and managed configuration
+class "install.ps1" as win {
+ Append-Utf8(Path, Text) [23-25]
+ $Dir / $PSScriptRoot [29-36]
+ prerequisite loop [39-49]
+ native claude.exe search [53-67]
+ $NodeBin / $NodeToml [71-73]
+ version warnings [75-97]
+ TOML append or skip [109-159]
+ instruction append or skip [161-176]
+}
+class "install.sh" as unix {
+ DIR and control-character checks [20-36]
+ prerequisites / NODE_BIN [38-48]
+ version warnings [50-68]
+ TOML escaping [73-78]
+ config append or skip [80-120]
+ instruction append or skip [122-132]
+ optional helper copy/chmod [134-149]
+}
+class "~/.codex/config.toml" as config <<user-owned>> {
+ [mcp_servers.claude]
+ command = resolved Node
+ args = absolute relay path
+ tool_timeout_sec = 600
+ [mcp_servers.claude.tools.ask_claude]
+ approval_mode = approve
+}
+class "CLAUDE-codex-section.md" as section <<repository>> {
+ instructions for codex exec
+ read-only by default
+}
+class "~/.claude/CLAUDE.md" as instructions <<user-owned>>
+class "~/.claude/scripts/genimg.sh" as helper <<optional>>
+win --> config : Append-Utf8 unless block exists
+unix --> config : append unless block exists
+section --> win : source text
+section --> unix : source text
+win --> instructions : append unless heading exists
+unix --> instructions : append unless heading exists
+unix --> helper : optional copy plus chmod
+note bottom of config
+Existing blocks are skipped, not upgraded.
+No transactional backup/rollback or WhatIf.
+Source version comment is an upstream claim, not a test receipt.
+end note
+legend bottom
+Windows and Unix installers: unchanged in target; separate setup added.
+New selected-agent setup uses PowerShell; existing behavior retained.
+Existing macOS behavior retained as excluded baseline scope.
+endlegend
+@enduml

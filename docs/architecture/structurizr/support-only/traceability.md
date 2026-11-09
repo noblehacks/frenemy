@@ -1,0 +1,14 @@
+# Traceability for the existing server extension
+
+The [current plan](../../../plans/grok-cline-integration.md) governs the target. FR-FRENEMY-113/114/115/116, TR-FRENEMY-ARCH-117, TR-FRENEMY-ADAPTER-118, TR-FRENEMY-CONFIG-120 and TEST-FRENEMY-113/114/115/116 are persisted in the live requirement store. Mapping rows connect each functional record to its technical and test records. The [current use cases](../../../requirements/grok-cline-use-cases.md) define the canonical architecture aliases. Their exact live-store creates are retained in the supported failsafe queue after a disclosed UC persistence error. The [Phase 1 and Phase 2 self-evaluation](../../../receipts/self-eval/20261106T113443-phase1-phase2/final.md) records the earlier completion gate without making a product-correctness claim.
+
+- The four new tool entries and dispatch edges extend `TOOLS` and `handle`. FR-FRENEMY-114 AC01, FR-FRENEMY-115 AC01, TR-FRENEMY-ADAPTER-118, TEST-FRENEMY-114/115, R01. UC-SUPPORT-GROK and UC-SUPPORT-CLINE. Phase 3.
+- Grok and Cline components invoke the external CLIs in the startup directory. Their result edges use the current error and sanitizer boundary. FR-FRENEMY-114 AC02–AC04, FR-FRENEMY-115 AC02/AC03, TR-FRENEMY-ADAPTER-118, TEST-FRENEMY-114/115, R02–R05. UC-SUPPORT-GROK and UC-SUPPORT-CLINE. Phase 3.
+- Grok's temporary prompt and Windows ACL protection belong to the invocation. FR-FRENEMY-114 AC05, TR-FRENEMY-ADAPTER-118, TEST-FRENEMY-114, R03. UC-SUPPORT-GROK. Phase 3.
+- Target Windows/Linux deployments and the two call flows trace to FR-FRENEMY-114 AC06, FR-FRENEMY-115 AC04/AC06, TR-FRENEMY-ADAPTER-118, TEST-FRENEMY-114/115, Q01/Q02. UC-SUPPORT-GROK and UC-SUPPORT-CLINE. Phase 3 qualification and Phase 4 release validation.
+- Baseline source, all four C4 levels, legends and reproducible rendering trace to FR-FRENEMY-113 AC01–AC06, TR-FRENEMY-ARCH-117, TEST-FRENEMY-113, A01. UC-SUPPORT-ARCHITECTURE. Phase 2.
+- Existing Claude invocations, server framing and limits, Codex instructions, installers and image helper are compatibility obligations. FR-FRENEMY-115 AC01/AC03/AC05, TR-FRENEMY-ADAPTER-118, TEST-FRENEMY-115, R01/R05/R06. Phase 3 and Phase 4.
+- The configuration container and selector-resolution component trace to FR-FRENEMY-116 AC01/AC02/AC04/AC05, TR-FRENEMY-CONFIG-120 AC01/AC02/AC03, TEST-FRENEMY-116, R07. Caller selectors override per-agent JSON defaults, while omission preserves each native CLI default. Phase 3.
+- The selector edges to Claude and Grok use native argv. The Cline edge uses child-only `CLINE_PROVIDER` and `CLINE_MODEL` plus `--thinking`, with no parent-process environment mutation. FR-FRENEMY-116 AC03, TR-FRENEMY-CONFIG-120 AC04, TEST-FRENEMY-116 AC02, R07/Q02. Phase 3.
+
+The [case design](../../../testing/grok-cline-test-design.md) defines assertions and execution gates. No withdrawn job-service or installer-change requirement is part of this architecture or implementation scope.

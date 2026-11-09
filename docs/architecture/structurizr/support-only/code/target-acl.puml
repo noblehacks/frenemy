@@ -1,0 +1,39 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+title TARGET DESIGN: Windows prompt protection subprocess
+class "runGrok" as caller <<existing relay extension DESIGN>>
+class "Protect-GrokPrompt.ps1" as protect <<Added DESIGN>> {
+ param(OwnedDirectory : absolute path)
+ validate owned directory argument
+ create non-inheriting DirectorySecurity
+ grant current user + SYSTEM only
+ Set-Acl / verify before success
+ exit nonzero on protection failure
+}
+class "pwsh.exe" as runtime <<external runtime>> {
+ native pwsh.exe from absolute PATH entries
+ -NoProfile -NonInteractive -File FIXED_SCRIPT
+}
+class "Invocation-local directory" as temp <<Added data>> {
+ random exclusive owned path
+ no prompt bytes before protection success
+ parent performs write and finally cleanup
+}
+caller --> runtime : starts fixed helper with path only
+runtime --> protect : executes shipped script
+protect --> temp : apply / verify ACL
+protect --> caller : exit 0 or error
+note bottom of protect
+Windows only. Linux uses native 0700/0600 modes.
+No prompt text in argv; no dynamic command evaluation.
+Protected residue may remain after an uncatchable crash.
+end note
+legend bottom
+Added DESIGN: fixed helper and invocation-local storage.
+External: existing PowerShell7 runtime.
+Modified: Grok invocation calls helper before writing.
+Unchanged: existing Claude/Codex behavior.
+Removed/replaced: none.
+endlegend
+@enduml

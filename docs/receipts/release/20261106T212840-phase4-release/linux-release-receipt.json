@@ -1,0 +1,196 @@
+{
+  "receiptVersion": 1,
+  "host": "LAB-OMARCHY",
+  "os": "Omarchy",
+  "architecture": "X64",
+  "startLocal": "2026-11-06T21:09:05",
+  "finishLocal": "2026-11-06T21:27:26",
+  "sourceArchivePath": "/tmp/frenemy-phase4-source-20261106T210700.zip",
+  "sourceArchiveSha256": "4279EA3CD3BF96C466D94F70BC98CE05660CAC221C9C4D1DC7E11B30E27547EE",
+  "destinationRoot": "/tmp/frenemy-phase4-20261106T210700-r2",
+  "runId": "20261106T210700-phase4-linux-release",
+  "command": "./build.ps1 Validate --test-run-id <runId> --grok-executable <absolute-path> --cline-executable <absolute-path>",
+  "validateExitCode": 0,
+  "versions": {
+    "powerShell": "7.6.9",
+    "node": "v26.12.0",
+    "dotnet": "10.0.403",
+    "grok": "grok 1.0.70 (f50904eaee6c) [stable]",
+    "cline": "3.0.74"
+  },
+  "executables": {
+    "grok": "/home/sharpninja/tools/grok",
+    "cline": "/home/sharpninja/.local/share/mise/shims/cline"
+  },
+  "totals": {
+    "total": 188,
+    "passed": 188,
+    "failed": 0,
+    "skipped": 0
+  },
+  "trx": [
+    {
+      "relativePath": "TestResults/20261106T210700-phase4-linux-release/integration/Frenemy.Relay.IntegrationTests/Frenemy.Relay.IntegrationTests.trx",
+      "total": 40,
+      "passed": 40,
+      "failed": 0,
+      "skipped": 0,
+      "length": 42278,
+      "sha256": "F45240ED778575E34F1B04180C57A3DEEE905922A48FA9025B33D32A573EE53D"
+    },
+    {
+      "relativePath": "TestResults/20261106T210700-phase4-linux-release/native/Frenemy.Relay.NativeQualification/Frenemy.Relay.NativeQualification.trx",
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "length": 5571,
+      "sha256": "136FDC9579CC467E86890A7B2730E11C2E702AE1160BF88E14DD65AA289882AC"
+    },
+    {
+      "relativePath": "TestResults/20261106T210700-phase4-linux-release/unit/Frenemy.Relay.UnitTests/Frenemy.Relay.UnitTests.trx",
+      "total": 72,
+      "passed": 72,
+      "failed": 0,
+      "skipped": 0,
+      "length": 73196,
+      "sha256": "4DD66FCDEF4BBB449E4B8104A47E6DC555680D8D945EA220B8142D830CBCD391"
+    },
+    {
+      "relativePath": "TestResults/20261106T210700-phase4-linux-release/verify-mocks/Frenemy.Relay.UnitTests/Frenemy.Relay.UnitTests.trx",
+      "total": 72,
+      "passed": 72,
+      "failed": 0,
+      "skipped": 0,
+      "length": 73196,
+      "sha256": "F8C0EBF316297CD1D867BBB990E8C377DD93DDE53CFE5900216E5B6235548696"
+    }
+  ],
+  "files": [
+    {
+      "relativePath": "TestResults/20261106T210700-phase4-linux-release/integration/Frenemy.Relay.IntegrationTests/Frenemy.Relay.IntegrationTests.node.junit.xml",
+      "length": 11481,
+      "sha256": "9CBF130B5183245DB7F487D4ACC028C30B7E676097AFC06D965DAF697642F09B"
+    },
+    {
+      "relativePath": "TestResults/20261106T210700-phase4-linux-release/integration/Frenemy.Relay.IntegrationTests/Frenemy.Relay.IntegrationTests.node.stderr.log",
+      "length": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "relativePath": "TestResults/20261106T210700-phase4-linux-release/integration/Frenemy.Relay.IntegrationTests/Frenemy.Relay.IntegrationTests.trx",
+      "length": 42278,
+      "sha256": "F45240ED778575E34F1B04180C57A3DEEE905922A48FA9025B33D32A573EE53D"
+    },
+    {
+      "relativePath": "TestResults/20261106T210700-phase4-linux-release/native/Frenemy.Relay.NativeQualification/fixtures/cline-session-identity.json",
+      "length": 618,
+      "sha256": "B1A4FBDFB0750C2E1E9CF18E3F14461C5005D3CF9CCD26FDB10DDC7CD88886D4"
+    },
+    {
+      "relativePath": "TestResults/20261106T210700-phase4-linux-release/native/Frenemy.Relay.NativeQualification/fixtures/cline-workspace/cline-editor.txt",
+      "length": 13,
+      "sha256": "AEB83515C355E510884165012AE8108092201EC4185ED26B4EFD37ECBA32AF84"
+    },
+    {
+      "relativePath": "TestResults/20261106T210700-phase4-linux-release/native/Frenemy.Relay.NativeQualification/fixtures/cline-workspace/cline-patch.txt",
+      "length": 12,
+      "sha256": "CD217C120F79147AA35485AD31288362F30DB9607C4D8280E501B036B46EB10A"
+    },
+    {
+      "relativePath": "TestResults/20261106T210700-phase4-linux-release/native/Frenemy.Relay.NativeQualification/fixtures/cline-workspace/sentinel.txt",
+      "length": 18,
+      "sha256": "3B74169B942C2B389FA5502DBC6403EA55357B8516F66AB2FFAF0BF54EF8BFAB"
+    },
+    {
+      "relativePath": "TestResults/20261106T210700-phase4-linux-release/native/Frenemy.Relay.NativeQualification/fixtures/grok-workspace/grok-write.txt",
+      "length": 11,
+      "sha256": "AECB49DF429D207B2EF4BBE064E08580D4EEE624F9FDAFEBD659665A4F282FF2"
+    },
+    {
+      "relativePath": "TestResults/20261106T210700-phase4-linux-release/native/Frenemy.Relay.NativeQualification/fixtures/grok-workspace/sentinel.txt",
+      "length": 18,
+      "sha256": "3B74169B942C2B389FA5502DBC6403EA55357B8516F66AB2FFAF0BF54EF8BFAB"
+    },
+    {
+      "relativePath": "TestResults/20261106T210700-phase4-linux-release/native/Frenemy.Relay.NativeQualification/fixtures/product-cline-workspace/cline-editor.txt",
+      "length": 13,
+      "sha256": "AEB83515C355E510884165012AE8108092201EC4185ED26B4EFD37ECBA32AF84"
+    },
+    {
+      "relativePath": "TestResults/20261106T210700-phase4-linux-release/native/Frenemy.Relay.NativeQualification/fixtures/product-cline-workspace/cline-patch.txt",
+      "length": 12,
+      "sha256": "CD217C120F79147AA35485AD31288362F30DB9607C4D8280E501B036B46EB10A"
+    },
+    {
+      "relativePath": "TestResults/20261106T210700-phase4-linux-release/native/Frenemy.Relay.NativeQualification/fixtures/product-cline-workspace/sentinel.txt",
+      "length": 18,
+      "sha256": "3B74169B942C2B389FA5502DBC6403EA55357B8516F66AB2FFAF0BF54EF8BFAB"
+    },
+    {
+      "relativePath": "TestResults/20261106T210700-phase4-linux-release/native/Frenemy.Relay.NativeQualification/fixtures/product-grok-workspace/grok-write.txt",
+      "length": 11,
+      "sha256": "AECB49DF429D207B2EF4BBE064E08580D4EEE624F9FDAFEBD659665A4F282FF2"
+    },
+    {
+      "relativePath": "TestResults/20261106T210700-phase4-linux-release/native/Frenemy.Relay.NativeQualification/fixtures/product-grok-workspace/sentinel.txt",
+      "length": 18,
+      "sha256": "3B74169B942C2B389FA5502DBC6403EA55357B8516F66AB2FFAF0BF54EF8BFAB"
+    },
+    {
+      "relativePath": "TestResults/20261106T210700-phase4-linux-release/native/Frenemy.Relay.NativeQualification/Frenemy.Relay.NativeQualification.node.junit.xml",
+      "length": 781,
+      "sha256": "D198D752C24C38D51087D9AF419D5BC4D855589B287A0757940C07FB74CCF724"
+    },
+    {
+      "relativePath": "TestResults/20261106T210700-phase4-linux-release/native/Frenemy.Relay.NativeQualification/Frenemy.Relay.NativeQualification.node.stderr.log",
+      "length": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "relativePath": "TestResults/20261106T210700-phase4-linux-release/native/Frenemy.Relay.NativeQualification/Frenemy.Relay.NativeQualification.trx",
+      "length": 5571,
+      "sha256": "136FDC9579CC467E86890A7B2730E11C2E702AE1160BF88E14DD65AA289882AC"
+    },
+    {
+      "relativePath": "TestResults/20261106T210700-phase4-linux-release/unit/Frenemy.Relay.UnitTests/Frenemy.Relay.UnitTests.node.junit.xml",
+      "length": 18377,
+      "sha256": "02CF53C713A9E668E3765172D4272D4C152EB76F72F0BD513C8641B823D87132"
+    },
+    {
+      "relativePath": "TestResults/20261106T210700-phase4-linux-release/unit/Frenemy.Relay.UnitTests/Frenemy.Relay.UnitTests.node.stderr.log",
+      "length": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "relativePath": "TestResults/20261106T210700-phase4-linux-release/unit/Frenemy.Relay.UnitTests/Frenemy.Relay.UnitTests.pester.nunit.xml",
+      "length": 2360,
+      "sha256": "C4D2EBDC11B22D6F8D910BECC65808152A41A87FD5FA17F47C89740AD5D24DA3"
+    },
+    {
+      "relativePath": "TestResults/20261106T210700-phase4-linux-release/unit/Frenemy.Relay.UnitTests/Frenemy.Relay.UnitTests.trx",
+      "length": 73196,
+      "sha256": "4DD66FCDEF4BBB449E4B8104A47E6DC555680D8D945EA220B8142D830CBCD391"
+    },
+    {
+      "relativePath": "TestResults/20261106T210700-phase4-linux-release/verify-mocks/Frenemy.Relay.UnitTests/Frenemy.Relay.UnitTests.node.junit.xml",
+      "length": 18377,
+      "sha256": "2553CD6CF696C2E7E329BCDF2B25B660BE78BA35259B52450475766E1C01023A"
+    },
+    {
+      "relativePath": "TestResults/20261106T210700-phase4-linux-release/verify-mocks/Frenemy.Relay.UnitTests/Frenemy.Relay.UnitTests.node.stderr.log",
+      "length": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "relativePath": "TestResults/20261106T210700-phase4-linux-release/verify-mocks/Frenemy.Relay.UnitTests/Frenemy.Relay.UnitTests.pester.nunit.xml",
+      "length": 2358,
+      "sha256": "9666836CCB958A4E5F3718FE257CBC280D1A8CCE51CD2533B59D41AEB6A0DE7A"
+    },
+    {
+      "relativePath": "TestResults/20261106T210700-phase4-linux-release/verify-mocks/Frenemy.Relay.UnitTests/Frenemy.Relay.UnitTests.trx",
+      "length": 73196,
+      "sha256": "F8C0EBF316297CD1D867BBB990E8C377DD93DDE53CFE5900216E5B6235548696"
+    }
+  ]
+}

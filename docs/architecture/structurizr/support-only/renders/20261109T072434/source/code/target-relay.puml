@@ -1,0 +1,84 @@
+@startuml
+!pragma layout smetana
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+title TARGET DESIGN: extend the existing blocking relay
+class "ask-claude-mcp.mjs" as module {
+ existing stdin framing / handle / send / reply
+ TOOLS: existing Claude tools retained
+ + ask_grok(prompt, model?, effort?) / ask_grok_write(...)
+ + ask_cline(prompt, provider?, model?, effort?) / ask_cline_write(...)
+}
+class "loadFrenemyConfig() / resolveExecutionSelectors()" as selectors <<Added>> {
+ frenemy.config.json + JSON Schema
+ startup validation; invalid config fails closed
+ caller input > per-agent default > native default
+ no credential or authentication storage
+}
+class "runClaude({prompt, model, effort}, write)" as claude <<Modified selector input>>
+class "runGrok({prompt, model, effort}, write)" as grok <<Added>> {
+ headless JSON result
+ --model / --reasoning-effort argv
+ prompt via supported non-shell input
+ startup cwd / native auth
+ answer/error within existing relay policies
+}
+class "runCline({prompt, provider, model, effort}, write)" as cline <<Added>> {
+ one native session and prompt
+ native ACP exchange inside blocking call
+ CLINE_PROVIDER / CLINE_MODEL in copied child env
+ --thinking effort argv; parent env unchanged
+ access mode derived from explicit tool
+ final answer/error within existing relay policies
+}
+class "NativeInvocationConfig" as config <<Added>> {
+ grokExecutable / clineExecutable : optional absolute native path
+ resolveNativePath(): PATH or absolute override
+ shared existing MAX_CONCURRENT = 4
+}
+class "Grok prompt transport" as temp <<DESIGN>> {
+ owned temp directory / exclusive prompt file
+ Linux 0700/0600; Windows PowerShell ACL helper
+ protect before write; finally cleanup
+}
+class "InvocationResult" as result <<DESIGN follows existing>> {
+ ok : boolean
+ text : string
+}
+class "sanitize(text)" as clean <<existing>>
+class "External native CLI processes" as native <<external>>
+module --> claude : unchanged invocation
+module --> selectors : validate / resolve tool selectors
+selectors --> config : startup options / existing capacity
+selectors --> claude : model / effort
+selectors --> grok : model / effort
+selectors --> cline : provider / model / effort
+config --> grok : resolved native path
+config --> cline : resolved native path
+class "Protect-GrokPrompt.ps1" as acl <<Added Windows child DESIGN>>
+class "Native pwsh.exe" as pwsh <<external runtime>>
+grok --> temp : prompt file lifecycle
+grok --> pwsh : Windows fixed helper / owned path only
+pwsh --> acl : -NoProfile -NonInteractive -File
+acl --> temp : protect ACL before parent writes
+module --> grok : await
+module --> cline : await
+claude --> result
+cline --> result
+grok --> result
+result --> clean : existing response cleanup
+grok --> native : Grok Build
+cline --> native : Cline
+note bottom of module
+Public input adds optional provider/model/effort only where supported; output remains MCP text/error.
+Configuration is product-owned JSON and contains no credentials.
+No new public job lifecycle or permission API.
+Native selector bindings are independently contract-tested and production-qualified.
+end note
+legend bottom
+Gray/existing: retained Claude path and framing.
+Added: Grok/Cline invocation and selector configuration/resolution.
+Modified: TOOLS dispatch and supported selector inputs only.
+No existing product capability removed/replaced.
+endlegend
+@enduml
