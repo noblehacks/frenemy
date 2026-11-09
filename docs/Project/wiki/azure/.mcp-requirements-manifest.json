@@ -1,7 +1,7 @@
 {
   "schema": "mcp-requirements-wiki/v1",
   "platform": "azure",
-  "generatedAtUtc": "2026-11-09T21:06:04.2341415+00:00",
+  "generatedAtUtc": "2026-11-09T22:37:59.9198693+00:00",
   "documents": [
     "Home.md",
     "Functional-Requirements.md",
