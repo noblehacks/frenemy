@@ -171,10 +171,10 @@ try {
         testedSourceHashesStable = $sourceHashesStable
         executions = @($executions)
         trx = $trxReceipts
-        total = [int](($trxReceipts | Measure-Object -Property total -Sum).Sum)
-        passed = [int](($trxReceipts | Measure-Object -Property passed -Sum).Sum)
-        failed = [int](($trxReceipts | Measure-Object -Property failed -Sum).Sum)
-        notExecuted = [int](($trxReceipts | Measure-Object -Property notExecuted -Sum).Sum)
+        total = [int](($trxReceipts | ForEach-Object { [int]$_['total'] } | Measure-Object -Sum).Sum)
+        passed = [int](($trxReceipts | ForEach-Object { [int]$_['passed'] } | Measure-Object -Sum).Sum)
+        failed = [int](($trxReceipts | ForEach-Object { [int]$_['failed'] } | Measure-Object -Sum).Sum)
+        notExecuted = [int](($trxReceipts | ForEach-Object { [int]$_['notExecuted'] } | Measure-Object -Sum).Sum)
     }
 
     $receiptDirectory = Split-Path -Parent $receiptFullPath
