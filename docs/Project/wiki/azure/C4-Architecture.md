@@ -8,8 +8,8 @@ The baseline is pinned to `c7338ad39b646e695e7c4b5fbd998d45be914c02`. The target
 - [Change traceability](traceability.md)
 - [Current use cases](../../../requirements/grok-cline-use-cases.md)
 - [Current plan](../../../plans/grok-cline-integration.md)
-- [Rendered static site](renders/20261109T072434/site/index.html)
-- [Validation and rendering receipt](renders/20261109T072434/receipt.json)
+- [Rendered static site](renders/20261109T081454/site/index.html)
+- [Validation and rendering receipt](renders/20261109T081454/receipt.json)
 - [Visual inspection](visual-inspection.md)
 - [Phase 1 and Phase 2 self-evaluation](../../../receipts/self-eval/20261106T113443-phase1-phase2/final.md)
 
