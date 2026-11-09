@@ -1,0 +1,77 @@
+{
+  "timestampLocal": "2026-11-09T04:32:29",
+  "workspacePath": "F:\\GitHub\\frenemy",
+  "reviewer": {
+    "agent": "ClaudeCode",
+    "model": "claude-opus-5-5",
+    "effort": "high"
+  },
+  "scope": "Existing JavaScript Frenemy server Grok Build and Cline CLI support plus the approved test-only four-agent reasoning validation.",
+  "sourceFiles": [
+    {
+      "path": "docs/plans/four-agent-reasoning-integration.md",
+      "bytes": 45685,
+      "lastWriteTimeLocal": "2026-11-07T20:29:13",
+      "sha256": "EEC7E694CF441990106BB51B48918D2EEEBFD0448E196CC90D6C227020FAE491"
+    },
+    {
+      "path": "docs/testing/validation.md",
+      "bytes": 35668,
+      "lastWriteTimeLocal": "2026-11-07T20:29:13",
+      "sha256": "7B6571FA7B1263C06AA15D94E5253F2DA1B68DD68713AE4FEBA73A93C3F63810"
+    },
+    {
+      "path": "tests/contracts/four-agent-reasoning.mjs",
+      "bytes": 36420,
+      "lastWriteTimeLocal": "2026-11-07T19:07:16",
+      "sha256": "BEE5CA91C657ACC5F3EC62B4378706F56587F55539E1C2E1C2818C1EEB6E488E"
+    },
+    {
+      "path": "tests/unit/four-agent-reasoning.contract.test.mjs",
+      "bytes": 49653,
+      "lastWriteTimeLocal": "2026-11-07T20:01:16",
+      "sha256": "484E5C03140330056C06BED4FCAF12D62EFB13C2A18E285152430B45E7BC6DFF"
+    },
+    {
+      "path": "tests/integration/four-agent-reasoning.integration.test.mjs",
+      "bytes": 28504,
+      "lastWriteTimeLocal": "2026-11-07T20:01:45",
+      "sha256": "97732AC585D3FE0F1D5056D4D165275A05DF16203A349B9BAE78C528525DB69F"
+    },
+    {
+      "path": "tests/integration/four-agent-reasoning.archive.test.mjs",
+      "bytes": 2415,
+      "lastWriteTimeLocal": "2026-11-07T14:00:33",
+      "sha256": "2453498E3FFDC8940FB362D971B40157A73B1F10338857CF83BD41413D3D64FF"
+    },
+    {
+      "path": "build/Invoke-RelayTests.ps1",
+      "bytes": 34123,
+      "lastWriteTimeLocal": "2026-11-07T19:06:36",
+      "sha256": "14622BFEC4BCD3D9E56ADDEF1016E961C75A37A5694DFC9A9C4F0A3699041DA1"
+    }
+  ],
+  "chat": {
+    "sourcePath": "C:\\Users\\kingd\\.codex\\sessions\\2026\\11\\04\\rollout-2026-11-04T11-28-21-01a1a79a-c917-78d2-9c56-74a811b3bc8a.jsonl",
+    "copiedPath": "F:\\GitHub\\frenemy\\docs\\receipts\\hv\\20261109T042918-four-agent-reasoning-claude-hv\\visible-chat-unredacted-current-session.jsonl",
+    "bytes": 271278425,
+    "sha256": "6BD91DD1B1AB5A15A5AD8CB97886A6C61A8D1263BCFBF5DEE01D41289D9C63B6",
+    "complete": true,
+    "redacted": false
+  },
+  "evidence": {
+    "focusedMock": "TestResults/20261107T200421-four-agent-r10-remediation-mock",
+    "missingSessionMetadata": "TestResults/20261107T200437-four-agent-r10-missing-session-metadata",
+    "extraDisclosed": "TestResults/20261107T200558",
+    "fullGate": "TestResults/20261107T200628-four-agent-r10-final-validate",
+    "liveBinding": "TestResults/20261107T201715-four-agent-r10-final-live"
+  },
+  "bounds": {
+    "timeout": null,
+    "maxTurns": null,
+    "outputSize": null,
+    "maxBudgetUsd": null
+  },
+  "readOnly": true,
+  "activePaidClineSessionsAtLaunch": 0
+}

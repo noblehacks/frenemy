@@ -1,125 +1,60 @@
-# Frenemy: Grok Build and Cline CLI integration plan
+# PLAN-FRENEMY-001: Grok and Cline in the existing Frenemy server
 
-Proposed: 2026-11-04T12:27:43 (America/Chicago)
+Scope authority, 2026-11-05: “Literally, the only thing in scope is supporting grok and cline in the __current frenemy server__.”
 
-Status: Approved by the operator on 2026-11-04. Phase 2 architecture amendment approved for execution. Product implementation and executable TDD remain gated by architecture acceptance.
+Add `ask_grok`, `ask_grok_write`, `ask_cline` and `ask_cline_write` to the existing stdio MCP relay. Each takes the same prompt input, uses the server startup directory, and returns one text answer or error. Use native CLI invocation and access controls. Preserve the existing Claude tools, Codex delegation instructions, concurrency, timeout, output and sanitization behavior.
 
-Extend Frenemy into a shared delegation service for **Claude Code, Codex, Grok Build, and Cline CLI**. This plan incorporates the operator scope correction of 2026-11-04: no product integration with agent-specific audit plugins or QBrain, and no Git/worktree orchestration. Development tracking remains external to the product.
+Scope excludes workstation and workspace configuration, plugin inventories or policy, managed client registration or instructions, new setup or installer work, and new runtime services. Test Windows and Linux on suitable generic test hosts with the native CLIs available. The operator's installed software and settings are outside the validation denominator.
 
-## 1. Scope and public interface
+Scope amendment, 2026-11-06: product-owned selection of provider, model, and effort is part of supporting the existing Claude, Grok, and Cline tools. `FR-FRENEMY-116`, `TR-FRENEMY-CONFIG-120`, and `TEST-FRENEMY-116` add caller selectors and a versioned Frenemy JSON configuration with a JSON Schema. This does not bring the operator's workstation settings, agent plugins, authentication material, installers, or any new service into scope.
 
-Support all **12 directed agent-to-agent routes** on Windows and Linux. Use Node for the relay under the explicit repository exception; use PowerShell for installation, build orchestration, and operational scripts.
+1. **Phase 1, complete:** Define the [binding](https://github.com/sharpninja/frenemy/blob/main/docs/contracts/grok-cline-support.md), [test cases](https://github.com/sharpninja/frenemy/blob/main/docs/testing/grok-cline-test-design.md), and [current use cases](https://github.com/sharpninja/frenemy/blob/main/docs/requirements/grok-cline-use-cases.md). FR-FRENEMY-114 covers the new tools and native calls. FR-FRENEMY-115 covers compatibility and host validation. TR-FRENEMY-ADAPTER-118 and TEST-FRENEMY-114/115 trace those behaviors.
+2. **Phase 2, complete:** Review the [baseline and target C4 model](https://github.com/sharpninja/frenemy/blob/main/docs/architecture/structurizr/support-only/README.md). FR-FRENEMY-113, TR-FRENEMY-ARCH-117 and TEST-FRENEMY-113 cover source accuracy, change traceability and reproducible rendering. Accept architecture before executable TDD.
+3. **Phase 3, complete:** The independent mock gate, production-binding suite, targeted selector amendment gates, native qualifications, and full final-head Windows gate are green. Product-native Grok Q01 is green on Windows and Linux. Product-native Cline Q02 is green on Windows through the product MCP entry point with observed `openai-codex`, `gpt-5.6-luna`, and `high` identity. The [independent review](https://github.com/sharpninja/frenemy/blob/main/docs/receipts/hv/20261106T191320-phase3-final-selectors-r1/verdict.md) returned AGREE at 99% accuracy and 99% completeness with 30 PASS, 0 FAIL, and 0 UNKNOWN.
+4. **Phase 4, complete:** The full planned Windows and Linux `Validate` lanes are green, original reports and TRX are retained, and server usage documentation is current. Windows passed 191 of 191 selected cases. Linux passed 188 of 188 selected cases. Both lanes have 0 failures and 0 skips. The [final independent release review](https://github.com/sharpninja/frenemy/blob/main/docs/receipts/hv/20261106T220747-phase4-release-r3/verdict.md) returned AGREE at 99% accuracy and 99% completeness with 13 PASS, 0 FAIL, and 0 UNKNOWN after reading the complete unredacted chat.
 
-Expose the same MCP tools to each caller:
+Use PowerShell and Nuke to run executable validation. The operator-directed Phase 1 and Phase 2 completion pass uses implementer self-evaluation, not a new hostile validation. Its acceptance requires AGREE, both scores at least 98%, and zero applicable FAIL or UNKNOWN. The November 5 independent review remains historical architecture evidence. Phase 4 retains independent review of release evidence after implementation unless the operator changes that gate. Any review receives the chat and pinned artifacts and assesses only the current server and these two bindings. Operator workstation setup, plugins and workflow infrastructure have no acceptance criteria in this plan.
 
-- `list_agents`: installed versions, supported capabilities, and configuration status.
-- `start_read_job` and `start_write_job`: submit work and immediately return a job ID.
-- `get_job`: status, final answer, artifacts, execution identity.
-- `read_job_events`: retrieve progress and transcript events using a continuation cursor.
-- `cancel_job`: cancel a specific job.
-- `resume_read_job` and `resume_write_job`: continue a recorded session with a new prompt.
+Phase 1 and Phase 2 are complete at the [November 6 self-evaluation](https://github.com/sharpninja/frenemy/blob/main/docs/receipts/self-eval/20261106T113443-phase1-phase2/final.md), which returned AGREE at 99% accuracy and 99% completeness with 24 PASS, 0 FAIL and 0 UNKNOWN. Phase 3 is complete at the [November 6 independent review](https://github.com/sharpninja/frenemy/blob/main/docs/receipts/hv/20261106T191320-phase3-final-selectors-r1/verdict.md), which returned AGREE at 99% accuracy and 99% completeness with 30 PASS, 0 FAIL, and 0 UNKNOWN. Phase 4 is complete: its [release evidence](https://github.com/sharpninja/frenemy/blob/main/docs/receipts/release/20261106T212840-phase4-release/summary.md) is retained and the [final independent release review](https://github.com/sharpninja/frenemy/blob/main/docs/receipts/hv/20261106T220747-phase4-release-r3/verdict.md) returned AGREE at 99% accuracy and 99% completeness with 13 PASS, 0 FAIL, and 0 UNKNOWN. See the [validation status](https://github.com/sharpninja/frenemy/blob/main/docs/testing/validation.md). The expanded setup, plugin preflight and exact-binary enrollment designs are superseded.
 
-Submission accepts the target agent, prompt, optional model and effort, and optional Cline provider. Workspace and caller identity come from the configured MCP connection.
+## Phase 3 amendment: configurable execution selectors
 
-Retain `ask_claude` and `ask_claude_write` as compatibility names, but route them into the job system. **This is a version-2 behavior change:** they return job handles. Write jobs run in the configured caller workspace, as the baseline write tool does. Update tool descriptions and migration documentation explicitly.
+Status: completed on 2026-11-06. Requirements and traceability are recorded. The BDPv4 sequence below was executed without expanding the file or product boundary.
 
-## 2. Shared execution and agent adapters
+### Locked behavior
 
-Use one local job service per OS user, reached through a Windows named pipe or Linux Unix-domain socket. Each agent's stdio MCP server connects to that service. Jobs continue when a caller disconnects.
+- Keep the six existing tool names and their read/write distinction.
+- Add optional `model` and `effort` inputs to both Claude tools and both Grok tools.
+- Add optional `provider`, `model`, and `effort` inputs to both Cline tools.
+- Resolve each selector independently in this order: caller value, then that agent's configured default, then omission of the native flag so the CLI retains its native default. Never inherit across agents.
+- Map Claude to discrete `--model` and `--effort` argv entries. Claude effort values are `low`, `medium`, `high`, `xhigh`, and `max`.
+- Map Grok to discrete `--model` and `--reasoning-effort` argv entries. Grok accepts canonical `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max` values plus documented model-specific menu identifiers.
+- Map Cline ACP provider and model to child-only `CLINE_PROVIDER` and `CLINE_MODEL` environment values, and effort to a discrete `--thinking` argv entry. Cline effort values are `none`, `low`, `medium`, `high`, and `xhigh`. Never mutate the parent environment.
+- Validate types, empty values, effort domains, configuration structure, and unknown properties before launching an agent. Pass nonempty provider and model identifiers to the native CLI for authoritative catalog validation, and surface native rejection without fallback.
+- Never construct a shell command from selector values. Never store or accept API keys, OAuth tokens, account identifiers, or other credentials in Frenemy configuration.
+- Preserve current behavior when all selectors are omitted, including permission controls, executable discovery, prompt transport, capacity, deadline, output limits, framing, sanitization, and error envelopes.
 
-Keep agent-specific invocation and response parsing behind adapters:
+### Configuration contract
 
-- **Claude:** headless streaming JSON, explicit model/effort, recorded session ID, and permission configuration.
-- **Codex:** `codex exec --json`, stdin prompts, explicit sandbox, and exact session IDs for continuation.
-- **Grok Build:** headless streaming JSON, prompt files instead of prompt-bearing command arguments, explicit model/effort, and recorded session IDs.
-- **Cline:** `cline --acp --auto-approve false`, using ACP for prompts, progress, permissions, cancellation, and session loading. Its documented ACP interface supplies these controls. [Cline ACP](https://docs.cline.bot/usage/acp)
+- Add `frenemy.config.json` and `frenemy.config.schema.json` beside `ask-claude-mcp.mjs`.
+- Use JSON Schema draft 2020-12 and set `additionalProperties` to `false` for every Frenemy-owned object.
+- Use this versioned shape: `version: 1`, then `agents.claude`, `agents.grok`, and `agents.cline`. Claude and Grok expose optional `model` and `effort`; Cline exposes optional `provider`, `model`, and `effort`.
+- Ship neutral empty agent objects rather than an operator-specific provider or model. Native qualification supplies `openai-codex`, `gpt-5.6-luna`, and a supported effort through the MCP call.
+- Resolve the default file from the relay module directory. Add `--config <absolute-path>` for isolated tests and deployments. A missing default file behaves as empty configuration for upgrade compatibility; a missing explicit file is an error.
+- Read and validate configuration once at startup. Malformed JSON, invalid values, unknown fields, unreadable explicit files, and unsupported schema versions fail with credential-free diagnostics before any target process launches.
+- Do not change either installer. Existing installers reference the relay in its repository directory, so the adjacent default configuration remains discoverable without installer behavior changes.
 
-Resolve executable paths during setup and launch with argument arrays, without an intermediate shell. On Windows, resolve Cline's installed native executable instead of invoking its `.cmd` shim.
+### BDPv4 implementation sequence
 
-Reuse existing CLI authentication. Frenemy must not collect credentials or silently change providers or models. Record requested and observed execution identity separately; missing identity evidence remains unknown.
+1. Update the requirement-backed contract and test design with `FR-FRENEMY-116`, `TR-FRENEMY-CONFIG-120`, `TEST-FRENEMY-116`, their acceptance criteria, and the selector precedence above.
+2. Extend the independent contract fixture and `RelayContractMockTests` first. Cover all tool schemas, per-agent selector domains, caller/config/native precedence, exact argv ordering, neutral omission, invalid configuration, invalid inputs, cross-agent isolation, native rejection without fallback, and preservation of existing permissions and limits.
+3. Add deliberate negative mutations for every assertion. Run only `Frenemy.Relay.UnitTests:RelayContractMockTests` through Nuke `TestGroups`. The correct fixture and every rejection control must be green before product edits.
+4. Add the two JSON files and implement configuration loading, validation, selector resolution, tool schema changes, and agent-specific native process-input mapping in `ask-claude-mcp.mjs`. Do not add dependencies, services, installers, plugins, or C# product code.
+5. Bind the same cases and assertions through the MCP entry point in `RelayContractIntegrationTests`. Run only `Frenemy.Relay.IntegrationTests:RelayContractIntegrationTests` through Nuke `TestGroups` until green.
+6. Extend Q02 to submit `provider: openai-codex`, `model: gpt-5.6-luna`, and `effort: high`. Require observed Cline session identity to match, then retain all existing answer, permission, sentinel, editor, apply-patch, and slash-prompt assertions. Run only `Frenemy.Relay.NativeQualification:NativeProductionQualificationTestsQ02` through Nuke `TestGroups` on Windows and Linux.
+7. Update the binding contract, test design, use cases, README usage examples, validation status, C4 target/code views, and requirement navigation only where this amendment changes the current relay.
+8. Run the full Phase 3 gate once at the final head. Preserve original JUnit/TRX, host, command, version, hash, and observed provider/model/effort receipts. Completed: the final gate passed and the independent review returned AGREE at 99% accuracy and 99% completeness with zero FAIL and zero UNKNOWN.
 
-Default to four active jobs per host, with additional work queued. Permit one active turn per recorded agent session. Every agent can initiate delegation, but delegated jobs cannot recursively delegate in this first release.
+### File and compatibility boundary
 
-## 3. Permissions, recovery, and local job evidence
-
-Read jobs must prevent agent-directed source edits and unrestricted command execution. Enforce permissions using each adapter's supported controls and test their effect. A requested mode that cannot be enforced must fail explicitly. Grok's sandbox flag alone is insufficient evidence of Windows protection. [Grok sandbox documentation](https://docs.x.ai/build/features/sandbox)
-
-Write jobs run in the configured caller workspace. Frenemy does not select Git revisions, create worktrees, collect Git diffs, merge or push. The caller remains responsible for its working files.
-
-Durability requirements:
-
-- Persist the accepted request before launching the agent. Retried submissions with the same request ID must not launch duplicate jobs.
-- Retain complete credential-redacted request, response, progress, and error streams. Paginate retrieval without truncating retained evidence.
-- Record parent/caller IDs, workspace, job ID, attempt ID, CLI session ID, versions, model, effort, and artifact hashes.
-- Distinguish queued, running, awaiting permission, succeeded, failed, cancelled, and interrupted states.
-- After reboot, retain history and mark unfinished execution interrupted. Resume only through an explicit request, using the exact recorded session. Never silently restart write work.
-- Cancellation must terminate the owned job's process tree without affecting unrelated agent sessions.
-
-Durable jobs have no fixed wall-clock or total transcript-size cutoff. Hostile reviews follow the existing stall rule: stop only after more than 30 minutes without reviewer output, preserve that attempt, and relaunch as a separate recorded attempt. Progress percentages and ETAs must come from the reviewer rather than being invented by Frenemy.
-
-
-## 4. Installation and migration
-
-Extend the PowerShell installer to register the shared MCP interface with all four clients. Support explicitly selected clients and require only their corresponding installed CLIs.
-
-Installation must:
-
-- Check executable versions and required capabilities.
-- Preview configuration changes with `-WhatIf`.
-- Copy and hash-verify backups before changing configuration, retaining originals.
-- Preserve unrelated settings and update only Frenemy-managed entries.
-- Avoid automatic approval of write, resume-write, or permission-escalation tools.
-- Be repeatable without duplicate registrations or duplicated instruction sections.
-- Provide rollback that restores Frenemy's changes without overwriting later unrelated edits.
-
-Replace the current Claude-only delegation instructions with instructions for the common job interface. Document the version-2 behavior changes and recovery procedure.
-
-The existing image helper remains outside this integration's acceptance scope. macOS and remote execution across machines are also outside this release.
-
-## 5. BDPv4 delivery and acceptance
-
-Execute in five gated phases:
-
-1. **Requirements and contracts:** establish FR/TR/TEST/AC traceability and public contracts. Define test requirements here; defer executable fixtures and TDD until after architecture acceptance.
-2. **C4 architecture baseline and planned changes:** create the source-pinned and target workspace described below, validate and independently accept it before TDD.
-3. **Shared job runtime:** begin TDD with independent mocks and negative controls, then implement MCP operations, scheduling, persistence, event retrieval, cancellation and recovery; bind the same assertions to production.
-4. **Agent integration:** implement four adapters, permissions, workspace-bound execution and continuation through the same TDD process.
-5. **Installation and release validation:** configuration migration, rollback, documentation and Windows/Linux validation.
-
-### Phase 2 architecture deliverables and exit gate
-
-Version-control `docs/architecture/structurizr/`. Pin the baseline to **c7338ad39b646e695e7c4b5fbd998d45be914c02** and inspect the relay, both installers, delegation instructions, managed configuration and optional image helper. Cite actual files and symbols; external CLI internals are outside Frenemy ownership.
-
-Model the target shared job service, four adapters, MCP interfaces, scheduler, durable storage, permission enforcement, workspace-bound execution, event retrieval and recovery and installation/rollback. Provide native Structurizr system-context, container and component views. Render code diagrams locally with PlantUML and embed their SVGs as Structurizr image views. Planned code and data contracts must be labeled DESIGN.
-
-Separate baseline and target views with consistent identifiers and a legend for unchanged, added, modified and removed/replaced elements and relationships. Include Windows/Linux deployment views and dynamic submission, execution, permissions, cancellation, recovery/resume and installer-rollback flows. Existing macOS installation and image-helper behavior remain visible in the baseline and excluded from integration implementation.
-
-Every planned change identifies FR/TR, relevant UC, affected component/interface/deployment boundary, AC, planned TEST coverage and responsible implementation phase. Record decisions and consequences. Architecture-specific records are **FR-FRENEMY-113**, **TR-FRENEMY-ARCH-117**, and **TEST-FRENEMY-113**.
-
-Use pinned tools through PowerShell to run Structurizr workspace validation, locally render diagrams, and generate a browsable static site and diagram exports. Retain versions and hashes. Check owned-component C4 coverage, source evidence, change mappings, readability, legends, relationships, navigation and baseline/target distinction. Require the existing **Claude Opus 5.5 high** independent review: **AGREE, accuracy >=98%, completeness >=98%, zero unresolved applicable FAIL or UNKNOWN**. Do not begin TDD before this gate passes. Architecture acceptance never proves implementation correctness or satisfies production ACs.
-
-Documentation validation and architecture rendering are this phase's checks; product mocks and executable product tests belong to phases 3-5.
-
-For every implementation increment, first write tests and independent mocks covering **100% of its acceptance criteria**. Demonstrate correct responses passing and deliberately incorrect responses being rejected within a green mock suite. Then bind the same cases and assertions to production behavior.
-
-Use Nuke to orchestrate Node tests, PowerShell validation, and integration tests. Retain original test output and validated TRX reports. Run targeted tests after edits and the full applicable suite at each phase exit.
-
-Required acceptance scenarios include:
-
-- All **12 routes x 2 access modes x 2 operating systems**, giving **48 routing/access combinations**.
-- Read-only attempts to edit, execute commands, escape through MCP tools, or escalate through continuation.
-- Writes in the configured workspace, trusted workspace binding, and concurrent submissions.
-- Duplicate requests, malformed events, partial output, provider errors, missing credentials, and unsupported model/effort selections.
-- Caller disconnect, service restart, reboot recovery, cancellation races, and exact-session continuation.
-- Long transcripts, reviewer-reported progress, and complete local verdict retention and retrieval.
-- Fresh installation, repeated installation, upgrade, conflicting configuration, and rollback.
-
-At each phase exit, supply the complete evidence to **Claude Opus 5.5 at high effort**, verifying that identity from runtime receipts. The reviewer reads supplied tests and TRX results without independently building or running tests. Acceptance requires **AGREE, accuracy >=98%, completeness >=98%, and no unresolved applicable FAIL or UNKNOWN findings**.
-
-## 6. Tracking and current state
-
-The operator approved PLAN-FRENEMY-001 and its five-phase architecture amendment on 2026-11-04. The high-priority QBrain TODO retains the plan. Product implementation has not started; TDD is gated by Phase 2 architecture acceptance.
-
-The active repository is sharpninja/frenemy, forked from noblehacks/frenemy. The historical `proposed-v2` layer key is retained for FR-FRENEMY-101 through FR-FRENEMY-113 except withdrawn FR-FRENEMY-107, 15 target TRs and TEST-FRENEMY-101 through TEST-FRENEMY-113 except withdrawn TEST-FRENEMY-107. UCs 10186 through 10197 map respectively to FRs 101-112 except withdrawn UC10192/FR107. Removed TR-FRENEMY-GIT-108 and TR-FRENEMY-AUDIT-113 are historical only; retained TR-FRENEMY-AUDIT-110 governs local job evidence, not external delivery. FR113's architecture coverage traces those existing UCs; it introduces no new user workflow. These records and diagrams are specifications, not implementation evidence.
-
-See [architecture workspace](../architecture/structurizr/README.md), [baseline overview](../architecture/overview.md), and [validation status](../testing/validation.md). The two-tool baseline product remains unchanged.
+Expected product files are `ask-claude-mcp.mjs`, `frenemy.config.json`, and `frenemy.config.schema.json`. Expected test files are the existing contract fixture, unit contract test, integration contract test, native qualification test, and their controlled provider fixture. Expected documentation files are the current binding, test design, use cases, plan, README, validation status, and directly affected architecture source. No other product, installer, workstation, plugin, or service file is authorized by this amendment.

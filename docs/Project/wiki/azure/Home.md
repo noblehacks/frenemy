@@ -10,5 +10,8 @@
 - [Documentation](Documentation)
 - [Current Architecture](Current-Architecture)
 - [Validation Status](Validation-Status)
+- [Grok and Cline Test Design](Grok-Cline-Test-Design)
 - [Approved Grok Build and Cline CLI Integration](Grok-Cline-Integration-Plan)
+- [Grok and Cline Relay Contract](Grok-Cline-Relay-Contract)
+- [Grok and Cline Native Qualification](Grok-Cline-Native-Qualification)
 - [C4 Baseline and Target Architecture](C4-Architecture)
