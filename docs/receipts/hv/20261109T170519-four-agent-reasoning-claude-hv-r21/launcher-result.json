@@ -1,0 +1,12 @@
+{
+  "startedAtLocal": "2026-11-09T18:15:01",
+  "completedAtLocal": "2026-11-09T18:34:45",
+  "status": "completed",
+  "exitCode": 0,
+  "responsePath": "F:\\GitHub\\frenemy\\docs\\receipts\\hv\\20261109T170519-four-agent-reasoning-claude-hv-r21\\response.jsonl",
+  "responseExists": true,
+  "responseBytes": 3497760,
+  "responseSha256": "8192BFA7A9961692FDF55E019F7B1E6FBCCFC973BEE8B07A5BA4D62B1EDDC9D2",
+  "stderrPath": "F:\\GitHub\\frenemy\\docs\\receipts\\hv\\20261109T170519-four-agent-reasoning-claude-hv-r21\\stderr.log",
+  "stderrBytes": 142
+}

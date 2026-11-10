@@ -1,0 +1,14 @@
+{
+  "completedAtLocal": "2026-11-09T18:52:20",
+  "exportMode": "local-projection-and-package-after-supported-export-timeout",
+  "wikiFileCount": 39,
+  "projectionCount": 4,
+  "mismatchCount": 0,
+  "originalZipSha256": "0EB975818F90D6E9B3E2C4E4D4EB262522D9B3BC02331DE1B4126933228B8484",
+  "backupZipPath": "docs/receipts/hv/20261109T170519-four-agent-reasoning-claude-hv-r21/requirements-wiki-documents.pre-public-copy.zip",
+  "backupZipSha256": "0EB975818F90D6E9B3E2C4E4D4EB262522D9B3BC02331DE1B4126933228B8484",
+  "generatedZipPath": "docs/receipts/hv/20261109T170519-four-agent-reasoning-claude-hv-r21/requirements-wiki-documents.r21-public-copy.zip",
+  "generatedZipSha256": "073D499C0A9E823406ED1689ECB034F6C16185F84492CC8B63F11AA92B2F23E3",
+  "installedZipPath": "F:\\GitHub\\frenemy\\docs\\requirements\\requirements-wiki-documents.zip",
+  "installedZipSha256": "073D499C0A9E823406ED1689ECB034F6C16185F84492CC8B63F11AA92B2F23E3"
+}

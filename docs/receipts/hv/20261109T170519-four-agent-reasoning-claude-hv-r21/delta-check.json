@@ -1,0 +1,286 @@
+{
+  "checkedAtLocal": "2026-11-09T18:21:21",
+  "sourceBindingCount": 13,
+  "sourceBindingAllUnchanged": true,
+  "sourceBindingAllReceiptFieldsMatch": true,
+  "sourceBindings": [
+    {
+      "path": "ask-claude-mcp.mjs",
+      "testHeadBlob": "2b465726dc1b0e125026c18af08d79cb93f28fb6",
+      "headBlob": "2b465726dc1b0e125026c18af08d79cb93f28fb6",
+      "workingTreeBlob": "2b465726dc1b0e125026c18af08d79cb93f28fb6",
+      "sha256": "F1E6CB5694E8152A3B291A3E33F16625D84099BE8D773EBED9F319EF46E80A7A",
+      "receiptTestBlobMatches": true,
+      "receiptWorkingBlobMatches": true,
+      "receiptShaMatches": true,
+      "unchanged": true
+    },
+    {
+      "path": "build/Build.cs",
+      "testHeadBlob": "24c093e3e559877062db300e7d6c79dd01672c84",
+      "headBlob": "24c093e3e559877062db300e7d6c79dd01672c84",
+      "workingTreeBlob": "24c093e3e559877062db300e7d6c79dd01672c84",
+      "sha256": "059581CFB85D8A5A80E8414AA0498C779E1146BD26E17EFDDFF6CF391B1A3B03",
+      "receiptTestBlobMatches": true,
+      "receiptWorkingBlobMatches": true,
+      "receiptShaMatches": true,
+      "unchanged": true
+    },
+    {
+      "path": "build/Convert-TestResultsToTrx.ps1",
+      "testHeadBlob": "d4a57ecd3ced92180c588cf178bd1c3d9cacc5cb",
+      "headBlob": "d4a57ecd3ced92180c588cf178bd1c3d9cacc5cb",
+      "workingTreeBlob": "d4a57ecd3ced92180c588cf178bd1c3d9cacc5cb",
+      "sha256": "05170713E473E3BC0F3484BE936D0EDD26AA8A862900EC928C403394D9689C83",
+      "receiptTestBlobMatches": true,
+      "receiptWorkingBlobMatches": true,
+      "receiptShaMatches": true,
+      "unchanged": true
+    },
+    {
+      "path": "build/Invoke-RelayTests.ps1",
+      "testHeadBlob": "dbdc12a7f357d2630de8b35b0c3327700692f3ad",
+      "headBlob": "dbdc12a7f357d2630de8b35b0c3327700692f3ad",
+      "workingTreeBlob": "dbdc12a7f357d2630de8b35b0c3327700692f3ad",
+      "sha256": "14622BFEC4BCD3D9E56ADDEF1016E961C75A37A5694DFC9A9C4F0A3699041DA1",
+      "receiptTestBlobMatches": true,
+      "receiptWorkingBlobMatches": true,
+      "receiptShaMatches": true,
+      "unchanged": true
+    },
+    {
+      "path": "tests/fixtures/four-agent-reasoning-questions.json",
+      "testHeadBlob": "b4c4c23264fdc917b5a54570ed3afa0584a46e8a",
+      "headBlob": "b4c4c23264fdc917b5a54570ed3afa0584a46e8a",
+      "workingTreeBlob": "b4c4c23264fdc917b5a54570ed3afa0584a46e8a",
+      "sha256": "A096E06027D753C5B19CCD8EB6699819CF364E1F0A3687C4A017E77FCD88E4AC",
+      "receiptTestBlobMatches": true,
+      "receiptWorkingBlobMatches": true,
+      "receiptShaMatches": true,
+      "unchanged": true
+    },
+    {
+      "path": "tests/contracts/four-agent-reasoning.mjs",
+      "testHeadBlob": "0965c38c11a4628db16f7f8585e7d4cdf13fdab8",
+      "headBlob": "0965c38c11a4628db16f7f8585e7d4cdf13fdab8",
+      "workingTreeBlob": "0965c38c11a4628db16f7f8585e7d4cdf13fdab8",
+      "sha256": "BEE5CA91C657ACC5F3EC62B4378706F56587F55539E1C2E1C2818C1EEB6E488E",
+      "receiptTestBlobMatches": true,
+      "receiptWorkingBlobMatches": true,
+      "receiptShaMatches": true,
+      "unchanged": true
+    },
+    {
+      "path": "tests/contracts/zip-archive.mjs",
+      "testHeadBlob": "d3cda758060a2f9d34628f1401fb996b1a54230e",
+      "headBlob": "d3cda758060a2f9d34628f1401fb996b1a54230e",
+      "workingTreeBlob": "d3cda758060a2f9d34628f1401fb996b1a54230e",
+      "sha256": "60EE7B867C658FAFC62760975D28EB446413B3D76EA3D16CDEB53A03E8DE80EB",
+      "receiptTestBlobMatches": true,
+      "receiptWorkingBlobMatches": true,
+      "receiptShaMatches": true,
+      "unchanged": true
+    },
+    {
+      "path": "tests/unit/four-agent-reasoning.contract.test.mjs",
+      "testHeadBlob": "5b17a0a0e0b9559a00f6318698031b62a43febe1",
+      "headBlob": "5b17a0a0e0b9559a00f6318698031b62a43febe1",
+      "workingTreeBlob": "5b17a0a0e0b9559a00f6318698031b62a43febe1",
+      "sha256": "428260A6C83B0C7A2B69E307436AA67073BC2B36C54DEBB49005BE0919F0BDF9",
+      "receiptTestBlobMatches": true,
+      "receiptWorkingBlobMatches": true,
+      "receiptShaMatches": true,
+      "unchanged": true
+    },
+    {
+      "path": "tests/integration/four-agent-reasoning.integration.test.mjs",
+      "testHeadBlob": "5ba0ecfd40a284e991a5773bec88f3174371ec78",
+      "headBlob": "5ba0ecfd40a284e991a5773bec88f3174371ec78",
+      "workingTreeBlob": "5ba0ecfd40a284e991a5773bec88f3174371ec78",
+      "sha256": "97732AC585D3FE0F1D5056D4D165275A05DF16203A349B9BAE78C528525DB69F",
+      "receiptTestBlobMatches": true,
+      "receiptWorkingBlobMatches": true,
+      "receiptShaMatches": true,
+      "unchanged": true
+    },
+    {
+      "path": "tests/integration/four-agent-reasoning.archive.test.mjs",
+      "testHeadBlob": "051c1f5d51ae2c0f9669de5bd7f2d110b4f86119",
+      "headBlob": "051c1f5d51ae2c0f9669de5bd7f2d110b4f86119",
+      "workingTreeBlob": "051c1f5d51ae2c0f9669de5bd7f2d110b4f86119",
+      "sha256": "2453498E3FFDC8940FB362D971B40157A73B1F10338857CF83BD41413D3D64FF",
+      "receiptTestBlobMatches": true,
+      "receiptWorkingBlobMatches": true,
+      "receiptShaMatches": true,
+      "unchanged": true
+    },
+    {
+      "path": "tests/native/native-qualification.test.mjs",
+      "testHeadBlob": "8daac3c8f049398e40b08065f4bb417ca33584d2",
+      "headBlob": "8daac3c8f049398e40b08065f4bb417ca33584d2",
+      "workingTreeBlob": "8daac3c8f049398e40b08065f4bb417ca33584d2",
+      "sha256": "A8102F1BDDFB783CF3CD80B1D891F36892AEC01C5F044DB4F76DD4761CF95B0B",
+      "receiptTestBlobMatches": true,
+      "receiptWorkingBlobMatches": true,
+      "receiptShaMatches": true,
+      "unchanged": true
+    },
+    {
+      "path": "tests/native/production-native-qualification.test.mjs",
+      "testHeadBlob": "c86c79bcaed69a944f254575ebd4b5ce59beaaa3",
+      "headBlob": "c86c79bcaed69a944f254575ebd4b5ce59beaaa3",
+      "workingTreeBlob": "c86c79bcaed69a944f254575ebd4b5ce59beaaa3",
+      "sha256": "47D6B84019671712DA1BD49DF655827AEA7544469345CA178372B96870EDA0C4",
+      "receiptTestBlobMatches": true,
+      "receiptWorkingBlobMatches": true,
+      "receiptShaMatches": true,
+      "unchanged": true
+    },
+    {
+      "path": "tests/integration/Protect-GrokPrompt.Tests.ps1",
+      "testHeadBlob": "9a4a1a29ea3c454cb0c95863554b0b2af5ba383a",
+      "headBlob": "9a4a1a29ea3c454cb0c95863554b0b2af5ba383a",
+      "workingTreeBlob": "9a4a1a29ea3c454cb0c95863554b0b2af5ba383a",
+      "sha256": "EF9449A2CA6616F16A7F8AA8F54D7F42D8AC821CE8A9BC4090EAA434EFE94F83",
+      "receiptTestBlobMatches": true,
+      "receiptWorkingBlobMatches": true,
+      "receiptShaMatches": true,
+      "unchanged": true
+    }
+  ],
+  "testHeadToHeadPaths": [
+    "docs/Project/wiki/azure/.mcp-requirements-manifest.json",
+    "docs/Project/wiki/azure/Four-Agent-Reasoning-Integration-Test.md",
+    "docs/Project/wiki/azure/Validation-Status.md",
+    "docs/Project/wiki/github/.mcp-requirements-manifest.json",
+    "docs/Project/wiki/github/Four-Agent-Reasoning-Integration-Test.md",
+    "docs/Project/wiki/github/Validation-Status.md",
+    "docs/plans/four-agent-reasoning-integration.md",
+    "docs/requirements/requirements-wiki-documents.zip",
+    "docs/testing/validation.md"
+  ],
+  "testHeadToHeadNonDocPaths": [],
+  "remediationDeltaPaths": [
+    "docs/Project/wiki/azure/.mcp-requirements-manifest.json",
+    "docs/Project/wiki/azure/Four-Agent-Reasoning-Integration-Test.md",
+    "docs/Project/wiki/azure/Validation-Status.md",
+    "docs/Project/wiki/github/.mcp-requirements-manifest.json",
+    "docs/Project/wiki/github/Four-Agent-Reasoning-Integration-Test.md",
+    "docs/Project/wiki/github/Validation-Status.md",
+    "docs/plans/four-agent-reasoning-integration.md",
+    "docs/requirements/requirements-wiki-documents.zip",
+    "docs/testing/validation.md"
+  ],
+  "deltaCommits": [
+    "82e90f9df5047634767a3395a72ba76150e80d44"
+  ],
+  "zipEntryCount": 39,
+  "zipMismatchCount": 0,
+  "zipMismatches": [],
+  "zipPlanEntries": [
+    {
+      "entry": "azure/Validation-Status.md",
+      "disk": "docs/Project/wiki/azure/Validation-Status.md",
+      "matches": true
+    },
+    {
+      "entry": "azure/Four-Agent-Reasoning-Integration-Test.md",
+      "disk": "docs/Project/wiki/azure/Four-Agent-Reasoning-Integration-Test.md",
+      "matches": true
+    },
+    {
+      "entry": "github/Validation-Status.md",
+      "disk": "docs/Project/wiki/github/Validation-Status.md",
+      "matches": true
+    },
+    {
+      "entry": "github/Four-Agent-Reasoning-Integration-Test.md",
+      "disk": "docs/Project/wiki/github/Four-Agent-Reasoning-Integration-Test.md",
+      "matches": true
+    }
+  ],
+  "manifests": [
+    {
+      "path": "docs/Project/wiki/azure/.mcp-requirements-manifest.json",
+      "baseGeneratedAtUtc": "11/09/2026 15:06:04",
+      "headGeneratedAtUtc": "11/09/2026 16:37:59",
+      "restIdentical": true,
+      "diffLines": []
+    },
+    {
+      "path": "docs/Project/wiki/github/.mcp-requirements-manifest.json",
+      "baseGeneratedAtUtc": "11/09/2026 15:06:04",
+      "headGeneratedAtUtc": "11/09/2026 16:37:59",
+      "restIdentical": true,
+      "diffLines": []
+    }
+  ],
+  "hashes": {
+    "prompt": {
+      "expected": "DE958754EEA4DAC7C9D65AE25AA708E34B11594567DEB72AE213DDAF71458C71",
+      "actual": "DE958754EEA4DAC7C9D65AE25AA708E34B11594567DEB72AE213DDAF71458C71",
+      "matches": true
+    },
+    "sourceBinding": {
+      "expected": "FED80B54ACAE365C26D0CFB88CEEEBB8F48E9E96C04BB3533D2714019D652EB0",
+      "actual": "FED80B54ACAE365C26D0CFB88CEEEBB8F48E9E96C04BB3533D2714019D652EB0",
+      "matches": true
+    },
+    "chat": {
+      "expected": "16B819C65DB18C9A310038E1C7507EAFF8DB76A754A5B596EF1C490E753478BB",
+      "actual": "16B819C65DB18C9A310038E1C7507EAFF8DB76A754A5B596EF1C490E753478BB",
+      "matches": true
+    },
+    "chatPublic": {
+      "actual": "16B819C65DB18C9A310038E1C7507EAFF8DB76A754A5B596EF1C490E753478BB"
+    },
+    "manifest": {
+      "expected": "24F8D39693C46CE5828B77412FF0BD4AAB15E55AA718B7B286D2B6497FA5B2A4",
+      "actual": "24F8D39693C46CE5828B77412FF0BD4AAB15E55AA718B7B286D2B6497FA5B2A4",
+      "matches": true
+    },
+    "r19Verdict": {
+      "expected": "6D5FAD61CCFAD6D155303B71CD7388634F8151DFD1B446CF24DFFC4186037824",
+      "actual": "6D5FAD61CCFAD6D155303B71CD7388634F8151DFD1B446CF24DFFC4186037824",
+      "matches": true
+    },
+    "r19Request": {
+      "expected": "C9F3B7AC5BFEF4D3730410D6F873136F9FEE8178C415D5EC3861B3477A88873C",
+      "actual": "C9F3B7AC5BFEF4D3730410D6F873136F9FEE8178C415D5EC3861B3477A88873C",
+      "matches": true
+    },
+    "r19Response": {
+      "expected": "0EC4B468A5C9DABA1BFE5F51146235E33A88B957AC302DE5C962AAA23A0D761A",
+      "actual": "0EC4B468A5C9DABA1BFE5F51146235E33A88B957AC302DE5C962AAA23A0D761A",
+      "matches": true
+    },
+    "r20DocValidation": {
+      "expected": "735BED0F2FED8BD0693411AA4F5E99C2809C11B7E2C5DDDAF97CE8DEB8420685",
+      "actual": "735BED0F2FED8BD0693411AA4F5E99C2809C11B7E2C5DDDAF97CE8DEB8420685",
+      "matches": true
+    }
+  },
+  "missingEvidencePaths": [],
+  "dashHits": [
+    {
+      "path": "docs/plans/four-agent-reasoning-integration.md",
+      "em": 0,
+      "en": 0
+    },
+    {
+      "path": "docs/testing/validation.md",
+      "em": 0,
+      "en": 0
+    },
+    {
+      "path": "docs/receipts/hv/20261109T140625-four-agent-reasoning-claude-hv-r18/correction-20261109T145809.md",
+      "em": 0,
+      "en": 0
+    },
+    {
+      "path": "docs/receipts/hv/20261109T151227-four-agent-reasoning-claude-hv-r19/correction-20261109T155052.md",
+      "em": 0,
+      "en": 0
+    }
+  ]
+}
