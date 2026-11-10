@@ -1,0 +1,16 @@
+AGENTS-README-FIRST.yaml
+.mcpServer/
+cache/
+
+# Local QBrain runtime and authoritative storage stay outside source control.
+mcp.db
+mcp.db-*
+todo-bootstrap.marker
+docs/todo.yaml
+
+# Generated build and test artifacts stay outside source control.
+.nuke/temp/
+build/bin/
+build/obj/
+TestResults/
+node_modules/

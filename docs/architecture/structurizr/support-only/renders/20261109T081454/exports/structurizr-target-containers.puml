@@ -1,0 +1,144 @@
+@startuml
+!pragma layout smetana
+title <size:24>Container View: Frenemy TARGET DESIGN</size>
+
+set separator none
+left to right direction
+skinparam ranksep 20
+skinparam nodesep 5
+hide stereotype
+
+<style>
+  root {
+    BackgroundColor: #ffffff;
+    FontColor: #444444;
+  }
+  // Element,Added
+  .Element-RWxlbWVudCxBZGRlZA== {
+    BackgroundColor: #176b3a;
+    LineColor: #104a28;
+    LineStyle: 0;
+    LineThickness: 2;
+    FontColor: #ffffff;
+    FontSize: 22;
+    HorizontalAlignment: center;
+    Shadowing: 0;
+    MaximumWidth: 450;
+  }
+  // Element,Modified
+  .Element-RWxlbWVudCxNb2RpZmllZA== {
+    BackgroundColor: #865a22;
+    LineColor: #5d3e17;
+    LineStyle: 0;
+    LineThickness: 2;
+    FontColor: #ffffff;
+    FontSize: 22;
+    HorizontalAlignment: center;
+    Shadowing: 0;
+    MaximumWidth: 450;
+  }
+  // Element,Person,Unchanged
+  .Element-RWxlbWVudCxQZXJzb24sVW5jaGFuZ2Vk {
+    BackgroundColor: #526477;
+    LineColor: #394653;
+    LineStyle: 0;
+    LineThickness: 2;
+    FontColor: #ffffff;
+    FontSize: 22;
+    HorizontalAlignment: center;
+    Shadowing: 0;
+    MaximumWidth: 450;
+  }
+  // Element,Unchanged
+  .Element-RWxlbWVudCxVbmNoYW5nZWQ= {
+    BackgroundColor: #526477;
+    LineColor: #394653;
+    LineStyle: 0;
+    LineThickness: 2;
+    FontColor: #ffffff;
+    FontSize: 22;
+    HorizontalAlignment: center;
+    Shadowing: 0;
+    MaximumWidth: 450;
+  }
+  // Relationship
+  .Relationship-UmVsYXRpb25zaGlw {
+    LineThickness: 2;
+    LineStyle: 10-10;
+    LineColor: #4d4d4d;
+    FontColor: #4d4d4d;
+    FontSize: 18;
+    MaximumWidth: 200;
+  }
+  // Relationship,Added
+  .Relationship-UmVsYXRpb25zaGlwLEFkZGVk {
+    LineThickness: 2;
+    LineStyle: 10-10;
+    LineColor: #176b3a;
+    FontColor: #176b3a;
+    FontSize: 18;
+    MaximumWidth: 200;
+  }
+  // Relationship,Modified
+  .Relationship-UmVsYXRpb25zaGlwLE1vZGlmaWVk {
+    LineThickness: 2;
+    LineStyle: 10-10;
+    LineColor: #865a22;
+    FontColor: #865a22;
+    FontSize: 18;
+    MaximumWidth: 200;
+  }
+  // Frenemy TARGET DESIGN
+  .Boundary-RnJlbmVteSBUQVJHRVQgREVTSUdO {
+    BackgroundColor: #ffffff;
+    LineColor: #5d3e17;
+    LineStyle: 0;
+    LineThickness: 2;
+    FontColor: #ffffff;
+    FontSize: 22;
+    HorizontalAlignment: center;
+    Shadowing: 0;
+  }
+</style>
+
+person "==Operator\n<size:15>[Person]</size>\n\nUses locally authenticated CLIs and selects explicit read or write delegation." <<Element-RWxlbWVudCxQZXJzb24sVW5jaGFuZ2Vk>> as Operator
+rectangle "==Claude Code CLI\n<size:15>[Software System]</size>\n\nExternal client and delegated CLI; existing native authentication and internals." <<Element-RWxlbWVudCxVbmNoYW5nZWQ=>> as ClaudeCodeCLI
+rectangle "==Codex CLI\n<size:15>[Software System]</size>\n\nExternal client and codex exec destination; existing behavior preserved." <<Element-RWxlbWVudCxVbmNoYW5nZWQ=>> as CodexCLI
+rectangle "==Grok Build CLI\n<size:15>[Software System]</size>\n\nExternal CLI newly supported by Frenemy; native internals remain external." <<Element-RWxlbWVudCxBZGRlZA==>> as GrokBuildCLI
+rectangle "==Cline CLI\n<size:15>[Software System]</size>\n\nExternal CLI newly supported by Frenemy; ACP is an internal invocation detail." <<Element-RWxlbWVudCxBZGRlZA==>> as ClineCLI
+
+rectangle "Frenemy TARGET DESIGN\n<size:15>[Software System]</size>" <<Boundary-RnJlbmVteSBUQVJHRVQgREVTSUdO>> {
+  rectangle "==Blocking agent relay\n<size:15>[Container: Node.js]</size>\n\nExisting ask-claude-mcp.mjs process extended with four calls and validated execution selectors; one answer/error per call, fixed startup cwd." <<Element-RWxlbWVudCxNb2RpZmllZA==>> as FrenemyTARGETDESIGN.Blockingagentrelay
+  rectangle "==Frenemy selector configuration\n<size:15>[Container: JSON / JSON Schema]</size>\n\nProduct-owned frenemy.config.json and frenemy.config.schema.json define optional defaults for Claude, Grok and Cline. Invalid startup configuration fails closed on tool calls." <<Element-RWxlbWVudCxBZGRlZA==>> as FrenemyTARGETDESIGN.Frenemyselectorconfiguration
+  rectangle "==Retained Windows installer\n<size:15>[Container: PowerShell]</size>\n\ninstall.ps1 unchanged; legacy Claude/Codex setup." <<Element-RWxlbWVudCxVbmNoYW5nZWQ=>> as FrenemyTARGETDESIGN.RetainedWindowsinstaller
+  rectangle "==Retained Mac/Linux installer\n<size:15>[Container: Bash existing source]</size>\n\ninstall.sh unchanged; legacy setup and optional helper." <<Element-RWxlbWVudCxVbmNoYW5nZWQ=>> as FrenemyTARGETDESIGN.RetainedMacLinuxinstaller
+  rectangle "==Existing user configuration\n<size:15>[Container: User-owned files]</size>\n\nLegacy relay registration and Claude/Codex instructions." <<Element-RWxlbWVudCxVbmNoYW5nZWQ=>> as FrenemyTARGETDESIGN.Existinguserconfiguration
+  rectangle "==Caller workspace\n<size:15>[Container: Filesystem]</size>\n\nRelay startup directory; explicit write calls may edit files." <<Element-RWxlbWVudCxVbmNoYW5nZWQ=>> as FrenemyTARGETDESIGN.Callerworkspace
+  rectangle "==Requested image output\n<size:15>[Container: Filesystem]</size>\n\nExisting user-selected image output path." <<Element-RWxlbWVudCxVbmNoYW5nZWQ=>> as FrenemyTARGETDESIGN.Requestedimageoutput
+  rectangle "==Invocation-local Grok prompt\n<size:15>[Container: OS temp filesystem DESIGN]</size>\n\nExclusive protected temp directory/file, finally cleanup; protected residue after uncatchable crash." <<Element-RWxlbWVudCxBZGRlZA==>> as FrenemyTARGETDESIGN.InvocationlocalGrokprompt
+  rectangle "==Windows prompt ACL helper\n<size:15>[Container: PowerShell7 process DESIGN]</size>\n\nFixed Protect-GrokPrompt.ps1 child invoked by native pwsh.exe before writing prompt bytes; Windows only." <<Element-RWxlbWVudCxBZGRlZA==>> as FrenemyTARGETDESIGN.WindowspromptACLhelper
+  rectangle "==Optional image helper\n<size:15>[Container: Bash (existing source)]</size>\n\nExisting genimg.sh unchanged; changes excluded." <<Element-RWxlbWVudCxVbmNoYW5nZWQ=>> as FrenemyTARGETDESIGN.Optionalimagehelper
+}
+
+FrenemyTARGETDESIGN.Blockingagentrelay --> ClaudeCodeCLI <<Relationship-UmVsYXRpb25zaGlw>> : "Runs existing Claude invocation\n<size:12>[stdin/stdout]</size>"
+FrenemyTARGETDESIGN.Blockingagentrelay --> GrokBuildCLI <<Relationship-UmVsYXRpb25zaGlwLEFkZGVk>> : "Runs one prompt with native mode and selector argv; parses the JSON answer\n<size:12>[Native CLI / stdout]</size>"
+FrenemyTARGETDESIGN.Blockingagentrelay --> ClineCLI <<Relationship-UmVsYXRpb25zaGlwLEFkZGVk>> : "Runs one prompt with child-only CLINE_PROVIDER/CLINE_MODEL, --thinking, and native permission responses\n<size:12>[ACP stdio]</size>"
+FrenemyTARGETDESIGN.Blockingagentrelay --> FrenemyTARGETDESIGN.Callerworkspace <<Relationship-UmVsYXRpb25zaGlw>> : "Uses startup cwd\n<size:12>[Filesystem]</size>"
+Operator --> FrenemyTARGETDESIGN.RetainedWindowsinstaller <<Relationship-UmVsYXRpb25zaGlw>> : "Runs retained Windows setup\n<size:12>[PowerShell]</size>"
+FrenemyTARGETDESIGN.RetainedWindowsinstaller --> FrenemyTARGETDESIGN.Existinguserconfiguration <<Relationship-UmVsYXRpb25zaGlw>> : "Appends legacy settings\n<size:12>[UTF-8]</size>"
+Operator --> FrenemyTARGETDESIGN.RetainedMacLinuxinstaller <<Relationship-UmVsYXRpb25zaGlw>> : "Runs retained Mac/Linux setup\n<size:12>[Shell]</size>"
+FrenemyTARGETDESIGN.RetainedMacLinuxinstaller --> FrenemyTARGETDESIGN.Existinguserconfiguration <<Relationship-UmVsYXRpb25zaGlw>> : "Appends legacy settings/helper\n<size:12>[Filesystem]</size>"
+FrenemyTARGETDESIGN.Blockingagentrelay --> FrenemyTARGETDESIGN.WindowspromptACLhelper <<Relationship-UmVsYXRpb25zaGlwLEFkZGVk>> : "Protects owned temp directory on Windows before prompt write\n<size:12>[pwsh.exe child / fixed script]</size>"
+FrenemyTARGETDESIGN.WindowspromptACLhelper --> FrenemyTARGETDESIGN.InvocationlocalGrokprompt <<Relationship-UmVsYXRpb25zaGlwLEFkZGVk>> : "Sets non-inheriting user/SYSTEM ACL\n<size:12>[Windows filesystem ACL]</size>"
+FrenemyTARGETDESIGN.Blockingagentrelay --> FrenemyTARGETDESIGN.InvocationlocalGrokprompt <<Relationship-UmVsYXRpb25zaGlwLEFkZGVk>> : "Creates, writes and finally removes owned prompt; Linux mode 0700/0600\n<size:12>[Filesystem]</size>"
+GrokBuildCLI --> FrenemyTARGETDESIGN.InvocationlocalGrokprompt <<Relationship-UmVsYXRpb25zaGlwLEFkZGVk>> : "Reads prompt file argument\n<size:12>[Filesystem]</size>"
+FrenemyTARGETDESIGN.Existinguserconfiguration --> ClaudeCodeCLI <<Relationship-UmVsYXRpb25zaGlw>> : "Supplies existing instructions\n<size:12>[CLAUDE.md]</size>"
+FrenemyTARGETDESIGN.Existinguserconfiguration --> CodexCLI <<Relationship-UmVsYXRpb25zaGlw>> : "Retains existing registration\n<size:12>[TOML]</size>"
+ClaudeCodeCLI --> FrenemyTARGETDESIGN.Optionalimagehelper <<Relationship-UmVsYXRpb25zaGlw>> : "Uses unchanged optional helper\n<size:12>[genimg.sh]</size>"
+FrenemyTARGETDESIGN.Optionalimagehelper --> CodexCLI <<Relationship-UmVsYXRpb25zaGlw>> : "Uses existing image invocation\n<size:12>[codex exec]</size>"
+FrenemyTARGETDESIGN.Optionalimagehelper --> FrenemyTARGETDESIGN.Requestedimageoutput <<Relationship-UmVsYXRpb25zaGlw>> : "Moves generated output\n<size:12>[Filesystem]</size>"
+ClaudeCodeCLI --> CodexCLI <<Relationship-UmVsYXRpb25zaGlw>> : "Delegates using existing instructions\n<size:12>[codex exec]</size>"
+CodexCLI --> FrenemyTARGETDESIGN.Blockingagentrelay <<Relationship-UmVsYXRpb25zaGlwLE1vZGlmaWVk>> : "Calls blocking tools\n<size:12>[stdio MCP]</size>"
+FrenemyTARGETDESIGN.Blockingagentrelay --> FrenemyTARGETDESIGN.Frenemyselectorconfiguration <<Relationship-UmVsYXRpb25zaGlwLEFkZGVk>> : "Loads startup defaults and validates the owned schema contract\n<size:12>[Filesystem / JSON]</size>"
+
+@enduml

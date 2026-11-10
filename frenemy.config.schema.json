@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/sharpninja/frenemy/frenemy.config.schema.json",
+  "title": "Frenemy execution selector configuration",
+  "description": "Per-agent model, provider, and effort defaults. Credentials are not permitted.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "agents"],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "const": "./frenemy.config.schema.json"
+    },
+    "version": {
+      "type": "integer",
+      "const": 1
+    },
+    "agents": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["claude", "grok", "cline"],
+      "properties": {
+        "claude": {
+          "$ref": "#/$defs/claude"
+        },
+        "grok": {
+          "$ref": "#/$defs/grok"
+        },
+        "cline": {
+          "$ref": "#/$defs/cline"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "selector": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": ".*\\S.*"
+    },
+    "claude": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "model": {
+          "$ref": "#/$defs/selector"
+        },
+        "effort": {
+          "type": "string",
+          "enum": ["low", "medium", "high", "xhigh", "max"]
+        }
+      }
+    },
+    "grok": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "model": {
+          "$ref": "#/$defs/selector"
+        },
+        "effort": {
+          "type": "string",
+          "pattern": "^(?:none|minimal|low|medium|high|xhigh|max|[A-Za-z0-9][A-Za-z0-9._:-]*)$"
+        }
+      }
+    },
+    "cline": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "provider": {
+          "$ref": "#/$defs/selector"
+        },
+        "model": {
+          "$ref": "#/$defs/selector"
+        },
+        "effort": {
+          "type": "string",
+          "enum": ["none", "low", "medium", "high", "xhigh"]
+        }
+      }
+    }
+  }
+}

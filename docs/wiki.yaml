@@ -1,0 +1,141 @@
+schema: mcp-wiki-export/v1
+home:
+  document: home
+documents:
+  - id: home
+    title: Home
+    source: generated:home
+    target: Home.md
+    platforms:
+      - github
+      - azure
+  - id: functional
+    title: Functional Requirements
+    source: generated:functional
+    target: Functional-Requirements.md
+    platforms:
+      - github
+      - azure
+  - id: technical
+    title: Technical Requirements
+    source: generated:technical
+    target: Technical-Requirements.md
+    platforms:
+      - github
+      - azure
+  - id: testing
+    title: Testing Requirements
+    source: generated:testing
+    target: Testing-Requirements.md
+    platforms:
+      - github
+      - azure
+  - id: mapping
+    title: TR per FR Mapping
+    source: generated:mapping
+    target: TR-per-FR-Mapping.md
+    platforms:
+      - github
+      - azure
+  - id: matrix
+    title: Requirements Matrix
+    source: generated:matrix
+    target: Requirements-Matrix.md
+    platforms:
+      - github
+      - azure
+  - source: README.md
+    platforms:
+      - github
+      - azure
+    title: Frenemy Setup and Usage
+    id: project-readme
+    target: Frenemy-Setup.md
+  - source: docs/README.md
+    platforms:
+      - github
+      - azure
+    title: Documentation
+    id: docs-index
+    target: Documentation.md
+  - source: docs/architecture/overview.md
+    platforms:
+      - github
+      - azure
+    title: Current Architecture
+    id: arch-overview
+    target: Current-Architecture.md
+  - source: docs/testing/validation.md
+    platforms:
+      - github
+      - azure
+    title: Validation Status
+    id: testing-status
+    target: Validation-Status.md
+  - source: docs/plans/grok-cline-integration.md
+    platforms:
+      - github
+      - azure
+    title: Approved Grok Build and Cline CLI Integration
+    id: plan-grok-cline
+    target: Grok-Cline-Integration-Plan.md
+  - title: C4 Baseline and Target Architecture
+    platforms:
+      - github
+      - azure
+    id: c4-architecture
+    target: C4-Architecture.md
+    source: docs/architecture/structurizr/support-only/README.md
+  - platforms:
+      - github
+      - azure
+    source: docs/contracts/grok-cline-support.md
+    title: Grok and Cline Relay Contract
+    id: grok-cline-binding
+    target: Grok-Cline-Relay-Contract.md
+  - platforms:
+      - github
+      - azure
+    source: docs/contracts/native-binding-qualification.md
+    title: Grok and Cline Native Qualification
+    id: grok-cline-native-validation
+    target: Grok-Cline-Native-Qualification.md
+  - platforms:
+      - github
+      - azure
+    source: docs/testing/grok-cline-test-design.md
+    title: Grok and Cline Test Design
+    id: grok-cline-test-design
+    target: Grok-Cline-Test-Design.md
+  - platforms:
+      - github
+      - azure
+    source: docs/requirements/grok-cline-use-cases.md
+    title: Grok and Cline Use Cases
+    id: grok-cline-use-cases
+    target: Grok-Cline-Use-Cases.md
+  - platforms:
+      - github
+      - azure
+    source: docs/plans/four-agent-reasoning-integration.md
+    title: Four-Agent Reasoning Integration Test
+    id: plan-four-agent-reasoning
+    target: Four-Agent-Reasoning-Integration-Test.md
+navigation:
+  - document: home
+  - document: functional
+  - document: technical
+  - document: testing
+  - document: mapping
+  - document: matrix
+  - document: project-readme
+  - document: docs-index
+  - document: arch-overview
+  - document: testing-status
+  - document: grok-cline-test-design
+  - document: grok-cline-use-cases
+  - document: plan-grok-cline
+  - document: plan-four-agent-reasoning
+  - document: grok-cline-binding
+  - document: grok-cline-native-validation
+  - document: c4-architecture

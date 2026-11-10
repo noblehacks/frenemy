@@ -1,0 +1,83 @@
+@startuml
+!pragma layout smetana
+title <size:24>Component View: Frenemy BASELINE c7338ad - Claude relay</size>
+
+set separator none
+left to right direction
+skinparam ranksep 20
+skinparam nodesep 5
+hide stereotype
+
+<style>
+  root {
+    BackgroundColor: #ffffff;
+    FontColor: #444444;
+  }
+  // Element,Unchanged
+  .Element-RWxlbWVudCxVbmNoYW5nZWQ= {
+    BackgroundColor: #526477;
+    LineColor: #394653;
+    LineStyle: 0;
+    LineThickness: 2;
+    FontColor: #ffffff;
+    FontSize: 22;
+    HorizontalAlignment: center;
+    Shadowing: 0;
+    MaximumWidth: 450;
+  }
+  // Relationship
+  .Relationship-UmVsYXRpb25zaGlw {
+    LineThickness: 2;
+    LineStyle: 10-10;
+    LineColor: #4d4d4d;
+    FontColor: #4d4d4d;
+    FontSize: 18;
+    MaximumWidth: 200;
+  }
+  // Claude relay
+  .Boundary-Q2xhdWRlIHJlbGF5 {
+    BackgroundColor: #ffffff;
+    LineColor: #394653;
+    LineStyle: 0;
+    LineThickness: 2;
+    FontColor: #ffffff;
+    FontSize: 22;
+    HorizontalAlignment: center;
+    Shadowing: 0;
+  }
+  // Frenemy BASELINE c7338ad
+  .Boundary-RnJlbmVteSBCQVNFTElORSBjNzMzOGFk {
+    BackgroundColor: #ffffff;
+    LineColor: #293a4a;
+    LineStyle: 0;
+    LineThickness: 2;
+    FontColor: #ffffff;
+    FontSize: 22;
+    HorizontalAlignment: center;
+    Shadowing: 0;
+  }
+</style>
+
+rectangle "==Claude Code CLI\n<size:15>[Software System]</size>\n\nExternal client and delegated CLI; existing native authentication and internals." <<Element-RWxlbWVudCxVbmNoYW5nZWQ=>> as ClaudeCodeCLI
+rectangle "==Codex CLI\n<size:15>[Software System]</size>\n\nExternal client and codex exec destination; existing behavior preserved." <<Element-RWxlbWVudCxVbmNoYW5nZWQ=>> as CodexCLI
+
+rectangle "Frenemy BASELINE c7338ad\n<size:15>[Software System]</size>" <<Boundary-RnJlbmVteSBCQVNFTElORSBjNzMzOGFk>> {
+  rectangle "Claude relay\n<size:15>[Container: Node.js / ask-claude-mcp.mjs]</size>" <<Boundary-Q2xhdWRlIHJlbGF5>> {
+    rectangle "==MCP dispatcher\n<size:15>[Component: JavaScript]</size>\n\nhandle, TOOLS, reply, send; two blocking tool calls." <<Element-RWxlbWVudCxVbmNoYW5nZWQ=>> as FrenemyBASELINEc7338ad.Clauderelay.MCPdispatcher
+    rectangle "==Claude launch and limits\n<size:15>[Component: JavaScript]</size>\n\nrunClaude, resolveClaudeOnWindowsPath; 4 calls/process, 10 minutes, output cap; direct-child kill." <<Element-RWxlbWVudCxVbmNoYW5nZWQ=>> as FrenemyBASELINEc7338ad.Clauderelay.Claudelaunchandlimits
+    rectangle "==Response sanitization\n<size:15>[Component: JavaScript]</size>\n\nsanitize strips terminal controls and private-key blocks, best effort." <<Element-RWxlbWVudCxVbmNoYW5nZWQ=>> as FrenemyBASELINEc7338ad.Clauderelay.Responsesanitization
+    rectangle "==Line framing\n<size:15>[Component: JavaScript]</size>\n\nstdin data handler, buffer, discarding; 8 Mi character input line guard." <<Element-RWxlbWVudCxVbmNoYW5nZWQ=>> as FrenemyBASELINEc7338ad.Clauderelay.Lineframing
+  }
+
+  rectangle "==Caller repository\n<size:15>[Container: Filesystem / Git checkout]</size>\n\nRelay startup cwd; write calls may edit caller checkout directly." <<Element-RWxlbWVudCxVbmNoYW5nZWQ=>> as FrenemyBASELINEc7338ad.Callerrepository
+}
+
+CodexCLI --> FrenemyBASELINEc7338ad.Clauderelay.Lineframing <<Relationship-UmVsYXRpb25zaGlw>> : "Sends MCP request\n<size:12>[stdio JSON-RPC]</size>"
+FrenemyBASELINEc7338ad.Clauderelay.Lineframing --> FrenemyBASELINEc7338ad.Clauderelay.MCPdispatcher <<Relationship-UmVsYXRpb25zaGlw>> : "Dispatches parsed message\n<size:12>[In-process]</size>"
+FrenemyBASELINEc7338ad.Clauderelay.MCPdispatcher --> FrenemyBASELINEc7338ad.Clauderelay.Claudelaunchandlimits <<Relationship-UmVsYXRpb25zaGlw>> : "Awaits runClaude result\n<size:12>[In-process]</size>"
+FrenemyBASELINEc7338ad.Clauderelay.Claudelaunchandlimits --> ClaudeCodeCLI <<Relationship-UmVsYXRpb25zaGlw>> : "Runs prompt; reads JSON result\n<size:12>[stdin/stdout]</size>"
+FrenemyBASELINEc7338ad.Clauderelay.Claudelaunchandlimits --> FrenemyBASELINEc7338ad.Callerrepository <<Relationship-UmVsYXRpb25zaGlw>> : "Uses startup cwd\n<size:12>[Filesystem]</size>"
+FrenemyBASELINEc7338ad.Clauderelay.MCPdispatcher --> FrenemyBASELINEc7338ad.Clauderelay.Responsesanitization <<Relationship-UmVsYXRpb25zaGlw>> : "Sanitizes result before reply\n<size:12>[In-process]</size>"
+ClaudeCodeCLI --> CodexCLI <<Relationship-UmVsYXRpb25zaGlw>> : "Delegates using existing instructions\n<size:12>[codex exec]</size>"
+
+@enduml

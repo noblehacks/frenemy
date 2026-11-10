@@ -1,0 +1,8 @@
+{
+  "name": "frenemy-relay-unit-tests",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test relay.contract.test.mjs"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "plantuml": {
+    "file": "plantuml.jar",
+    "hashSource": "Scoop extras plantuml manifest",
+    "url": "https://github.com/plantuml/plantuml/releases/download/v1.2026.9/plantuml-1.2026.9.jar",
+    "version": "1.2026.9",
+    "sha256": "AA4A1D06F8911C4B842BEFF4828DD955BE431692B631A312D04C0E9FAB9581DE"
+  },
+  "structurizr": {
+    "file": "structurizr.war",
+    "hashSource": "Locally measured official release download; retained pin",
+    "url": "https://download.structurizr.com/structurizr-2026.09.19.war",
+    "version": "2026.09.19",
+    "sha256": "AC1A2806E246364B88261A542A36CA7F3006EF48E5DE68830AFA8672F58690F1"
+  },
+  "java": {
+    "archive": "java21.zip",
+    "relativeExecutable": "java21/jdk-21.0.13+9-jre/bin/java.exe",
+    "url": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.13+9/OpenJDK21U-jre_x64_windows_hotspot_21.0.13_9.zip",
+    "sha256": "2332c0b4cff6bed722da3567c91d5e47568bcba863fa4945d0a8d6fc76158628",
+    "hashSource": "Scoop Java temurin21-jre manifest",
+    "version": "21.0.13+9"
+  }
+}
