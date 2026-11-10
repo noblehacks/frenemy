@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-11-04T15:19:43",
+  "workspace": "F:/GitHub/frenemy",
+  "todoId": "PLAN-FRENEMY-001",
+  "priority": "high",
+  "done": false,
+  "planReadbackMatches": true,
+  "functionalRequirementLinks": 12,
+  "technicalRequirementLinks": 16,
+  "wikiDocuments": 11,
+  "exportFilesVerified": 27,
+  "archiveSha256": "A8F0AAFDF36490C886BC9D573560B1A1EF385BBCFDB1F5E012B4BF661048FC2D",
+  "planSha256": "3440B4F2DCBD74177C5875DA342E5AC22E88C74D94CDD23F3380275CFAEF7AC1",
+  "docsPruned": 0,
+  "screenshotsRegenerated": 0,
+  "productionCodeChanged": false,
+  "testsRun": "None: documentation and operational metadata only; no Frenemy automated suite exists",
+  "failures": [],
+  "stagedWhitespaceWarnings": [
+    "docs/Project/wiki/azure/Functional-Requirements.md:222: new blank line at EOF.",
+    "docs/Project/wiki/azure/Technical-Requirements.md:204: new blank line at EOF.",
+    "docs/Project/wiki/github/Functional-Requirements.md:222: new blank line at EOF.",
+    "docs/Project/wiki/github/Technical-Requirements.md:204: new blank line at EOF."
+  ],
+  "stagedWhitespaceDisposition": "Preserved byte-exact server-generated exports; no product code changed. Initial unstaged diff check did not cover these then-untracked pages."
+}

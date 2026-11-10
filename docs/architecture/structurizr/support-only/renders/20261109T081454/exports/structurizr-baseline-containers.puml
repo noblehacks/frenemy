@@ -1,0 +1,90 @@
+@startuml
+!pragma layout smetana
+title <size:24>Container View: Frenemy BASELINE c7338ad</size>
+
+set separator none
+left to right direction
+skinparam ranksep 20
+skinparam nodesep 5
+hide stereotype
+
+<style>
+  root {
+    BackgroundColor: #ffffff;
+    FontColor: #444444;
+  }
+  // Element,Person,Unchanged
+  .Element-RWxlbWVudCxQZXJzb24sVW5jaGFuZ2Vk {
+    BackgroundColor: #526477;
+    LineColor: #394653;
+    LineStyle: 0;
+    LineThickness: 2;
+    FontColor: #ffffff;
+    FontSize: 22;
+    HorizontalAlignment: center;
+    Shadowing: 0;
+    MaximumWidth: 450;
+  }
+  // Element,Unchanged
+  .Element-RWxlbWVudCxVbmNoYW5nZWQ= {
+    BackgroundColor: #526477;
+    LineColor: #394653;
+    LineStyle: 0;
+    LineThickness: 2;
+    FontColor: #ffffff;
+    FontSize: 22;
+    HorizontalAlignment: center;
+    Shadowing: 0;
+    MaximumWidth: 450;
+  }
+  // Relationship
+  .Relationship-UmVsYXRpb25zaGlw {
+    LineThickness: 2;
+    LineStyle: 10-10;
+    LineColor: #4d4d4d;
+    FontColor: #4d4d4d;
+    FontSize: 18;
+    MaximumWidth: 200;
+  }
+  // Frenemy BASELINE c7338ad
+  .Boundary-RnJlbmVteSBCQVNFTElORSBjNzMzOGFk {
+    BackgroundColor: #ffffff;
+    LineColor: #293a4a;
+    LineStyle: 0;
+    LineThickness: 2;
+    FontColor: #ffffff;
+    FontSize: 22;
+    HorizontalAlignment: center;
+    Shadowing: 0;
+  }
+</style>
+
+person "==Operator\n<size:15>[Person]</size>\n\nUses locally authenticated CLIs and selects explicit read or write delegation." <<Element-RWxlbWVudCxQZXJzb24sVW5jaGFuZ2Vk>> as Operator
+rectangle "==Claude Code CLI\n<size:15>[Software System]</size>\n\nExternal client and delegated CLI; existing native authentication and internals." <<Element-RWxlbWVudCxVbmNoYW5nZWQ=>> as ClaudeCodeCLI
+rectangle "==Codex CLI\n<size:15>[Software System]</size>\n\nExternal client and codex exec destination; existing behavior preserved." <<Element-RWxlbWVudCxVbmNoYW5nZWQ=>> as CodexCLI
+
+rectangle "Frenemy BASELINE c7338ad\n<size:15>[Software System]</size>" <<Boundary-RnJlbmVteSBCQVNFTElORSBjNzMzOGFk>> {
+  rectangle "==Windows installer\n<size:15>[Container: PowerShell]</size>\n\ninstall.ps1 executed by the user; append-only registration, skip existing entries." <<Element-RWxlbWVudCxVbmNoYW5nZWQ=>> as FrenemyBASELINEc7338ad.Windowsinstaller
+  rectangle "==Mac/Linux installer\n<size:15>[Container: Bash]</size>\n\ninstall.sh; existing Bash source only, not a target implementation language." <<Element-RWxlbWVudCxVbmNoYW5nZWQ=>> as FrenemyBASELINEc7338ad.MacLinuxinstaller
+  rectangle "==Optional image helper\n<size:15>[Container: Bash]</size>\n\ngenimg.sh; existing Mac/Linux behavior, excluded from integration changes." <<Element-RWxlbWVudCxVbmNoYW5nZWQ=>> as FrenemyBASELINEc7338ad.Optionalimagehelper
+  rectangle "==User configuration\n<size:15>[Container: User-owned files]</size>\n\n~/.codex/config.toml; ~/.claude/CLAUDE.md; optional ~/.claude/scripts/genimg.sh." <<Element-RWxlbWVudCxVbmNoYW5nZWQ=>> as FrenemyBASELINEc7338ad.Userconfiguration
+  rectangle "==Caller repository\n<size:15>[Container: Filesystem / Git checkout]</size>\n\nRelay startup cwd; write calls may edit caller checkout directly." <<Element-RWxlbWVudCxVbmNoYW5nZWQ=>> as FrenemyBASELINEc7338ad.Callerrepository
+  rectangle "==Requested image output\n<size:15>[Container: Filesystem]</size>\n\nUser-selected output path; may be outside the caller repository." <<Element-RWxlbWVudCxVbmNoYW5nZWQ=>> as FrenemyBASELINEc7338ad.Requestedimageoutput
+  rectangle "==Claude relay\n<size:15>[Container: Node.js / ask-claude-mcp.mjs]</size>\n\nOne stdio process per Codex connection; fixed startup cwd." <<Element-RWxlbWVudCxVbmNoYW5nZWQ=>> as FrenemyBASELINEc7338ad.Clauderelay
+}
+
+CodexCLI --> FrenemyBASELINEc7338ad.Clauderelay <<Relationship-UmVsYXRpb25zaGlw>> : "Sends MCP request\n<size:12>[stdio JSON-RPC]</size>"
+FrenemyBASELINEc7338ad.Clauderelay --> ClaudeCodeCLI <<Relationship-UmVsYXRpb25zaGlw>> : "Runs prompt; reads JSON result\n<size:12>[stdin/stdout]</size>"
+FrenemyBASELINEc7338ad.Clauderelay --> FrenemyBASELINEc7338ad.Callerrepository <<Relationship-UmVsYXRpb25zaGlw>> : "Uses startup cwd\n<size:12>[Filesystem]</size>"
+Operator --> FrenemyBASELINEc7338ad.Windowsinstaller <<Relationship-UmVsYXRpb25zaGlw>> : "Runs Windows installer\n<size:12>[PowerShell]</size>"
+FrenemyBASELINEc7338ad.Windowsinstaller --> FrenemyBASELINEc7338ad.Userconfiguration <<Relationship-UmVsYXRpb25zaGlw>> : "Appends registration/instructions\n<size:12>[UTF-8]</size>"
+Operator --> FrenemyBASELINEc7338ad.MacLinuxinstaller <<Relationship-UmVsYXRpb25zaGlw>> : "Runs Mac/Linux installer\n<size:12>[Shell]</size>"
+FrenemyBASELINEc7338ad.MacLinuxinstaller --> FrenemyBASELINEc7338ad.Userconfiguration <<Relationship-UmVsYXRpb25zaGlw>> : "Appends configuration and optional helper\n<size:12>[Filesystem]</size>"
+FrenemyBASELINEc7338ad.Userconfiguration --> CodexCLI <<Relationship-UmVsYXRpb25zaGlw>> : "Registers relay\n<size:12>[TOML]</size>"
+FrenemyBASELINEc7338ad.Userconfiguration --> ClaudeCodeCLI <<Relationship-UmVsYXRpb25zaGlw>> : "Supplies instructions\n<size:12>[CLAUDE.md]</size>"
+ClaudeCodeCLI --> CodexCLI <<Relationship-UmVsYXRpb25zaGlw>> : "Delegates using existing instructions\n<size:12>[codex exec]</size>"
+ClaudeCodeCLI --> FrenemyBASELINEc7338ad.Optionalimagehelper <<Relationship-UmVsYXRpb25zaGlw>> : "Uses optional helper\n<size:12>[genimg.sh]</size>"
+FrenemyBASELINEc7338ad.Optionalimagehelper --> CodexCLI <<Relationship-UmVsYXRpb25zaGlw>> : "Requests out.png\n<size:12>[codex exec]</size>"
+FrenemyBASELINEc7338ad.Optionalimagehelper --> FrenemyBASELINEc7338ad.Requestedimageoutput <<Relationship-UmVsYXRpb25zaGlw>> : "Moves generated output\n<size:12>[Filesystem]</size>"
+
+@enduml

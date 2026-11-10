@@ -1,0 +1,57 @@
+{
+  "requirementId": "TEST-FRENEMY-117",
+  "effort": "medium",
+  "participants": [
+    "claude",
+    "codex",
+    "grok",
+    "cline"
+  ],
+  "questions": [
+    {
+      "id": "Q01",
+      "subject": "math",
+      "acceptanceCriterionId": "AC-TEST-FRENEMY-117-Q01",
+      "acceptanceCriterionSha256": "187C6F9D3D571E4E4642ADC0F5441B8719852322FDBC952ABC8F672F2DD7ED89",
+      "question": "A redundant service has two independent components. Component A fails on any day with probability 0.10 and component B with probability 0.20. The service is unavailable only when both fail that day. Assuming independence across components and across days, what is the probability that the service is unavailable at least once during five days? Show the computation and give the result as a percentage.",
+      "rubric": "Daily joint failure is 0.10 x 0.20 = 0.02; no joint failure in five days is 0.98^5; requested probability is 1 - 0.98^5 = 0.0960792032, approximately 9.61 percent. Equivalent correct reasoning and rounding receive full credit.",
+      "acceptanceCriterionText": "Math question, exact text: \"A redundant service has two independent components. Component A fails on any day with probability 0.10 and component B with probability 0.20. The service is unavailable only when both fail that day. Assuming independence across components and across days, what is the probability that the service is unavailable at least once during five days? Show the computation and give the result as a percentage.\" Canonical rubric: daily joint failure is 0.10 x 0.20 = 0.02; no joint failure in five days is 0.98^5; requested probability is 1 - 0.98^5 = 0.0960792032, approximately 9.61 percent. Equivalent correct reasoning and rounding receive full credit."
+    },
+    {
+      "id": "Q02",
+      "subject": "physics",
+      "acceptanceCriterionId": "AC-TEST-FRENEMY-117-Q02",
+      "acceptanceCriterionSha256": "20B47268ADD6F2A2F269B660F16A5548429599A1ACCABD6E2A09924C9DD19ACB",
+      "question": "A 2.0 kg block starts from rest, descends a frictionless track through a vertical height of 5.0 m, and then travels 10.0 m across a horizontal surface with kinetic-friction coefficient 0.20. Using g = 9.8 m/s^2, what is its speed after the rough section, or does it stop before the end? Show the energy calculation.",
+      "rubric": "Initial potential energy is 98 J; friction removes 39.2 J; final kinetic energy is 58.8 J, so the block reaches the end and v = sqrt(58.8) = approximately 7.67 m/s. Equivalent correct reasoning and rounding receive full credit.",
+      "acceptanceCriterionText": "Physics question, exact text: \"A 2.0 kg block starts from rest, descends a frictionless track through a vertical height of 5.0 m, and then travels 10.0 m across a horizontal surface with kinetic-friction coefficient 0.20. Using g = 9.8 m/s^2, what is its speed after the rough section, or does it stop before the end? Show the energy calculation.\" Canonical rubric: initial potential energy is 98 J; friction removes 39.2 J; final kinetic energy is 58.8 J, so the block reaches the end and v = sqrt(58.8) = approximately 7.67 m/s. Equivalent correct reasoning and rounding receive full credit."
+    },
+    {
+      "id": "Q03",
+      "subject": "history",
+      "acceptanceCriterionId": "AC-TEST-FRENEMY-117-Q03",
+      "acceptanceCriterionSha256": "D636555339A80AE68F1C461B46C59B96AAC4065B1F5ED41FEB8041999D6BFFA0",
+      "question": "Between February and October 1917, why did the Russian Provisional Government lose authority? Weigh at least three major factors and explain how they interacted rather than merely listing them.",
+      "rubric": "A strong answer accurately weighs at least three of continued participation in World War I and military failures, dual power with the Petrograd Soviet, delayed land reform and peasant demands, economic and food-supply breakdown, the Kornilov affair, and Bolshevik organization and slogans; it explains interaction and relative importance and reaches a supported causal judgment. A materially accurate alternative synthesis may receive full credit.",
+      "acceptanceCriterionText": "History question, exact text: \"Between February and October 1917, why did the Russian Provisional Government lose authority? Weigh at least three major factors and explain how they interacted rather than merely listing them.\" Canonical rubric: a strong answer accurately weighs at least three of continued participation in World War I and military failures, dual power with the Petrograd Soviet, delayed land reform and peasant demands, economic and food-supply breakdown, the Kornilov affair, and Bolshevik organization and slogans; it explains interaction and relative importance and reaches a supported causal judgment. A materially accurate alternative synthesis may receive full credit."
+    },
+    {
+      "id": "Q04",
+      "subject": "chemistry",
+      "acceptanceCriterionId": "AC-TEST-FRENEMY-117-Q04",
+      "acceptanceCriterionSha256": "7B55E71719FD2CB41CDFDFC71480EC1F39B0A7EFEE300F0235B885F732F765C5",
+      "question": "A 1.00 L buffer contains 0.20 mol acetic acid and 0.10 mol acetate. The pKa of acetic acid is 4.76. After 0.050 mol HCl is added with negligible volume change, estimate the pH. Show the strong-acid stoichiometry before applying the Henderson-Hasselbalch equation.",
+      "rubric": "H+ consumes acetate, leaving 0.050 mol acetate and producing 0.250 mol acetic acid; pH = 4.76 + log10(0.050/0.250) = approximately 4.06. Equivalent correct reasoning and rounding receive full credit.",
+      "acceptanceCriterionText": "Chemistry question, exact text: \"A 1.00 L buffer contains 0.20 mol acetic acid and 0.10 mol acetate. The pKa of acetic acid is 4.76. After 0.050 mol HCl is added with negligible volume change, estimate the pH. Show the strong-acid stoichiometry before applying the Henderson-Hasselbalch equation.\" Canonical rubric: H+ consumes acetate, leaving 0.050 mol acetate and producing 0.250 mol acetic acid; pH = 4.76 + log10(0.050/0.250) = approximately 4.06. Equivalent correct reasoning and rounding receive full credit."
+    },
+    {
+      "id": "Q05",
+      "subject": "economics",
+      "acceptanceCriterionId": "AC-TEST-FRENEMY-117-Q05",
+      "acceptanceCriterionSha256": "1F8A281A2D98D6A41B5BE0933EBAD955D4294ED0A80265B5EB331E868A47386B",
+      "question": "A competitive market has demand Qd = 120 - 2Pb and supply Qs = 20 + 3Ps, where Pb is the price buyers pay and Ps is the price sellers receive. A tax of 10 dollars per unit is collected from sellers, so Pb = Ps + 10. Find the no-tax equilibrium price and quantity, the post-tax buyer price, seller net price and quantity, each side's per-unit tax burden, total tax revenue, and deadweight loss.",
+      "rubric": "No-tax P = 20 and Q = 80; with tax Pb = 26, Ps = 16, Q = 68; buyer burden is 6 dollars and seller burden is 4 dollars per unit; revenue is 680 dollars; deadweight loss is 0.5 x 10 x 12 = 60 dollars. Equivalent correct reasoning receives full credit.",
+      "acceptanceCriterionText": "Economics question, exact text: \"A competitive market has demand Qd = 120 - 2Pb and supply Qs = 20 + 3Ps, where Pb is the price buyers pay and Ps is the price sellers receive. A tax of 10 dollars per unit is collected from sellers, so Pb = Ps + 10. Find the no-tax equilibrium price and quantity, the post-tax buyer price, seller net price and quantity, each side's per-unit tax burden, total tax revenue, and deadweight loss.\" Canonical rubric: no-tax P = 20 and Q = 80; with tax Pb = 26, Ps = 16, Q = 68; buyer burden is 6 dollars and seller burden is 4 dollars per unit; revenue is 680 dollars; deadweight loss is 0.5 x 10 x 12 = 60 dollars. Equivalent correct reasoning receives full credit."
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "$schema": "./frenemy.config.schema.json",
+  "version": 1,
+  "agents": {
+    "claude": {},
+    "grok": {},
+    "cline": {}
+  }
+}
