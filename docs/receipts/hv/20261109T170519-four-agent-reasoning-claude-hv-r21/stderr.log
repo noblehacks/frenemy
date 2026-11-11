@@ -1,1 +1,0 @@
-SessionEnd hook [pwsh -NoLogo -NoProfile -NonInteractive -File "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/session-end.ps1"] failed: Hook cancelled
