@@ -1,0 +1,7 @@
+{
+  "session_id": "fixture-df8258345bacba73",
+  "transcript_path": "/fixture/transcript.jsonl",
+  "cwd": "/fixture/project",
+  "hook_event_name": "SessionEnd",
+  "reason": "other"
+}

@@ -1,0 +1,8 @@
+{
+  "hook_event_name": "StopFailure",
+  "session_id": "aaaaaaa_aa0aa000-0000-0aa0-000a-00a000aa0a0a",
+  "cwd": "/fixture/project",
+  "client_type": "kimi_code_cli",
+  "error_type": "APIStatusError",
+  "error_message": "403 Your current subscription does not have access to Kimi Code right now. Upgrade your plan to keep coding with Kimi Code: https://www.kimi.com/code/#pricing"
+}

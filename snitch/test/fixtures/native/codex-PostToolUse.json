@@ -1,0 +1,15 @@
+{
+  "session_id": "fixture-df8258345bacba73",
+  "turn_id": "01a08cde-1c7f-7173-8257-3734ed4076af",
+  "transcript_path": "/fixture/transcript.jsonl",
+  "cwd": "/fixture/project",
+  "hook_event_name": "PostToolUse",
+  "model": "gpt-6-astra",
+  "permission_mode": "bypassPermissions",
+  "tool_name": "Bash",
+  "tool_input": {
+    "command": "printf FRENEMY-CODEX-NATIVE-20260910"
+  },
+  "tool_response": "FRENEMY-CODEX-NATIVE-20260910",
+  "tool_use_id": "exec-95a465ca-e45d-41d8-868c-9628e091d1c8"
+}

@@ -1,0 +1,10 @@
+{
+  "session_id": "fixture-df8258345bacba73",
+  "turn_id": "01a08cde-1c7f-7173-8257-3734ed4076af",
+  "transcript_path": "/fixture/transcript.jsonl",
+  "cwd": "/fixture/project",
+  "hook_event_name": "UserPromptSubmit",
+  "model": "gpt-6-astra",
+  "permission_mode": "bypassPermissions",
+  "prompt": "This is an authorized native-hook smoke test. Run exactly one shell command: printf FRENEMY-CODEX-NATIVE-20260910. Do not write or edit files, delegate, or call MCP tools. Then reply only FRENEMY-CODEX-NATIVE-20260910."
+}

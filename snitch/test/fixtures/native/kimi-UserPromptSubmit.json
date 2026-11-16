@@ -1,0 +1,13 @@
+{
+  "hook_event_name": "UserPromptSubmit",
+  "session_id": "fixture-af6bdfb07e77d0a9",
+  "cwd": "/fixture/project",
+  "client_type": "kimi_code_cli",
+  "prompt": [
+    {
+      "type": "text",
+      "text": "Read the example project README, then report completion."
+    }
+  ],
+  "is_steer": false
+}

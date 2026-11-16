@@ -1,0 +1,168 @@
+/* Snitch panel styles.
+ *
+ * This lives in its own file on purpose. It used to be a string inside lib/render.js, and
+ * because VS Code's extension host caches required modules, every style change needed a
+ * full window reload before it appeared. Read from disk at render time, hiding and showing
+ * the panel is enough.
+ *
+ * Every colour is a VS Code theme variable WITH a literal fallback, so the same file also
+ * renders correctly in a plain browser (the preview harness) where those variables do not
+ * exist.
+ *
+ * The look: warm and professional. The old flat grey read as
+ * cheap. Accents are honey/amber, rows are soft cards, and the one live colour
+ * (the beat) is a warm sage instead of chart green. Health still owns colour: amber is
+ * ambience, terracotta is trouble, sage is alive.
+ */
+:root{
+  --bg:var(--vscode-sideBar-background,#1f1d1a);
+  --fg:var(--vscode-foreground,#ddd6cc);
+  --dim:var(--vscode-descriptionForeground,#96897a);
+  --line:var(--vscode-panel-border,#3a352e);
+  --hover:var(--vscode-list-hoverBackground,#2a2621);
+  --track:var(--vscode-editorWidget-background,#2c2823);
+  --good:#9cb26b;                 /* alive — warm sage, not chart green */
+  --warn:#e0785c;                 /* trouble — terracotta, already warm */
+  --accent:#dfa25e;               /* ambience — honey amber */
+  --card:rgba(223,162,94,.045);   /* the faint warm wash under every row card */
+  --cardline:rgba(223,162,94,.14);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+     font:12px/1.5 var(--vscode-font-family,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif);
+     font-variant-numeric:tabular-nums;padding:6px 0 12px}
+
+/* Who launched the work, said ONCE for the whole panel and nowhere else.
+   Each driver's colour lives INSIDE its own chip and nowhere else. A tinted wash across the
+   whole line was built and rejected: a line splits its width evenly while names end wherever
+   they end, so one agent's colour ended up under another agent's name. Bound to the chip's
+   own box, a boundary can only ever fall between two names.
+   The colour is also kept faint on purpose — in this panel colour means health, and Claude's
+   orange (#D97757) is all but the warning colour (#e0785c). At this strength it reads as
+   whose chip it is, not as an alarm. */
+.drvline{display:flex;align-items:stretch;padding:0 0 0 12px;color:var(--dim);font-size:11px;
+         cursor:pointer}
+/* The word leads and is meant to be read first: small, but bold and widely tracked, in the
+   foreground colour rather than the dim one. */
+.drvline .lab{display:flex;align-items:center;flex:0 0 auto;padding-right:9px;
+              font-size:9.5px;font-weight:700;letter-spacing:.14em;color:var(--fg)}
+.drvline .cells{display:flex;flex:1 1 auto;min-width:0;align-items:stretch}
+.drvline .cl{display:flex;align-items:center;flex:0 0 auto;padding:7px 5px 6px}
+.drvline .pill{display:inline-flex;align-items:center;gap:5px;padding:2px 9px 2px 6px;
+               border-radius:99px;background:var(--track);border:1px solid var(--line);
+               color:var(--fg);font-weight:600;font-size:10.5px;white-space:nowrap}
+.drvline .pill svg{width:12px;height:12px;display:block;flex:0 0 auto}
+.drvline .pill em{font-style:normal;color:var(--dim);font-weight:400;margin-left:1px}
+/* Three names, then four, need the room back — measured at a 300px dock, not guessed. */
+.drvline.n3 .pill,.drvline.n4 .pill{font-size:9.5px;padding:1px 7px 1px 5px;gap:4px}
+.drvline.n3 .pill svg,.drvline.n4 .pill svg{width:11px;height:11px}
+.drvline.n3 .cl{padding-left:3px;padding-right:3px}
+.drvline.n3 .lab{padding-right:7px}
+.drvline.n3 .pill{padding:1px 6px 1px 4px}
+/* Four is the tightest case there is — every remaining pixel comes out of the padding and
+   the tracking, in that order, because the word and the four names all have to survive. */
+.drvline.n4 .cl{padding-left:2px;padding-right:2px}
+.drvline.n4 .lab{letter-spacing:.08em;padding-right:6px}
+.drvline.n4 .pill{padding:1px 5px 1px 4px;gap:3px}
+
+.head{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;padding:5px 12px 10px;
+      color:var(--dim);font-size:11px}
+.head .bits{flex:1 1 auto;min-width:0;display:flex;flex-wrap:wrap;gap:3px 14px}
+.head .acts{display:flex;gap:6px;flex-wrap:wrap;flex:0 1 auto;margin-left:auto}
+
+.btn{display:inline-block;padding:2.5px 11px;border-radius:99px;border:1px solid var(--line);
+     color:var(--dim);text-decoration:none;font-size:10.5px;white-space:nowrap;
+     cursor:pointer;flex:0 0 auto;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.btn:hover{background:var(--card);color:var(--fg);border-color:var(--cardline)}
+
+/* One row = brand mark | everything else | status word. The middle column is
+   minmax(0,1fr) so long titles shrink instead of shoving the right column off-screen.
+   Each row is a soft warm card; health keeps the left edge. */
+.hit{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:start;
+     padding:9px 10px;text-decoration:none;color:inherit;cursor:pointer}
+.row{margin:3px 8px;border-radius:10px;background:var(--card);
+     border:1px solid transparent;border-left:2.5px solid transparent}
+.row:hover{background:var(--hover);border-color:var(--cardline);
+           border-left-color:var(--cardline)}
+.row.open{background:var(--hover);border-color:var(--cardline)}
+/* Health owns the left edge even under hover/open, whose border-color would otherwise
+   out-rank it and wash the warning away at the exact moment the row is inspected
+   (Codex, 2026-08-31) — hence the doubled-up selectors. */
+.row.r-quiet,.row.r-quiet:hover,.row.r-quiet.open{border-left-color:var(--warn)}
+.row.r-dead,.row.r-dead:hover,.row.r-dead.open{border-left-color:var(--warn)}
+.r-dead{opacity:.6}
+.row.r-failed,.row.r-failed:hover,.row.r-failed.open{border-left-color:var(--warn)}
+.r-failed{opacity:.85}
+.r-done{opacity:.62}
+
+.chip{display:flex;flex-direction:column;align-items:center;gap:3px;line-height:1;
+      width:46px;font-size:9px;font-weight:600;letter-spacing:.04em}
+.chip svg{display:block;width:22px;height:22px}
+.chip i{font-style:normal;white-space:nowrap}
+.r-done .chip{filter:saturate(.4)}
+
+.mid{min-width:0;display:flex;flex-direction:column;gap:5px}
+/* The title owns its own line. Sharing a flex line with the status sentence is what
+   squeezed "Trace: per-stroke fill…" down to "Trace: per-st…" in a narrow dock. */
+.titleline{min-width:0;display:flex;flex-direction:column;gap:2px}
+.name{font-weight:650;font-size:12.5px;letter-spacing:.01em;min-width:0;max-width:100%;
+      overflow-wrap:break-word;
+      display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.demo{display:inline-block;margin-right:6px;padding:0 5px;border-radius:3px;font-size:9px;
+      font-weight:700;letter-spacing:.08em;background:var(--warn);color:#1a1a1a;vertical-align:1px}
+/* The status sentence says what is actually happening, so it wraps to a second line
+   rather than being cut off exactly where it gets interesting. */
+.sub{font-style:normal;color:var(--dim);font-size:11px;min-width:0;max-width:100%;
+     display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.sub:empty{display:none}
+
+.track{height:5px;border-radius:99px;background:var(--track);overflow:hidden}
+/* The only motion in the panel, and it runs once per real step, not on a loop. */
+.fill{display:block;height:100%;border-radius:99px;background:var(--accent);width:0;
+      transition:width .45s cubic-bezier(.22,.61,.36,1)}
+
+.stats{display:flex;flex-wrap:wrap;gap:4px 10px;color:var(--dim);font-size:11px}
+.stats .pct{color:var(--accent);font-weight:700;font-size:11.5px}
+
+.beat{font-size:11px;color:var(--dim);white-space:nowrap;padding-top:1px}
+.beat.live{color:var(--good)}
+.beat.bad{color:var(--warn);font-weight:600}
+.beat.ok{color:var(--good);opacity:.8}
+
+/* Belt for the braces above: an empty detail can never draw as a blank bordered box. */
+.detail:empty{display:none}
+/* A row that failed to draw says so in its own text; the tint keeps it from looking normal. */
+.row.row-error,.row.row-error:hover,.row.row-error.open{border-left-color:var(--warn)}
+.row-error .sub{color:var(--warn)}
+.detail{margin:0 10px 10px 10px;padding:11px 12px;border-radius:9px;
+        background:var(--track);border:1px solid var(--cardline)}
+/* The plain-words paragraph: what this is, who asked for it, how it is going. It leads
+   the block and reads like a person talking, so it gets reading size and room to breathe. */
+.detail .story{margin:0 0 10px;font-size:11.5px;line-height:1.55;color:var(--fg);
+               padding-bottom:9px;border-bottom:1px solid var(--line)}
+.detail dl{display:grid;grid-template-columns:minmax(64px,auto) minmax(0,1fr);
+           gap:6px 12px;margin:0 0 10px;align-items:baseline}
+.detail dt{color:var(--dim);font-size:10px;white-space:nowrap;letter-spacing:.05em;
+           text-transform:uppercase}
+.detail dd{margin:0;font-size:11.5px;overflow-wrap:break-word;word-break:normal}
+/* The trail and the plan. Dimmer than the answer above them, because the one thing the
+   owner is looking for — what just happened — must not have to compete with a list. */
+.detail .lines{margin:0;padding:0;list-style:none;display:grid;gap:3px}
+.detail .lines li{color:var(--dim);font-size:11px;line-height:1.35;
+                  white-space:pre-wrap;overflow-wrap:break-word}
+.detail .lines li.done{color:var(--dim);opacity:.62}
+.detail .lines li.active{color:var(--fg)}
+
+/* Under ~250px two columns cannot fit: stacking beats wrapping a value one letter
+   per line, which is what the old grid did in a narrow dock. */
+@media (max-width: 250px){
+  .detail dl{grid-template-columns:1fr;gap:1px}
+  .detail dt{margin-top:8px}
+  .detail dt:first-child{margin-top:0}
+  .chip{width:38px}
+  .chip svg{width:18px;height:18px}
+}
+
+.empty{padding:26px 18px;text-align:center;color:var(--fg)}
+.empty p{margin:0 0 8px}
+.empty .dim{color:var(--dim);font-size:11px;line-height:1.6}

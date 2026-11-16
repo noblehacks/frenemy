@@ -1,0 +1,7 @@
+{
+  "hook_event_name": "Stop",
+  "session_id": "fixture-af6bdfb07e77d0a9",
+  "cwd": "/fixture/project",
+  "client_type": "kimi_code_cli",
+  "stop_hook_active": false
+}

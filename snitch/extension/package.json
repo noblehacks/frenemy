@@ -1,0 +1,130 @@
+{
+  "name": "snitch",
+  "displayName": "Snitch",
+  "description": "A little birdie tells you what every agent is up to: live progress, ETA and heartbeat for long jobs across Claude Code, Codex, agy, Kimi and shell fleets. No server, no daemon.",
+  "version": "0.1.1",
+  "publisher": "local",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "snitch",
+          "title": "Snitch",
+          "icon": "media/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "snitch": [
+        {
+          "id": "snitch.jobs",
+          "name": "Jobs",
+          "type": "webview"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "snitch.focus",
+        "title": "Snitch: Show Jobs"
+      },
+      {
+        "command": "snitch.refresh",
+        "title": "Snitch: Refresh"
+      },
+      {
+        "command": "snitch.demo",
+        "title": "Snitch: Write Demo Jobs"
+      },
+      {
+        "command": "snitch.clearDemo",
+        "title": "Snitch: Clear Demo Jobs"
+      },
+      {
+        "command": "snitch.clearFinished",
+        "title": "Snitch: Clear Finished Jobs"
+      },
+      {
+        "command": "snitch.clearAll",
+        "title": "Snitch: Clear All Jobs"
+      },
+      {
+        "command": "snitch.toggle",
+        "title": "Snitch: Toggle Job Details"
+      },
+      {
+        "command": "snitch.clearOne",
+        "title": "Snitch: Clear One Job"
+      },
+      {
+        "command": "snitch.toggleDriverStyle",
+        "title": "Snitch: Switch Driver Line Look"
+      }
+    ],
+    "configuration": {
+      "title": "Snitch",
+      "properties": {
+        "snitch.stallSeconds": {
+          "type": "number",
+          "default": 180,
+          "description": "Minimum silence before a job with a known reporting rhythm is marked quiet; its own cadence may require longer."
+        },
+        "snitch.hideFinishedAfterSeconds": {
+          "type": "number",
+          "default": 600,
+          "description": "How long finished/failed jobs stay in the list before they drop off."
+        },
+        "snitch.statusBar": {
+          "type": "boolean",
+          "default": false,
+          "description": "Also show a summary in the bottom status bar strip. Off by default."
+        },
+        "snitch.notify": {
+          "type": "string",
+          "enum": [
+            "off",
+            "problems",
+            "all"
+          ],
+          "default": "problems",
+          "description": "Pop-up notifications: off, only stalls and failures, or those plus completions."
+        },
+        "snitch.driverStyle": {
+          "type": "string",
+          "enum": [
+            "chip",
+            "underline"
+          ],
+          "enumDescriptions": [
+            "The driver's name in a chip lit in their own colour.",
+            "The same chip, with a bar of that colour underneath it."
+          ],
+          "default": "chip",
+          "description": "How the DRIVER line looks. Clicking the line itself switches between the two."
+        }
+      }
+    }
+  },
+  "extensionKind": [
+    "ui"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": false
+    },
+    "virtualWorkspaces": {
+      "supported": false
+    }
+  }
+}
