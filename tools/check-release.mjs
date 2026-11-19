@@ -18,6 +18,7 @@ const IGNORED = new Set(['.attic', '.git', '.worker-state', '.worker-verificatio
 const SUITES = [
   ['worker-job-status', 'tools/test-worker-status.mjs'],
   ['fresh-install', 'tools/test-install.mjs'],
+  ['hive-lite-install', 'tools/test-hive-lite-install.mjs'],
   ['worker-guard', 'tools/test-worker-workspace.mjs'],
   ['worker-adversarial', 'tools/test-worker-adversarial.mjs'],
   ['worker-repairs', 'tools/test-worker-repairs.mjs'],

@@ -52,6 +52,22 @@ Type what you want in the app you are using. That app is the driver.
 > "Get a second opinion from Gemini on this plan."
 > "Have Kimi build the settings page in its own copy, then show me what changed."
 
+## Optional: coordinate a team with Hive-Lite
+
+[Hive-Lite](hive-lite/README.md) adds a supervised Controller, Executive and
+Workers, with bounded assignments, saved results and review before acceptance.
+Install the optional skill for Codex and Claude Code from this checkout:
+
+```sh
+node install-hive-lite.mjs
+```
+
+For a fresh installation of both components, add `--with-frenemy`. The
+[step-by-step guide](hive-lite/README.md) covers setup, updates and a first task.
+Frenemy's normal installer and direct delegation work independently of this
+skill. Automatic Hive-Lite dispatch and per-call model/effort forwarding remain
+future integration work.
+
 ## What is new in version 2
 
 ![Four red phone boxes at night, each with one app's logo, with calls running between them](images/four-ais.jpg)
