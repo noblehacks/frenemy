@@ -46,6 +46,15 @@ t('orphan family tree is found', () => {
   assert.strictEqual(sweep.stray(rows.get(3), rows), true);
 });
 
+t('Qwen is family only by Frenemy script names, never as a bare command word', () => {
+  for (const command of ['node /p/ask-qwen-mcp.mjs', 'node /p/ask-qwen-wrapper.mjs', '/p/ask-qwen-mcp.sh']) {
+    assert.ok(sweep.FAMILY.test(command), command);
+  }
+  for (const command of ['qwen', 'node /lib/node_modules/@qwen-code/qwen-code/cli-entry.js', 'ask-qwen-notes.txt']) {
+    assert.ok(!sweep.FAMILY.test(command), command);
+  }
+});
+
 t('new owner or reused pid prevents signalling', () => {
   const original = proc(2);
   for (const rows of [table([proc(2, { tty: 'ttys001' })]), table([proc(2, { started: 'new start' })])]) {

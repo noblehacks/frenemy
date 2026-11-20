@@ -3,7 +3,7 @@
 ## What you need
 
 - macOS, Linux or Windows, with Node.js 18 or newer. Nothing else: no Python, no WSL.
-- At least two of these, installed, on your PATH and signed in: Claude Code (`claude`), Codex (`codex`), Antigravity (`agy`), Kimi Code (`kimi`). Frenemy connects the ones it finds; you do not need all four.
+- At least two of these, installed, on your PATH and signed in: Claude Code (`claude`), Codex (`codex`), Antigravity (`agy`), Kimi Code (`kimi`), Qwen Code (`qwen`). Frenemy connects the ones it finds; you do not need all five.
 - VS Code, only if you want the Snitch panel. Without it everything else is installed and the installer says the panel was skipped.
 
 ## Install: one command
@@ -31,13 +31,15 @@ That one command:
 3. Connects every AI app it finds to the others, so each one can ask the rest.
 4. Adds each app's Snitch reporter, so the panel can show what it is doing.
 
-Then restart the AI apps you have open and reload VS Code. Codex asks once, on its own screen, to trust the new hooks; say yes. Open the panel with **Snitch: Show Jobs**.
+Then restart the AI apps you have open and reload VS Code. Codex asks once, on its own screen, to trust the new hooks; say yes. Qwen Code asks before running one of Frenemy's tools unless the folder it runs in is one you have trusted; its entries are marked as Frenemy's own servers, and that marking only takes effect in a trusted folder. Open the panel with **Snitch: Show Jobs**.
 
 It is safe to run again, for example after you install another AI app. Nothing is copied over an existing install and nothing is added twice.
 
 ## What it changes, and how to undo it
 
-Before the installer changes a settings file it saves a copy beside it, named `<file>.before-frenemy-<date-time>`, and prints the name. It only adds or refreshes Frenemy's own entries. A server of your own that happens to be called `claude`, `codex`, `agy` or `kimi` is left alone and the installer says so. Every changed file is read back and checked before it is kept. A settings file the installer cannot read with certainty is left exactly as it is, and the installer says which one.
+Before the installer changes a settings file it saves a copy beside it, named `<file>.before-frenemy-<date-time>`, and prints the name. It only adds or refreshes Frenemy's own entries. A server of your own that happens to be called `claude`, `codex`, `agy`, `kimi` or `qwen` is left alone and the installer says so. Every changed file is read back and checked before it is kept. A settings file the installer cannot read with certainty is left exactly as it is, and the installer says which one.
+
+Qwen Code stores connections and hooks in `.qwen/settings.json`. The installer accepts JSON with `//` and `/* */` comments and preserves content outside `mcpServers` and `hooks`. Comments inside those two objects are removed when they are updated; the original file is backed up first. Invalid syntax, including trailing commas, leaves the file unchanged.
 
 All paths below are inside your home folder.
 
@@ -47,10 +49,11 @@ All paths below are inside your home folder.
 | Codex | `codex mcp add` (the app's own command), then read back from `.codex/config.toml` | `.codex/hooks.json` |
 | agy | `.gemini/config/mcp_config.json` | `.gemini/config/hooks.json` |
 | Kimi | `.kimi-code/mcp.json` | `.kimi-code/config.toml` |
+| Qwen Code | `.qwen/settings.json` | `.qwen/settings.json` (the same file, under `hooks`) |
 
-If connecting one app fails or is interrupted half-way, the installer puts that app's settings back as they were and says which app; the others stay connected. If a file cannot be put back, it says so and names the `.before-frenemy-` copy to restore by hand. If you use `CLAUDE_CONFIG_DIR` or `CODEX_HOME`, the installer works in those folders.
+If connecting one app fails or is interrupted half-way, the installer puts that app's settings back as they were and says which app; the others stay connected. If a file cannot be put back, it says so and names the `.before-frenemy-` copy to restore by hand. If you use `CLAUDE_CONFIG_DIR`, `CODEX_HOME` or `QWEN_HOME`, the installer works in those folders. An explicitly set `QWEN_HOME` is resolved to an absolute path and included in the generated connections so jobs use the same settings.
 
-To undo: put the `.before-frenemy-` copies back. If you have no copy, remove only what points into the Frenemy folder (`.local/share/frenemy/2.0.0`): a server named `claude`, `codex`, `agy` or `kimi` whose arguments (`args`) hold a file in that folder (`claude mcp remove -s user <name>`, `codex mcp remove <name>`), and the hook lines that run a file in that folder. A server of your own with one of those names does not point there; leave it. Then move the Frenemy folder and the Snitch folder to the Trash or Recycle Bin. `.fleet` in your home folder holds local job history; keep it or remove it separately. Do not move the installed folder while it is in use: the apps' settings point at it.
+To undo: put the `.before-frenemy-` copies back. If you have no copy, remove only what points into the Frenemy folder (`.local/share/frenemy/2.0.0`): a server named `claude`, `codex`, `agy`, `kimi` or `qwen` whose arguments (`args`) hold a file in that folder (`claude mcp remove -s user <name>`, `codex mcp remove <name>`), and the hook lines that run a file in that folder. A server of your own with one of those names does not point there; leave it. Then move the Frenemy folder and the Snitch folder to the Trash or Recycle Bin. `.fleet` in your home folder holds local job history; keep it or remove it separately. Do not move the installed folder while it is in use: the apps' settings point at it.
 
 ## Options
 
@@ -63,7 +66,7 @@ node install.mjs --prefix /absolute/new/folder --extension-dir /absolute/new/fol
 
 The same options work after `bash install.sh` and `.\install.ps1`.
 
-With `--no-connect`, the entries for each app are written to `config/` inside the installed folder for you to add by hand. If the app commands are not on PATH, set `CLAUDE_BIN`, `CODEX_BIN`, `AGY_BIN`, `KIMI_BIN` or `NODE_BIN` to their full paths first.
+With `--no-connect`, the entries for each app are written to `config/` inside the installed folder for you to add by hand. If the app commands are not on PATH, set `CLAUDE_BIN`, `CODEX_BIN`, `AGY_BIN`, `KIMI_BIN`, `QWEN_BIN` or `NODE_BIN` to their full paths first.
 
 If another Snitch is already in VS Code, the installer leaves it alone and says so. Do not keep two Snitch versions active.
 

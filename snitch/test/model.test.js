@@ -493,6 +493,16 @@ t('unknown driver is not relabelled as shell', () => {
   assert.strictEqual(m.decorate({id:'a', agent:'kimi', driver:'codex'},1000,{}).driver, 'codex');
 });
 
+t('a Qwen row is its own agent, with its own brand and a driver line', () => {
+  assert.strictEqual(m.agentOf('qwen'), 'qwen');
+  const row = m.decorate({ id: 'q', agent: 'qwen', driver: 'claude', state: 'running', beat: 1000 }, 1000, {});
+  assert.strictEqual(row.agent, 'qwen');
+  assert.strictEqual(row.driver, 'claude');
+  const shown = require('../extension/lib/payload').rowPayload({ agent: 'qwen', trail: [], note: '' });
+  assert.strictEqual(shown.brandLabel, 'Qwen');
+  assert.ok(shown.mark.indexOf('<svg') === 0, 'a mark of its own, not the shell fallback');
+});
+
 t('activity wording is honest and preserves useful descriptions', () => {
   const {rowPayload} = require('../extension/lib/payload');
   const cases = [
@@ -502,6 +512,8 @@ t('activity wording is honest and preserves useful descriptions', () => {
     ['python3 tools/check-release.py', 'Ran release checks'],
     ['python3 - <<PY print("collaboration.followup_task")', 'Ran a script'],
     ['mcp__kimi__ask_kimi_write', 'Assigned work to Kimi'],
+    ['mcp__qwen__ask_qwen', 'Asked for help from Qwen'],
+    ['mcp__qwen__ask_qwen_write', 'Assigned work to Qwen'],
     ['collaboration.wait_agent', 'Checked on the helpers'],
     ['functions.exec', 'Ran a command'],
     ['unknown_tool', 'Used a tool'],

@@ -11,6 +11,7 @@ const AGENTS = {
   codex:  { label: 'codex',  hue: 145 },
   agy:    { label: 'agy',    hue: 205 },
   kimi:   { label: 'kimi',   hue: 275 },
+  qwen:   { label: 'qwen',   hue: 180 },
   shell:  { label: 'shell',  hue: 0 },
 };
 

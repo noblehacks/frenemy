@@ -468,6 +468,7 @@ function claudeBody(argv, input) {
     if (has('ask-agy') || has('antigravity') || has('agy -p') || has('agy --print') || has('agy --prompt') || has(' agy ')) WORKER = 'agy';
     else if (has('ask-kimi') || has('kimi-code') || has('kimi -p') || has('kimi --prompt') || has(' kimi ')) WORKER = 'kimi';
     else if (has('ask-codex') || has('codex exec') || has('genimg.sh') || has(' codex ')) WORKER = 'codex';
+    else if (has('ask-qwen')) WORKER = 'qwen';
     let BG_OUT = '';
     try { BG_OUT = String(resolveBackgroundLog(BG_ID, SESSION_RAW, field('transcript_path'), taskRoot())).replace(/\n+$/, ''); }
     catch { BG_OUT = ''; }
@@ -640,7 +641,7 @@ function agentReading(agent, mode, input, jobs, hookDir) {
 }
 
 function agentBody(agent, mode, input) {
-  if (!['codex', 'kimi', 'agy'].includes(agent)) return;
+  if (!['codex', 'kimi', 'agy', 'qwen'].includes(agent)) return;
   const JOBS = sub(fleetDir(), 'jobs');
   const hookDir = logicalCwd();
 

@@ -20,11 +20,11 @@ try {
     'Download Frenemy again and unpack it into a new, empty folder.');
   process.exit(1);
 }
-const { WIN, resolveBin, spawnCli, stopProcessTreeSync, homeDir, sleepSync } = platformTools;
+const { WIN, resolveBin, spawnCli, stopProcessTreeSync, homeDir, resolveQwenHome, sleepSync } = platformTools;
 
 export const ROOT = path.dirname(fs.realpathSync(fileURLToPath(import.meta.url)));
-export const SEATS = ['claude', 'codex', 'agy', 'kimi'];
-export const NAMES = { claude: 'Claude', codex: 'Codex', agy: 'Gemini (agy)', kimi: 'Kimi' };
+export const SEATS = ['claude', 'codex', 'agy', 'kimi', 'qwen'];
+export const NAMES = { claude: 'Claude', codex: 'Codex', agy: 'Gemini (agy)', kimi: 'Kimi', qwen: 'Qwen Code' };
 const NODE_NEEDED = 18;
 
 /** A plain message for the person at the keyboard; never shown with a stack or an error name. */
@@ -176,7 +176,11 @@ export const EVENTS = {
   agy: [['PostToolUse', ''], ['Stop', 'done']],
   kimi: [['PostToolUse', ''], ['Stop', 'done'], ['UserPromptSubmit', 'beat'], ['SessionStart', 'done'],
     ['SessionEnd', 'done'], ['Interrupt', 'done'], ['StopFailure', 'fail']],
+  qwen: [['PostToolUse', ''], ['Stop', 'done'], ['UserPromptSubmit', 'beat'], ['SessionStart', 'done'],
+    ['SessionEnd', 'done'], ['StopFailure', 'fail']],
 };
+
+export const QWEN_MATCHED = ['PostToolUse', 'StopFailure', 'SessionStart', 'SessionEnd'];
 
 /**
  * The reporter command one app runs for one event.
@@ -205,7 +209,11 @@ export function hookEntries(driver, prefix, where) {
     const entry = { type: 'command', command: hookCommand(driver, prefix, word, where) };
     if (driver === 'codex') hooks[event] = [{ matcher: '', hooks: [{ ...entry, timeout: 10 }] }];
     else if (driver === 'agy' && event !== 'PostToolUse') hooks[event] = [entry];
-    else if (driver === 'claude' && (event === 'UserPromptSubmit' || event === 'SessionEnd')) {
+    else if (driver === 'qwen') {
+      const group = { hooks: [{ ...entry, timeout: 10 }] };
+      if (QWEN_MATCHED.includes(event)) group.matcher = '*';
+      hooks[event] = [group];
+    } else if (driver === 'claude' && (event === 'UserPromptSubmit' || event === 'SessionEnd')) {
       hooks[event] = [{ hooks: [{ ...entry, timeout: 10 }] }];
     } else hooks[event] = [{ matcher: '*', hooks: [entry] }];
   }
@@ -221,7 +229,7 @@ export function kimiHookText(prefix, events, where) {
 /** True for a server entry that an earlier or this Frenemy wrote. */
 export function isFrenemy(entry) {
   const args = isObj(entry) && Array.isArray(entry.args) ? entry.args : [];
-  return args.some(a => /ask-(claude|codex|agy|kimi)-mcp\.mjs$/.test(String(a)));
+  return args.some(a => /ask-(claude|codex|agy|kimi|qwen)-mcp\.mjs$/.test(String(a)));
 }
 
 /**
@@ -837,6 +845,214 @@ export function mergeJsonHooks(file, hooks, done, key = 'hooks') {
   replaceChecked(file, jsonText(data), JSON.parse, done);
 }
 
+class JsoncError extends Stop {}
+
+export function scanJsonc(text) {
+  let at = 0;
+  const fail = why => { throw new JsoncError('could not read ' + why); };
+  if (text.charCodeAt(0) === 0xfeff) fail('a file that starts with a byte-order mark');
+
+  const blank = c => c === ' ' || c === '\t' || c === '\n' || c === '\r';
+  function skip() {
+    for (;;) {
+      while (at < text.length && blank(text[at])) at++;
+      if (text[at] === '/' && text[at + 1] === '/') { while (at < text.length && text[at] !== '\n') at++; continue; }
+      if (text[at] === '/' && text[at + 1] === '*') {
+        const end = text.indexOf('*/', at + 2);
+        if (end < 0) fail('a comment that is never closed');
+        at = end + 2;
+        continue;
+      }
+      return;
+    }
+  }
+  function string() {
+    at++;
+    let out = '';
+    while (at < text.length) {
+      const c = text[at++];
+      if (c === '"') return out;
+      if (c.charCodeAt(0) < 0x20) fail('an unescaped control character in a string');
+      if (c !== '\\') { out += c; continue; }
+      const e = text[at++];
+      if ('"\\/bfnrt'.includes(e)) out += { '"': '"', '\\': '\\', '/': '/', b: '\b', f: '\f', n: '\n', r: '\r', t: '\t' }[e];
+      else if (e === 'u') {
+        const hex = text.slice(at, at + 4);
+        if (!/^[0-9a-fA-F]{4}$/.test(hex)) fail('a short \\u escape');
+        at += 4;
+        out += String.fromCharCode(parseInt(hex, 16));
+      } else fail('an unknown escape "' + e + '"');
+    }
+    fail('a string that is never closed');
+  }
+  function number() {
+    const from = at;
+    if (text[at] === '-') at++;
+    while (at < text.length && text[at] >= '0' && text[at] <= '9') at++;
+    if (text[at] === '.') { at++; while (at < text.length && text[at] >= '0' && text[at] <= '9') at++; }
+    if (text[at] === 'e' || text[at] === 'E') {
+      at++;
+      if (text[at] === '+' || text[at] === '-') at++;
+      while (at < text.length && text[at] >= '0' && text[at] <= '9') at++;
+    }
+    const literal = text.slice(from, at);
+    if (!/^-?(?:0|[1-9][0-9]*)(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?$/.test(literal)) fail('the number "' + literal + '"');
+    const value = JSON.parse(literal);
+    if (!Number.isFinite(value)) fail('the number "' + literal + '"');
+    if (Number.isInteger(value) && !Number.isSafeInteger(value)) fail('the number ' + literal + ', too large to copy exactly');
+    return value;
+  }
+  function literalOf(word) {
+    if (text.startsWith(word, at)) { at += word.length; return word === 'null' ? null : word === 'true'; }
+    fail('the text "' + text.slice(at, at + 8) + '"');
+  }
+  function value(depth) {
+    if (depth > 64) fail('a file nested more than 64 levels deep');
+    const c = text[at];
+    if (c === '{') {
+      at++;
+      const members = [];
+      const out = {};
+      skip();
+      if (text[at] === '}') { at++; return { value: out, members }; }
+      for (;;) {
+        skip();
+        if (text[at] !== '"') fail('a member name that is not a quoted string');
+        const memberStart = at;
+        const key = string();
+        skip();
+        if (text[at] !== ':') fail('a member "' + key + '" without a colon after it');
+        at++;
+        skip();
+        const child = value(depth + 1);
+        members.push({ key, start: memberStart, end: at });
+        if (own(out, key)) fail('the member "' + key + '" written twice');
+        Object.defineProperty(out, key, { value: child.value, enumerable: true, writable: true, configurable: true });
+        skip();
+        if (text[at] === ',') { at++; continue; }
+        if (text[at] === '}') { at++; break; }
+        fail('a member list that goes on unexpectedly');
+      }
+      return { value: out, members };
+    }
+    if (c === '[') {
+      at++;
+      const items = [];
+      skip();
+      if (text[at] === ']') { at++; return { value: items }; }
+      for (;;) {
+        skip();
+        items.push(value(depth + 1).value);
+        skip();
+        if (text[at] === ',') { at++; continue; }
+        if (text[at] === ']') { at++; break; }
+        fail('a list that goes on unexpectedly');
+      }
+      return { value: items };
+    }
+    if (c === '"') return { value: string() };
+    if (c === 't') return { value: literalOf('true') };
+    if (c === 'f') return { value: literalOf('false') };
+    if (c === 'n') return { value: literalOf('null') };
+    if (c === '-' || (c >= '0' && c <= '9')) return { value: number() };
+    fail('the text "' + text.slice(at, at + 8) + '"');
+  }
+
+  skip();
+  if (text[at] !== '{') fail('a file whose top level is not one object');
+  const open = at;
+  const root = value(0);
+  const close = at - 1;
+  skip();
+  if (at !== text.length) fail('text after the closing brace');
+  return { value: root.value, members: root.members, open, close };
+}
+
+function memberIndent(text, open, members) {
+  const from = members.length ? members[0].start : open + 1;
+  const gap = text.slice(text.lastIndexOf('\n', from - 1) + 1, from);
+  return /^ +$/.test(gap) ? gap : '  ';
+}
+
+function memberText(key, value, indent) {
+  const body = jsonText(value).replace(/\n$/, '').split('\n')
+    .map((line, i) => i === 0 ? line : indent + line).join('\n');
+  return jsonText(key).replace(/\n$/, '') + ': ' + body;
+}
+
+export function mergeQwenSettings(file, servers, hooks, done, notes) {
+  const name = path.basename(file);
+  const text = fs.existsSync(file) ? readText(file) : '';
+  const scanned = /^[ \t\r\n]*$/.test(text) ? { value: {}, members: [], open: -1, close: -1 } : scanJsonc(text);
+  const data = scanned.value;
+  if (!isObj(data)) throw new Stop(name + ' is not a JSON object, so it was left alone');
+
+  const touched = [];
+
+  if (own(data, 'mcpServers') || Object.keys(servers).length) {
+    const have = own(data, 'mcpServers') ? data.mcpServers : {};
+    if (!isObj(have)) throw new Stop('mcpServers in ' + name + ' is not in the expected shape');
+    const wanted = { ...have };
+    for (const [seat, server] of Object.entries(servers)) {
+      if (own(wanted, seat) && !isFrenemy(wanted[seat])) {
+        notes.push('left your own "' + seat + '" entry in ' + name + ' untouched'); continue;
+      }
+      Object.defineProperty(wanted, seat, { value: server, enumerable: true, writable: true, configurable: true });
+    }
+    if (!same(wanted, have)) touched.push(['mcpServers', wanted]);
+  }
+
+  if (own(data, 'hooks') || Object.keys(hooks).length) {
+    const have = own(data, 'hooks') ? data.hooks : {};
+    if (!isObj(have) || !Object.values(have).every(Array.isArray)) {
+      throw new Stop('hooks in ' + name + ' are not in the expected shape');
+    }
+    const ours = new Set(commandsIn(Object.values(hooks)));
+    const wanted = Object.fromEntries(Object.entries(have).map(([event, groups]) => [event, withoutStale(groups, ours)]));
+    for (const [event, groups] of Object.entries(hooks)) {
+      const command = commandsIn(groups)[0];
+      if (own(wanted, event) && commandsIn(wanted[event]).includes(command)) continue;
+      if (!own(wanted, event)) Object.defineProperty(wanted, event, { value: [], enumerable: true, writable: true, configurable: true });
+      wanted[event].push(...groups);
+    }
+    if (!same(wanted, have)) touched.push(['hooks', wanted]);
+  }
+
+  if (!touched.length) return;
+  if (scanned.open < 0) { replaceChecked(file, jsonText({ ...data, ...Object.fromEntries(touched) }), JSON.parse, done); return; }
+
+  const indent = memberIndent(text, scanned.open, scanned.members);
+  const edits = [];
+  const added = [];
+  for (const [key, value] of touched) {
+    const member = scanned.members.find(m => m.key === key);
+    if (member) edits.push({ at: member.start, remove: member.end, insert: memberText(key, value, indent) });
+    else added.push(memberText(key, value, indent));
+  }
+  let out = text;
+  const apply = (from, to, insert) => { out = out.slice(0, from) + insert + out.slice(to); };
+  if (added.length) {
+    const last = scanned.members[scanned.members.length - 1];
+    const where = last ? last.end : scanned.open + 1;
+    const insert = last ? ',' + '\n' + indent + added.join(',\n' + indent)
+      : '\n' + indent + added.join(',\n' + indent) + '\n';
+    apply(where, where, insert);
+  }
+  for (const edit of edits.sort((a, b) => b.at - a.at)) apply(edit.at, edit.remove, edit.insert);
+
+  const expected = { ...data, ...Object.fromEntries(touched) };
+  let after;
+  try { after = scanJsonc(out).value; }
+  catch (error) {
+    throw new Stop('the entries could not be added to ' + name + ' with certainty, so nothing in it was changed' +
+      (error instanceof JsoncError ? ' (' + error.message + ')' : ''));
+  }
+  if (!same(after, expected)) {
+    throw new Stop('existing ' + name + ' settings would have changed, so nothing in it was changed');
+  }
+  replaceChecked(file, out, text => scanJsonc(text).value, done);
+}
+
 const splitLines = text => text.match(/[^\n]*\n|[^\n]+$/g) || [];
 
 export function mergeKimiHooks(file, prefix, done, where) {
@@ -933,12 +1149,14 @@ export function runCli(binary, args, onChild) {
 export function settingsFiles(home) {
   const claudeDir = process.env.CLAUDE_CONFIG_DIR;
   const codexDir = process.env.CODEX_HOME || path.join(home, '.codex');
+  const qwenHome = resolveQwenHome(process.env.QWEN_HOME, home);
   return {
     claude: [claudeDir ? path.join(claudeDir, '.claude.json') : path.join(home, '.claude.json'),
       path.join(claudeDir || path.join(home, '.claude'), 'settings.json')],
     codex: [path.join(codexDir, 'config.toml'), path.join(codexDir, 'hooks.json')],
     agy: [path.join(home, '.gemini', 'config', 'mcp_config.json'), path.join(home, '.gemini', 'config', 'hooks.json')],
     kimi: [path.join(home, '.kimi-code', 'mcp.json'), path.join(home, '.kimi-code', 'config.toml')],
+    qwen: [path.join(qwenHome, 'settings.json')],
   };
 }
 
@@ -1046,6 +1264,8 @@ export async function connect(prefix, bins, home, options = {}) {
         } else if (driver === 'agy') {
           mergeJsonHooks(files.agy[1], hooks, done, 'snitch');
           mergeJsonServers(files.agy[0], servers, done, notes);
+        } else if (driver === 'qwen') {
+          mergeQwenSettings(files.qwen[0], servers, hooks, done, notes);
         } else {
           mergeKimiHooks(files.kimi[1], prefix, done, where);
           mergeJsonServers(files.kimi[0], servers, done, notes);
@@ -1100,6 +1320,7 @@ export function generate(staging, node, prefix = staging) {
   const where = { node };
   const bins = Object.fromEntries(SEATS.map(seat => [seat, executable(seat)]));
   const env = { PATH: process.env.PATH || process.env.Path || (WIN ? '' : '/usr/bin:/bin'), NODE_BIN: node };
+  if (process.env.QWEN_HOME) env.QWEN_HOME = resolveQwenHome(process.env.QWEN_HOME);
   for (const seat of SEATS) if (bins[seat]) env[seat.toUpperCase() + '_BIN'] = bins[seat];
   for (const driver of SEATS) {
     const servers = {};
@@ -1107,6 +1328,7 @@ export function generate(staging, node, prefix = staging) {
       if (seat === driver) continue;
       servers[seat] = { command: node, args: [path.join(prefix, 'tools', 'ask-' + seat + '-mcp.mjs')], env: { ...env, FRENEMY_DRIVER: driver } };
     }
+    if (driver === 'qwen') for (const server of Object.values(servers)) server.trust = true;
     fs.writeFileSync(path.join(out, driver + '-mcp.json'), jsonText({ mcpServers: servers }));
     if (driver === 'codex') {
       let text = '';
@@ -1255,7 +1477,7 @@ export async function main(argv = process.argv.slice(2), overrides = {}) {
   }
   const { report, done } = await connect(prefix, bins, home, { node });
   const good = report.filter(([, ok]) => ok).map(([seat]) => NAMES[seat]);
-  if (good.length < 2) console.log('Frenemy needs at least two of the four AI apps. Found:', good.join(', ') || 'none');
+  if (good.length < 2) console.log('Frenemy needs at least two of the AI apps. Found:', good.join(', ') || 'none');
   else console.log('Connected to each other:', good.join(', '));
   for (const [seat, ok, note] of report) {
     if (!ok) console.log('Could not connect ' + NAMES[seat] + ':', note, '- its entries are in', config);

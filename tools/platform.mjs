@@ -314,6 +314,15 @@ export function homeDir(env = process.env) {
   return (WIN ? env.USERPROFILE : env.HOME) || os.homedir();
 }
 
+export function resolveQwenHome(value, home = homeDir(), cwd = process.cwd()) {
+  if (!value) return path.join(home, '.qwen');
+  if (value === '~') return home;
+  if (value.startsWith('~/') || value.startsWith('~\\')) {
+    return path.join(home, ...value.slice(2).split(/[/\\]+/).filter(Boolean));
+  }
+  return path.resolve(cwd, value);
+}
+
 /** A path written so every shell on every system reads it the same way (forward slashes). */
 export function portablePath(file) {
   return WIN ? String(file).replace(/\\/g, '/') : String(file);

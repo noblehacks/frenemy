@@ -11,7 +11,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { WIN, sleepSync } from './platform.mjs';
 
-export const FAMILY = /(?:^|[ /])(agy|kimi|codex)(?: |$)|(?:^|[ /])ask-(?:claude|agy|kimi|codex)[a-z-]*\.(?:sh|mjs)(?: |$)/;
+export const FAMILY = /(?:^|[ /])(agy|kimi|codex)(?: |$)|(?:^|[ /])ask-(?:claude|agy|kimi|codex|qwen)[a-z-]*\.(?:sh|mjs)(?: |$)/;
 
 /** One row of the process table. */
 export function makeProcess(pid, ppid, uid, tty, started, command) {

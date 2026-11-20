@@ -1,10 +1,10 @@
-# Frenemy 2: Claude ↔ Codex ↔ Gemini ↔ Kimi
+# Frenemy 2: Claude ↔ Codex ↔ Gemini ↔ Kimi ↔ Qwen
 
 ![Four app logos joined by cables, with the words "They can talk now."](images/they-can-talk-now.jpg)
 
-Version 1 let Claude and Codex call each other. Version 2 seats four: Claude Code, Codex,
-Gemini (through Google's Antigravity app, `agy`) and Kimi Code. Any of them can lead and
-hand work to the others, so you never copy/paste between them.
+Version 1 let Claude and Codex call each other. Version 2 seats five: Claude Code, Codex,
+Gemini (through Google's Antigravity app, `agy`), Kimi Code and Qwen Code. Any of them can
+lead and hand work to the others, so you never copy/paste between them.
 Runs on the **subscriptions you already pay for**. No API keys.
 
 Created by **Zakariya Syed**:
@@ -13,13 +13,13 @@ Created by **Zakariya Syed**:
 [X](https://x.com/ZakariyaHacks) ·
 [GitHub](https://github.com/noblehacks)
 
-Not affiliated with Anthropic, OpenAI, Google or Moonshot AI. MIT licensed (see LICENSE),
-the same as version 1.
+Not affiliated with Anthropic, OpenAI, Google, Moonshot AI or Alibaba. MIT licensed (see
+LICENSE), the same as version 1.
 
 **What you need:** Node.js 18 or newer, and at least two of these installed, on your
 `PATH` and signed in: Claude Code (`claude`), Codex (`codex`), Antigravity (`agy`), Kimi
-Code (`kimi`). You do not need all four; Frenemy connects the ones it finds. VS Code is
-needed only for the Snitch panel. No Python, no WSL.
+Code (`kimi`), Qwen Code (`qwen`). You do not need all five; Frenemy connects the ones it
+finds. VS Code is needed only for the Snitch panel. No Python, no WSL.
 
 ## Install (one command)
 
@@ -42,7 +42,9 @@ AI app it finds to the others. It saves a copy of any settings file before chang
 it is safe to run again.
 
 Then restart the AI apps you have open and reload VS Code. Codex asks once to trust the new
-hooks; say yes. How to undo it, and the options: [INSTALL.md](INSTALL.md).
+hooks; say yes. Qwen Code asks before running one of Frenemy's tools unless its folder is
+one you have trusted; the entries say they are Frenemy's own. How to undo it, and the
+options: [INSTALL.md](INSTALL.md).
 
 ## How to use it
 
@@ -56,9 +58,10 @@ Type what you want in the app you are using. That app is the driver.
 
 ![Four red phone boxes at night, each with one app's logo, with calls running between them](images/four-ais.jpg)
 
-- **Four AIs instead of two.** Claude, Codex, Gemini and Kimi, each able to ask the other three.
+- **Five AIs instead of two.** Claude, Codex, Gemini, Kimi and Qwen Code, each able to ask
+  the other four.
 - **Anyone can drive.** The app you are typing in is the driver. It takes your request and
-  hands out the work. Each driver gets the other three as tools.
+  hands out the work. Each driver gets the other four as tools.
 - **Two kinds of jobs.** Advice: one AI asks another for a review, an audit or a second
   opinion. Real work: the driver has another AI build something in its own separate copy,
   and checks it before anything touches your real files.
@@ -84,8 +87,9 @@ leave the panel out on purpose, add `--no-snitch` to the install command.
 - What the installer changes on your computer, and how to undo it: [INSTALL.md](INSTALL.md)
 - What was tested, and what was not: [RELEASE-STATUS.md](RELEASE-STATUS.md)
 - Real-work jobs: the other AI builds in its own copy and the driver applies it. For those
-  jobs Gemini and Kimi run their tools without asking each time, so only hand out work you
-  mean to. More: [worker safeguards](notes/WORKER-SAFEGUARDS.md)
+  jobs Gemini, Kimi and Qwen run their tools without asking each time, so only hand out work
+  you mean to. Qwen stops itself when it runs past its time or turn budget. More:
+  [worker safeguards](notes/WORKER-SAFEGUARDS.md)
 
 ## Coming from version 1?
 

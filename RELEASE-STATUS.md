@@ -23,3 +23,11 @@ More detail for macOS:
 License: MIT, the same as version 1. No account credentials or real machine configuration are included. Snitch is not on the VS Code Marketplace; the installer puts it into VS Code directly. This release is not certified for production use; read the table above before relying on it.
 
 Release tooling reference: https://code.visualstudio.com/api/working-with-extensions/publishing-extension
+
+## Qwen Code
+
+Qwen Code adds consult and isolated write jobs, installer connections, and Snitch reporting. Frenemy and relay versions remain 2.0.0.
+
+Validation: Linux, Node.js 18.20.8 and 22.22.1, `SNITCH_TEST_BROWSER=/usr/bin/chromium node tools/check-release.mjs`. The suite uses stand-in apps and includes Qwen settings preservation, home overrides, hook replay, relay lifecycle, and wrapper checks.
+
+Live provider routes, Qwen on Windows or macOS, and Qwen rows in a real VS Code window were not verified in this change.

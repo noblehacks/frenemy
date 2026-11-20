@@ -7,7 +7,7 @@ import { pathToFileURL } from 'node:url';
 import lock from '../snitch/extension/lib/joblock.js';
 import { PKG, NODE, t, finish, sleep, tempRoot, fakeApp, safeEnv, run, talk } from './test-relay-kit.mjs';
 
-const SEATS = ['claude', 'codex', 'agy', 'kimi'];
+const SEATS = ['claude', 'codex', 'agy', 'kimi', 'qwen'];
 const server = seat => path.join(PKG, 'tools', 'ask-' + seat + '-mcp.mjs');
 
 // Drivers learn arguments from tools/list, not from relay internals. Started outside the
@@ -117,6 +117,12 @@ const ROUTES = {
     stdin: '',
     argv: () => ['-p', framed, '--output-format', 'stream-json', '--agent-file', path.join(PKG, 'tools', 'kimi-consult-agent.md')],
   },
+  qwen: {
+    answer: JSON.stringify([{ type: 'system', subtype: 'init' },
+      { type: 'result', subtype: 'success', is_error: false, result: 'fake qwen answer' }]) + '\n',
+    stdin: framed,
+    argv: () => ['--output-format', 'json', '--safe-mode', '--approval-mode', 'plan'],
+  },
 };
 
 {
@@ -149,8 +155,77 @@ const ROUTES = {
         relay.child.stdin.end();
         await relay.exited(5000);
       } finally { await relay.close(); }
+
     });
   }
 }
+
+{
+  const root = tempRoot('frenemy-qwen-relay-home-');
+  const project = path.join(root, 'project');
+  fs.mkdirSync(project);
+  const home = path.join(root, 'home');
+  const cases = [
+    ['absolute', path.join(root, 'absolute home'), path.join(root, 'absolute home')],
+    ['relative', 'relative home', path.join(root, 'relative home')],
+    ['tilde', '~/custom home', path.join(home, 'custom home')],
+    ['tilde-backslash', '~\\custom home', path.join(home, 'custom home')],
+    ['home', '~', home],
+    ['empty', '', path.join(home, '.qwen')],
+    ['unset', undefined, path.join(home, '.qwen')],
+  ];
+  for (const [name, value, expected] of cases) {
+    await t('Qwen home ' + name + ' reaches consults, write jobs and log discovery', async () => {
+      const record = path.join(root, name + '-received.json');
+      const fake = fakeApp(path.join(root, name), 'fake-qwen',
+        'const fs = require("fs");\n' +
+        'fs.readFileSync(0, "utf8");\n' +
+        'fs.writeFileSync(' + JSON.stringify(record) + ', JSON.stringify({ home: process.env.QWEN_HOME, cwd: process.cwd() }));\n' +
+        'process.stdout.write(' + JSON.stringify(ROUTES.qwen.answer) + ');\n');
+      const relay = talk(NODE, [server('qwen')], { cwd: root,
+        env: safeEnv(root, { QWEN_BIN: fake, QWEN_HOME: value, FRENEMY_DRIVER: 'claude' }) });
+      try {
+        for (const [id, tool] of [[1, 'ask_qwen'], [2, 'ask_qwen_write']]) {
+          relay.send({ jsonrpc: '2.0', id, method: 'tools/call', params: { name: tool,
+            arguments: { prompt: 'fixture', working_directory: project, allowed_files: [name + '.txt'] } } });
+          const response = await relay.receive(30000, 'Qwen did not answer');
+          assert.strictEqual(response.id, id);
+          assert.strictEqual(response.result.isError, false, JSON.stringify(response));
+          const seen = JSON.parse(fs.readFileSync(record, 'utf8'));
+          assert.strictEqual(seen.home, expected);
+          const cwd = fs.realpathSync(seen.cwd);
+          if (tool === 'ask_qwen') assert.strictEqual(cwd, project);
+          else assert.strictEqual(path.dirname(cwd), path.join(project, '.worker-state', 'workspaces'));
+        }
+        relay.child.stdin.end();
+        await relay.exited(5000);
+      } finally { await relay.close(); }
+      const logs = path.join(expected, 'projects');
+      fs.mkdirSync(logs, { recursive: true });
+      fs.writeFileSync(path.join(logs, 'fixture.jsonl'), 'qwen-home-marker\n');
+      const found = await run(NODE, [path.join(PKG, 'tools', 'prove.mjs'), 'qwen-home-marker', 'qwen'],
+        { cwd: root, env: safeEnv(root, { QWEN_HOME: value }) });
+      assert.strictEqual(found.code, 0, found.stdout + found.stderr);
+      assert.match(found.stdout, /QWEN\s+1 log/);
+    });
+  }
+}
+
+await t('relay normalizes an explicit Qwen home override before changing directories', async () => {
+  const root = tempRoot('frenemy-qwen-env-override-');
+  const cwd = path.join(root, 'working');
+  fs.mkdirSync(cwd);
+  const stub = path.join(root, 'environment.mjs');
+  fs.writeFileSync(stub, 'console.log(process.env.QWEN_HOME);');
+  const bridge = path.join(root, 'bridge.mjs');
+  fs.writeFileSync(bridge,
+    'import {runWrapper} from ' + JSON.stringify(pathToFileURL(path.join(PKG, 'tools', 'relay-core.mjs')).href) + ';\n' +
+    'const result = await runWrapper({script:' + JSON.stringify(stub) + ',cwd:' + JSON.stringify(cwd) +
+    ',env:{QWEN_HOME:"explicit-home"},timeoutMs:5000,maxOutput:1000,exitMeaning:{},label:"fixture"},"fixture");\n' +
+    'console.log(JSON.stringify(result));\n');
+  const result = await run(NODE, [bridge], { cwd: root, env: safeEnv(root, { QWEN_HOME: 'inherited-home' }) });
+  assert.strictEqual(result.code, 0, result.stderr);
+  assert.deepStrictEqual(JSON.parse(result.stdout), { ok: true, text: path.join(root, 'explicit-home') + '\n' });
+});
 
 finish('relay transaction tests');

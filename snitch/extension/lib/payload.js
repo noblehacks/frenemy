@@ -12,7 +12,7 @@ const { brand, markSvg } = require('./brands');
 // Keep the original logs intact; never guess what an arbitrary script achieved.
 function plainActivity(value) {
   const text = typeof value === 'string' ? value.replace(/\s+/g, ' ').trim() : '';
-  const request = text.match(/^(?:mcp__\w+__)?ask_(claude|codex|agy|kimi)(_write)?$/i);
+  const request = text.match(/^(?:mcp__\w+__)?ask_(claude|codex|agy|kimi|qwen)(_write)?$/i);
   if (request) return (request[2] ? 'Assigned work to ' : 'Asked for help from ') + brand(request[1].toLowerCase()).label;
   const labels = [
     [/^answered,\s*\d+\s+chars$/i, 'Returned an answer'],

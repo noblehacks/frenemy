@@ -33,7 +33,7 @@ const kimiLine = text => JSON.stringify({ role: 'assistant', content: text }) + 
 // name: the word that starts the wrapper's own messages. byArgument: the prompt is handed to
 // the app as one argument (and may be given to the wrapper as one), not on standard input.
 const WRAPPERS = [
-  { name: 'ask-claude', file: 'tools/ask-claude-wrapper.mjs', seat: 'CLAUDE', byArgument: false,
+  { name: 'ask-claude', file: 'tools/ask-claude-wrapper.mjs', seat: 'CLAUDE', byArgument: false, claudeLike: true,
     good: { FAKE_STDOUT: JSON.stringify({ result: 'the answer' }) }, shown: 'the answer\n',
     argv: () => ['-p', '--output-format', 'json', '--safe-mode', '--disallowedTools', 'Bash', 'Edit', 'Write', 'NotebookEdit', 'WebFetch', 'WebSearch', '--strict-mcp-config'] },
   { name: 'ask-codex', file: 'tools/ask-codex-wrapper.mjs', seat: 'CODEX', byArgument: false,
@@ -48,6 +48,10 @@ const WRAPPERS = [
   { name: 'ask-kimi', file: 'ask-kimi.mjs', seat: 'KIMI', byArgument: true,
     good: { FAKE_STDOUT: '{"role":"user","content":"q"}\n' + kimiLine('the') + 'not json\n' + kimiLine('answer\n\n') }, shown: 'the\nanswer\n',
     argv: prompt => ['-p', prompt, '--output-format', 'stream-json', '--agent-file', PROFILE] },
+  { name: 'ask-qwen', file: 'tools/ask-qwen-wrapper.mjs', seat: 'QWEN', byArgument: false, claudeLike: true,
+    good: { FAKE_STDOUT: JSON.stringify([{ type: 'system', subtype: 'init' }, { type: 'result', subtype: 'success', is_error: false, result: 'the answer' }]) },
+    shown: 'the answer\n',
+    argv: () => ['--output-format', 'json', '--safe-mode', '--approval-mode', 'plan'] },
 ];
 
 function start(w, { args = [], input = '', env = {}, timeoutMs = 20000 } = {}) {
@@ -70,7 +74,7 @@ for (const w of WRAPPERS) {
     const seen = received();
     assert.deepStrictEqual(seen.argv, w.argv(PROMPT, seen.argv));
     assert.strictEqual(seen.stdin, w.byArgument ? '' : PROMPT);
-    if (w.name !== 'ask-claude') assert.strictEqual(seen.driver, 'claude');
+    if (!w.claudeLike) assert.strictEqual(seen.driver, 'claude');
     assert.ok(seen.user, 'the app is told who the user is');
   });
 
@@ -90,7 +94,7 @@ for (const w of WRAPPERS) {
   await t(w.name + ': an empty prompt is refused (exit 2)', async () => {
     const done = await start(w, { input: '', env: w.good });
     assert.strictEqual(done.code, 2);
-    if (w.name !== 'ask-claude') said(done, w.name + ': empty prompt');
+    if (!w.claudeLike) said(done, w.name + ': empty prompt');
     assert.strictEqual(fs.existsSync(record), false, 'the app was started');
   });
 
@@ -103,27 +107,27 @@ for (const w of WRAPPERS) {
     }
     const over = await start(w, { input: 'p'.repeat(cap + 1), env: w.good });
     assert.strictEqual(over.code, 2);
-    if (w.name !== 'ask-claude') said(over, w.name + ': prompt is ' + (cap + 1) + ' bytes; cap is ' + cap);
+    if (!w.claudeLike) said(over, w.name + ': prompt is ' + (cap + 1) + ' bytes; cap is ' + cap);
     assert.strictEqual(fs.existsSync(record), false, 'the app was started');
   });
 
   await t(w.name + ': a time limit that is not a number is refused (exit 2)', async () => {
     const done = await start(w, { ...give(w, PROMPT), env: { ...w.good, [T]: '5s' } });
     assert.strictEqual(done.code, 2);
-    said(done, w.name === 'ask-claude' ? 'Invalid CLAUDE_TIMEOUT' : w.name + ': ' + T + " must be a number, got '5s'");
+    said(done, w.claudeLike ? 'Invalid ' + T : w.name + ': ' + T + " must be a number, got '5s'");
   });
 
   await t(w.name + ': a missing app is exit 127', async () => {
     const absent = path.join(root, 'absent-app');
     const done = await start(w, { ...give(w, PROMPT), env: { [w.seat + '_BIN']: absent } });
     assert.strictEqual(done.code, 127);
-    if (w.name !== 'ask-claude') said(done, w.name + ': ' + w.seat.toLowerCase() + ' not found/executable at ' + absent);
+    if (!w.claudeLike) said(done, w.name + ': ' + w.seat.toLowerCase() + ' not found/executable at ' + absent);
   });
 
   await t(w.name + ': the app\'s own exit code is passed on with its answer', async () => {
     const done = await start(w, { ...give(w, PROMPT), env: { ...w.good, FAKE_EXIT: '7', FAKE_STDERR: 'the app complained\n' } });
     assert.strictEqual(done.code, 7);
-    if (w.name === 'ask-claude') said(done, 'the answer');
+    if (w.claudeLike) said(done, 'the answer');
     else { assert.strictEqual(done.stdout, w.shown); said(done, 'the app complained'); }
   });
 
@@ -132,8 +136,8 @@ for (const w of WRAPPERS) {
     assert.strictEqual(done.code, 1);
     assert.strictEqual(done.stdout, '');
     if (w.name === 'ask-kimi') said(done, 'ask-kimi: kimi produced no answer text (exit 0)');
-    else if (w.name !== 'ask-claude') said(done, 'wrapper: worker produced no answer');
-    if (w.name !== 'ask-claude') said(done, 'only an error');
+    else if (!w.claudeLike) said(done, 'wrapper: worker produced no answer');
+    if (!w.claudeLike) said(done, 'only an error');
   });
 
   await t(w.name + ': past the time limit it ends with exit 124 and the app is gone', async () => {
@@ -141,7 +145,7 @@ for (const w of WRAPPERS) {
     const pid = received().pid;
     try {
       assert.strictEqual(done.code, 124, done.stderr);
-      said(done, w.name === 'ask-claude' ? 'claude timed out after 1s'
+      said(done, w.claudeLike ? w.seat.toLowerCase() + ' timed out after 1s'
         : w.name + ': ' + w.seat.toLowerCase() + ' timed out after 1s and was killed');
       assert.strictEqual(await gone(pid, 2000), true, 'the app outlived the time limit');
     } finally { stopHard(pid); }
@@ -149,7 +153,7 @@ for (const w of WRAPPERS) {
 }
 
 // ---- the answer cap ---------------------------------------------------------------------
-for (const w of WRAPPERS.filter(one => one.name !== 'ask-claude' && one.name !== 'ask-kimi')) {
+for (const w of WRAPPERS.filter(one => !one.claudeLike && one.name !== 'ask-kimi')) {
   await t(w.name + ': an answer over 200,000 bytes is cut there and says so', async () => {
     const exact = await start(w, { ...give(w, PROMPT), env: { FAKE_BIG: '200000' } });
     assert.strictEqual(exact.stdout.length, 200000);
@@ -159,7 +163,7 @@ for (const w of WRAPPERS.filter(one => one.name !== 'ask-claude' && one.name !==
   });
 }
 
-const [claude, codex, consult, agy, kimi] = WRAPPERS;
+const [claude, codex, consult, agy, kimi, qwen] = WRAPPERS;
 
 await t('ask-kimi: an answer over 200,000 bytes is cut there and says so', async () => {
   // The long answer goes through a file: Linux refuses one environment value over 128 KiB.
@@ -207,6 +211,44 @@ await t('ask-claude: when Claude fails, its reason (or its error text) is passed
   assert.deepStrictEqual([text.code, text.stderr], [3, 'why it failed\n\n']);
   const silent = await start(claude, { input: PROMPT, env: { FAKE_EXIT: '3' } });
   assert.deepStrictEqual([silent.code, silent.stderr], [3, 'Claude failed without usable output\n']);
+});
+
+await t('ask-qwen: QWEN_WRITE=1 swaps plan mode for yolo with a wall clock just inside the watchdog', async () => {
+  await start(qwen, { input: PROMPT, env: { ...qwen.good, QWEN_WRITE: '1' } });
+  assert.deepStrictEqual(received().argv,
+    ['--output-format', 'json', '--safe-mode', '--yolo', '--max-wall-time', '540', '--max-session-turns', '300']);
+  await start(qwen, { input: PROMPT, env: { ...qwen.good, QWEN_WRITE: '1', QWEN_TIMEOUT: '0' } });
+  assert.deepStrictEqual(received().argv,
+    ['--output-format', 'json', '--safe-mode', '--yolo', '--max-wall-time', '24h', '--max-session-turns', '300']);
+  await start(qwen, { input: PROMPT, env: { ...qwen.good, QWEN_WRITE: 'yes' } });
+  assert.deepStrictEqual(received().argv, ['--output-format', 'json', '--safe-mode', '--approval-mode', 'plan']);
+});
+
+await t('ask-qwen: the result message is found wherever it sits, and an error one is exit 1 with its words', async () => {
+  const late = await start(qwen, { input: PROMPT, env: { FAKE_STDOUT: JSON.stringify(
+    [{ type: 'result', is_error: false, result: 'first' }, { type: 'assistant' }, { type: 'result', is_error: false, result: 'last' }]) } });
+  assert.deepStrictEqual([late.code, late.stdout], [0, 'last\n']);
+  const marked = await start(qwen, { input: PROMPT, env: { FAKE_STDOUT: JSON.stringify([{ type: 'result', is_error: true, result: 'it went wrong' }]) } });
+  assert.deepStrictEqual([marked.code, marked.stdout, marked.stderr], [1, '', 'it went wrong\n']);
+  const blank = await start(qwen, { input: PROMPT, env: { FAKE_STDOUT: JSON.stringify([{ type: 'result', result: '  ' }]) } });
+  assert.deepStrictEqual([blank.code, blank.stderr], [1, 'Qwen returned no answer\n']);
+  const noResult = await start(qwen, { input: PROMPT, env: { FAKE_STDOUT: JSON.stringify([{ type: 'assistant' }]) } });
+  assert.deepStrictEqual([noResult.code, noResult.stderr], [1, 'Qwen answered without a result message\n']);
+  const notList = await start(qwen, { input: PROMPT, env: { FAKE_STDOUT: JSON.stringify({ type: 'result', result: 'the answer' }) } });
+  assert.deepStrictEqual([notList.code, notList.stderr], [1, 'Qwen answer is not a list of messages\n']);
+  const broken = await start(qwen, { input: PROMPT, env: { FAKE_STDOUT: 'not json' } });
+  assert.strictEqual(broken.code, 1);
+  assert.ok(broken.stderr.startsWith('Qwen answer is not valid JSON'), broken.stderr);
+  const silent = await start(qwen, { input: PROMPT, env: { FAKE_EXIT: '55' } });
+  assert.deepStrictEqual([silent.code, silent.stderr], [55, 'Qwen failed without an answer\n']);
+});
+
+await t('ask-qwen: an answer over 200,000 characters is cut there', async () => {
+  const big = path.join(root, 'qwen-big-answer.txt');
+  fs.writeFileSync(big, JSON.stringify([{ type: 'result', is_error: false, result: 'é'.repeat(200005) }]));
+  const done = await start(qwen, { input: PROMPT, env: { FAKE_STDOUT_FILE: big } });
+  assert.strictEqual(done.code, 0);
+  assert.strictEqual(done.stdout, 'é'.repeat(200000) + '\n');
 });
 
 await t('ask-codex: CODEX_WRITE=1 lets Codex write inside its folder; anything else is read-only', async () => {

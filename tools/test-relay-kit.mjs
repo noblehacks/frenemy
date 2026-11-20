@@ -95,14 +95,14 @@ export function safeEnv(root, extra = {}) {
   fs.mkdirSync(home, { recursive: true });
   const env = { ...process.env };
   for (const key of Object.keys(env)) {
-    if (/^(CLAUDE|CODEX|AGY|KIMI)_(BIN|TIMEOUT|WRITE|FULL|AGENT_FILE|LOG_FILE)$/.test(key)) delete env[key];
+    if (/^(CLAUDE|CODEX|AGY|KIMI|QWEN)_(BIN|TIMEOUT|WRITE|FULL|AGENT_FILE|LOG_FILE)$/.test(key)) delete env[key];
   }
-  for (const key of ['NODE_BIN', 'FLEET_BIN', 'FRENEMY_DRIVER', 'FRENEMY_RELAY_JOB', 'SNITCH_CAPTURE']) delete env[key];
+  for (const key of ['NODE_BIN', 'FLEET_BIN', 'FRENEMY_DRIVER', 'FRENEMY_RELAY_JOB', 'SNITCH_CAPTURE', 'QWEN_HOME']) delete env[key];
   const pathName = Object.keys(env).find(key => key.toUpperCase() === 'PATH') || 'PATH';
   env[pathName] = [path.dirname(NODE), env[pathName] || ''].filter(Boolean).join(path.delimiter);
   const absent = path.join(root, 'no-real-app');
   return { ...env, HOME: home, USERPROFILE: home, FLEET_DIR: path.join(root, 'fleet'),
-    CLAUDE_BIN: absent, CODEX_BIN: absent, AGY_BIN: absent, KIMI_BIN: absent, ...extra };
+    CLAUDE_BIN: absent, CODEX_BIN: absent, AGY_BIN: absent, KIMI_BIN: absent, QWEN_BIN: absent, ...extra };
 }
 
 /** Run a program to its end. Resolves { code, signal, stdout, stderr, timedOut }. */
