@@ -12,6 +12,7 @@ const WRAPPERS = [
   ['claude', 'tools/ask-claude-wrapper.mjs', false],
   ['codex', 'tools/ask-codex-wrapper.mjs', false],
   ['kimi', 'ask-kimi.mjs', true],
+  ['qwen', 'tools/ask-qwen-wrapper.mjs', false],
   ['agy-consult', 'tools/ask-agy-consult.mjs', true],
   ['agy-write', 'ask-agy.mjs', true],
 ];

@@ -1,0 +1,20 @@
+{
+  "session_id": "fixture-74e0e66882114cd48754d909e0666191",
+  "transcript_path": "/fixture/transcript.jsonl",
+  "cwd": "/fixture/project",
+  "hook_event_name": "PostToolUse",
+  "timestamp": "2026-11-19T23:07:15.276Z",
+  "permission_mode": "default",
+  "prompt_id": "fixture-74e0e66882114cd48754d909e0666191########0",
+  "tool_name": "read_file",
+  "tool_input": {
+    "file_path": "/fixture/project/note.txt"
+  },
+  "tool_response": {
+    "llmContent": "FRENEMY-QWEN-NATIVE-20261119\n",
+    "returnDisplay": ""
+  },
+  "tool_use_id": "toolu_1795129635248_jg6jp8lvh",
+  "tool_call_id": "call_4efd6d98960c4cf4ba0ea85d",
+  "duration_ms": 6
+}

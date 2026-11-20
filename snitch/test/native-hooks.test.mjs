@@ -30,9 +30,9 @@ const beat = (agent, mode, data, env, cwd) => spawnSync(process.execPath, [HOOK,
 const rowFiles = jobs => fs.readdirSync(jobs).filter(name => name.endsWith('.json')).map(name => path.join(jobs, name));
 const readRow = file => JSON.parse(fs.readFileSync(file, 'utf8'));
 
-t('captured codex and kimi lifecycle', () => {
+t('captured codex, kimi and qwen lifecycle', () => {
   const root = tempRoot('snitch-native-replay-');
-  for (const agent of ['codex', 'kimi']) {
+  for (const agent of ['codex', 'kimi', 'qwen']) {
     const store = path.join(root, agent);
     const env = cleanEnv(root, { FLEET_DIR: store, FRENEMY_DRIVER: '' });
     for (const event of ['SessionStart', 'UserPromptSubmit', 'PostToolUse', 'Stop', 'SessionEnd']) {

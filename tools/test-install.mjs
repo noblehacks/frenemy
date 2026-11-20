@@ -17,7 +17,7 @@ import { WIN, processSnapshot, stopProcessTree } from './platform.mjs';
 
 const ROOT = path.dirname(path.dirname(fs.realpathSync(fileURLToPath(import.meta.url))));
 const join = path.join;
-const SEATS = ['claude', 'codex', 'agy', 'kimi'];
+const SEATS = ['claude', 'codex', 'agy', 'kimi', 'qwen'];
 
 let passed = 0, failed = 0, skipped = 0;
 async function check(name, fn) {
@@ -136,11 +136,11 @@ const INSTALL = join(SRC, 'install.mjs');
 const SAFE_HOME = mkdir(join(WORK, 'unused home'));
 const cleanEnv = () => {
   const env = { ...process.env, HOME: SAFE_HOME, USERPROFILE: SAFE_HOME, FLEET_DIR: join(SAFE_HOME, 'fleet') };
-  delete env.CLAUDE_CONFIG_DIR; delete env.CODEX_HOME;
+  delete env.CLAUDE_CONFIG_DIR; delete env.CODEX_HOME; delete env.QWEN_HOME;
   return env;
 };
 Object.assign(process.env, { HOME: SAFE_HOME, USERPROFILE: SAFE_HOME, FLEET_DIR: join(SAFE_HOME, 'fleet') });
-delete process.env.CLAUDE_CONFIG_DIR; delete process.env.CODEX_HOME;
+delete process.env.CLAUDE_CONFIG_DIR; delete process.env.CODEX_HOME; delete process.env.QWEN_HOME;
 const installer = await import(pathToFileURL(INSTALL).href);
 
 const runInstall = (args, env, timeout = 60000) =>
@@ -324,12 +324,16 @@ await group('Clean install and all generated routes (home folder with a space in
   const env = homeEnv(home);
   const calls = join(base, 'cli-calls.log');
   for (const seat of SEATS) {
-    const answer = { claude: JSON.stringify({ result: 'fixture answer' }), kimi: JSON.stringify({ role: 'assistant', content: 'fixture answer' }) }[seat] || 'fixture answer';
+    const answer = {
+      claude: JSON.stringify({ result: 'fixture answer' }),
+      kimi: JSON.stringify({ role: 'assistant', content: 'fixture answer' }),
+      qwen: JSON.stringify([{ type: 'result', subtype: 'success', is_error: false, result: 'fixture answer' }]),
+    }[seat] || 'fixture answer';
     const source = seat === 'claude' ? FAKE_CLAUDE : seat === 'codex' ? FAKE_CODEX : fakeOther(seat);
     env[seat.toUpperCase() + '_BIN'] = fakeApp(base, seat + '-not-on-path', source, calls, answer);
   }
   // Settings the person already had. None of it may be lost or reworded.
-  for (const folder of ['.claude', '.codex', join('.gemini', 'config'), '.kimi-code']) mkdir(join(home, folder));
+  for (const folder of ['.claude', '.codex', join('.gemini', 'config'), '.kimi-code', '.qwen']) mkdir(join(home, folder));
   write(join(home, '.claude', 'settings.json'), JSON.stringify({ model: 'keep', hooks: { Stop: [{ matcher: '*', hooks: [mine] }] } }));
   write(join(home, '.codex', 'hooks.json'), JSON.stringify({ hooks: { PostToolUse: [{ matcher: '', hooks: [mine] }] } }));
   write(join(home, '.gemini', 'config', 'mcp_config.json'), JSON.stringify({ mcpServers: { other: { command: 'x', args: ['y'] }, codex: { command: 'mine', args: ['my-own-server'] } } }));
@@ -337,28 +341,43 @@ await group('Clean install and all generated routes (home folder with a space in
   write(join(home, '.kimi-code', 'mcp.json'), JSON.stringify({ mcpServers: { claude: { command: 'old', args: ['/old/frenemy/ask-claude-mcp.mjs'] } } }));
   const kimiBefore = '# my comment\ndefault_model = "keep"\n\n[[hooks]]\nevent = "Stop"\ncommand = "/usr/bin/true mine"\n';
   write(join(home, '.kimi-code', 'config.toml'), kimiBefore);
+  const qwenBefore = '{\n' +
+    '  // My own settings. Frenemy must not lose this line.\n' +
+    '  "model": { "name": "my-local-model" },\n' +
+    "  /* A server of my own that happens to use one of Frenemy's names. */\n" +
+    '  "mcpServers": {\n' +
+    '    "claude": { "command": "mine", "args": ["/my/own/server"] }\n' +
+    '  },\n' +
+    '  "hooks": {\n' +
+    '    "PostToolUse": [{ "matcher": "*", "hooks": [{ "type": "command", "command": "/usr/bin/true mine" }] }]\n' +
+    '  }\n' +
+    '}\n';
+  write(join(home, '.qwen', 'settings.json'), qwenBefore);
   const args = ['--prefix', prefix, '--extension-dir', extension];
 
   // First: the look-only mode changes no settings at all.
   const quiet = runInstall(['--prefix', join(home, 'look only'), '--no-snitch', '--no-connect'], env, 30000);
   await check('--no-connect installs', () => assert.strictEqual(quiet.status, 0, quiet.stderr));
-  await check('--no-connect changes no settings', () => assert.strictEqual(read(join(home, '.kimi-code', 'config.toml')), kimiBefore));
+  await check('--no-connect changes no settings', () => {
+    assert.strictEqual(read(join(home, '.kimi-code', 'config.toml')), kimiBefore);
+    assert.strictEqual(read(join(home, '.qwen', 'settings.json')), qwenBefore);
+  });
   await check('--no-connect runs no app command', () => assert.ok(!fs.existsSync(calls)));
   await check('--no-connect says where the entries are', () => assert.match(quiet.stdout, /No app settings were changed\. The entries to add are in /));
 
   const result = runInstall(args, env);
   await check('the install succeeds', () => assert.strictEqual(result.status, 0, result.stdout + result.stderr));
-  await check('all four apps are connected', () => assert.ok(result.stdout.includes('Connected to each other: Claude, Codex, Gemini (agy), Kimi'), result.stdout));
+  await check('all five apps are connected', () => assert.ok(result.stdout.includes('Connected to each other: Claude, Codex, Gemini (agy), Kimi, Qwen Code'), result.stdout));
   await check('the Snitch panel is copied whole', () =>
     assert.ok(fs.readFileSync(join(extension, 'extension.js')).equals(fs.readFileSync(join(SRC, 'snitch', 'extension', 'extension.js')))));
   // Claude and Codex are connected through their own commands.
   const log = fs.existsSync(calls) ? read(calls) : '';
-  await check('Claude is connected through its own command', () => { for (const name of ['codex', 'agy', 'kimi']) assert.ok(log.includes('claude mcp add-json -s user ' + name + ' '), name); });
-  await check('Codex is connected through its own command', () => { for (const name of ['claude', 'agy', 'kimi']) assert.ok(log.includes('codex mcp add ' + name + ' --env '), name); });
+  await check('Claude is connected through its own command', () => { for (const name of ['codex', 'agy', 'kimi', 'qwen']) assert.ok(log.includes('claude mcp add-json -s user ' + name + ' '), name); });
+  await check('Codex is connected through its own command', () => { for (const name of ['claude', 'agy', 'kimi', 'qwen']) assert.ok(log.includes('codex mcp add ' + name + ' --env '), name); });
   await check('nothing was removed on a first install', () => assert.ok(!log.includes('mcp remove')));
-  await check('Claude lists the three others', () => assert.deepStrictEqual(sorted(Object.keys(readJson(join(home, '.claude.json')).mcpServers)), ['agy', 'codex', 'kimi']));
-  await check('Codex lists the three others', () =>
-    assert.deepStrictEqual(sorted(Object.keys(installer.parseToml(read(join(home, '.codex', 'config.toml'))).mcp_servers)), ['agy', 'claude', 'kimi']));
+  await check('Claude lists the four others', () => assert.deepStrictEqual(sorted(Object.keys(readJson(join(home, '.claude.json')).mcpServers)), ['agy', 'codex', 'kimi', 'qwen']));
+  await check('Codex lists the four others', () =>
+    assert.deepStrictEqual(sorted(Object.keys(installer.parseToml(read(join(home, '.codex', 'config.toml'))).mcp_servers)), ['agy', 'claude', 'kimi', 'qwen']));
   // Hooks are added beside the person's own, never instead of them.
   const claude = readJson(join(home, '.claude', 'settings.json'));
   await check("Claude's own settings are kept", () => assert.strictEqual(claude.model, 'keep'));
@@ -377,19 +396,46 @@ await group('Clean install and all generated routes (home folder with a space in
   await check("agy keeps another tool's hooks and gets the reporter", () => {
     assert.deepStrictEqual(agyHooks['other-tool'], { Stop: [mine] }); assert.ok('PostToolUse' in agyHooks.snitch);
   });
+  const qwenText = read(join(home, '.qwen', 'settings.json'));
+  const qwen = installer.scanJsonc(qwenText).value;
+  await check("Qwen: the person's own comments and settings survive", () => {
+    assert.ok(qwenText.includes('// My own settings. Frenemy must not lose this line.'), qwenText);
+    assert.ok(qwenText.includes("/* A server of my own that happens to use one of Frenemy's names. */"), qwenText);
+    assert.deepStrictEqual(qwen.model, { name: 'my-local-model' });
+  });
+  await check('Qwen: a server of your own named "claude" is left alone and said so', () => {
+    assert.deepStrictEqual(qwen.mcpServers.claude, { command: 'mine', args: ['/my/own/server'] });
+    assert.ok(result.stdout.includes('left your own "claude" entry in settings.json untouched'), result.stdout);
+  });
+  await check('Qwen: the four other apps are connected beside it', () =>
+    assert.deepStrictEqual(sorted(Object.keys(qwen.mcpServers)), ['agy', 'claude', 'codex', 'kimi']));
+  await check('Qwen: its servers are marked trusted, which no other app needs', () => {
+    assert.strictEqual(qwen.mcpServers.codex.trust, true);
+    assert.ok(!('trust' in readJson(join(home, '.gemini', 'config', 'mcp_config.json')).mcpServers.codex));
+  });
+  await check("Qwen: its six reporter events are added beside the person's own hook", () => {
+    assert.deepStrictEqual(sorted(Object.keys(qwen.hooks)),
+      ['PostToolUse', 'SessionEnd', 'SessionStart', 'Stop', 'StopFailure', 'UserPromptSubmit']);
+    assert.deepStrictEqual(qwen.hooks.PostToolUse[0].hooks[0], mine);
+    assert.strictEqual(qwen.hooks.PostToolUse.length, 2);
+  });
+  await check('Qwen: only the events that filter take a matcher', () => {
+    for (const event of installer.QWEN_MATCHED) assert.strictEqual(qwen.hooks[event].at(-1).matcher, '*', event);
+    for (const event of ['Stop', 'UserPromptSubmit']) assert.strictEqual(qwen.hooks[event].at(-1).matcher, undefined, event);
+  });
   // A server of the person's own with one of our names is left alone and said so;
   // an older Frenemy entry is refreshed.
   const agy = readJson(join(home, '.gemini', 'config', 'mcp_config.json')).mcpServers;
   await check('a server of your own named "codex" is left alone', () => {
     assert.deepStrictEqual(agy.codex, { command: 'mine', args: ['my-own-server'] }); assert.ok('other' in agy);
-    assert.deepStrictEqual(sorted(Object.keys(agy)), ['claude', 'codex', 'kimi', 'other']);
+    assert.deepStrictEqual(sorted(Object.keys(agy)), ['claude', 'codex', 'kimi', 'other', 'qwen']);
   });
   await check('and the installer says so', () => assert.ok(result.stdout.includes('left your own "codex" entry'), result.stdout));
   const kimi = readJson(join(home, '.kimi-code', 'mcp.json')).mcpServers;
   await check("an older Frenemy's connection is refreshed", () => assert.deepStrictEqual(kimi.claude.args, [join(prefix, 'tools', 'ask-claude-mcp.mjs')]));
   // Every changed file has a copy of how it was.
   for (const [folder, name] of [['.claude', 'settings.json'], ['.codex', 'hooks.json'], [join('.gemini', 'config'), 'mcp_config.json'],
-    [join('.gemini', 'config'), 'hooks.json'], ['.kimi-code', 'mcp.json'], ['.kimi-code', 'config.toml']]) {
+    [join('.gemini', 'config'), 'hooks.json'], ['.kimi-code', 'mcp.json'], ['.kimi-code', 'config.toml'], ['.qwen', 'settings.json']]) {
     await check('a backup copy exists for ' + name + ' in ' + folder, () => assert.ok(startsWithIn(join(home, folder), name + '.before-frenemy-').length > 0));
   }
   await check('the backup holds the file as it was', () =>
@@ -407,6 +453,7 @@ await group('Clean install and all generated routes (home folder with a space in
     assert.strictEqual(words[2], 'done');
     assert.strictEqual(codex.PostToolUse[1].hooks[0].command, expectedReporter(node, prefix, 'codex', ''));
     assert.strictEqual(agyHooks.snitch.Stop[0].command, expectedReporter(node, prefix, 'agy', 'done'));
+    assert.strictEqual(qwen.hooks.Stop.at(-1).hooks[0].command, expectedReporter(node, prefix, 'qwen', 'done'));
     assert.ok(installer.parseToml(kimiText).hooks.some(hook => hook.event === 'StopFailure' && hook.command === expectedReporter(node, prefix, 'kimi', 'fail')));
   });
   await check('the connections use a full node path and the .mjs file', () => {
@@ -420,6 +467,7 @@ await group('Clean install and all generated routes (home folder with a space in
   const sentinel = join(prefix, 'sentinel');
   if (fs.existsSync(prefix)) write(sentinel, 'keep me');
   const settingsOnce = read(join(home, '.claude', 'settings.json')), kimiOnce = read(join(home, '.kimi-code', 'config.toml'));
+  const qwenOnce = qwenText;
   const backupsOnce = fs.readdirSync(join(home, '.claude')).length;
   const again = runInstall(args, env);
   await check('a second run succeeds', () => assert.strictEqual(again.status, 0, again.stdout + again.stderr));
@@ -427,6 +475,7 @@ await group('Clean install and all generated routes (home folder with a space in
   await check('a second run says it is already installed', () => assert.ok(again.stdout.includes('Already installed')));
   await check("a second run leaves Claude's settings byte for byte", () => assert.strictEqual(read(join(home, '.claude', 'settings.json')), settingsOnce));
   await check("a second run leaves Kimi's settings byte for byte", () => assert.strictEqual(read(join(home, '.kimi-code', 'config.toml')), kimiOnce));
+  await check("a second run leaves Qwen's settings byte for byte", () => assert.strictEqual(read(join(home, '.qwen', 'settings.json')), qwenOnce));
   await check('a second run makes no new backup of an unchanged file', () => assert.strictEqual(fs.readdirSync(join(home, '.claude')).length, backupsOnce));
   await check('a second run leaves the Snitch panel as it is and says so', () => assert.ok(again.stdout.includes('Snitch is already at ')));
   // A different folder already sitting at the destination is never written into.
@@ -444,13 +493,13 @@ await group('Clean install and all generated routes (home folder with a space in
   });
 
   for (const driver of SEATS) {
-    await check('config/' + driver + '-mcp.json lists the three others', () => {
+    await check('config/' + driver + '-mcp.json lists the four others', () => {
       const config = readJson(join(prefix, 'config', driver + '-mcp.json')).mcpServers;
       assert.deepStrictEqual(sorted(Object.keys(config)), sorted(SEATS.filter(seat => seat !== driver)));
     });
   }
-  await check('config/codex-mcp.toml can be read and lists the three others', () =>
-    assert.deepStrictEqual(sorted(Object.keys(installer.parseToml(read(join(prefix, 'config', 'codex-mcp.toml'))).mcp_servers)), ['agy', 'claude', 'kimi']));
+  await check('config/codex-mcp.toml can be read and lists the four others', () =>
+    assert.deepStrictEqual(sorted(Object.keys(installer.parseToml(read(join(prefix, 'config', 'codex-mcp.toml'))).mcp_servers)), ['agy', 'claude', 'kimi', 'qwen']));
   await check('config/kimi-hooks.toml holds seven reporters', () =>
     assert.strictEqual(installer.parseToml(read(join(prefix, 'config', 'kimi-hooks.toml'))).hooks.length, 7));
   await check('config/claude-hooks.json has the four events with their words', () => {
@@ -458,6 +507,15 @@ await group('Clean install and all generated routes (home folder with a space in
     assert.deepStrictEqual(sorted(Object.keys(hooks)), ['PostToolUse', 'SessionEnd', 'Stop', 'UserPromptSubmit']);
     assert.ok(hooks.UserPromptSubmit[0].hooks[0].command.endsWith(' beat'));
     assert.ok(hooks.SessionEnd[0].hooks[0].command.endsWith(' done'));
+  });
+  await check('config/qwen-mcp.json trusts its servers and config/qwen-hooks.json has six events', () => {
+    const servers = readJson(join(prefix, 'config', 'qwen-mcp.json')).mcpServers;
+    assert.ok(Object.values(servers).every(server => server.trust === true));
+    const hooks = readJson(join(prefix, 'config', 'qwen-hooks.json')).hooks;
+    assert.deepStrictEqual(sorted(Object.keys(hooks)),
+      ['PostToolUse', 'SessionEnd', 'SessionStart', 'Stop', 'StopFailure', 'UserPromptSubmit']);
+    assert.ok(hooks.PostToolUse[0].hooks[0].command.endsWith('qwen'));
+    assert.ok(!('matcher' in hooks.Stop[0]));
   });
   for (const seat of SEATS) {
     await check('the installed connection to ' + seat + ' answers', async () => {
@@ -468,10 +526,10 @@ await group('Clean install and all generated routes (home folder with a space in
       assert.ok(reply.result.content[0].text.includes('fixture answer'), JSON.stringify(reply));
     });
   }
-  await check('each of the four questions left a finished job row', () => {
+  await check('each of the five questions left a finished job row', () => {
     const jobs = join(home, 'fleet', 'jobs');
     const rows = fs.readdirSync(jobs).filter(name => name.endsWith('.json')).map(name => readJson(join(jobs, name)));
-    assert.strictEqual(rows.length, 4); assert.ok(rows.every(row => row.state === 'done'), JSON.stringify(rows.map(row => row.state)));
+    assert.strictEqual(rows.length, 5); assert.ok(rows.every(row => row.state === 'done'), JSON.stringify(rows.map(row => row.state)));
   });
   for (const seat of SEATS) {
     await check('the installed reporter for ' + seat + ' runs', () => {
@@ -492,6 +550,7 @@ await group('Upgrade from an older Frenemy, permissions and half-way failures', 
   const home = mkdir(join(base, 'home \u{1F600}'));
   const env = homeEnv(home);
   for (const seat of ['agy', 'kimi']) env[seat.toUpperCase() + '_BIN'] = fakeApp(base, seat, SAYS_YES);
+  env.QWEN_BIN = join(base, 'not-installed');
   env.CLAUDE_BIN = fakeApp(base, 'claude', FAKE_CLAUDE, join(base, 'calls.log'), 'x');
   const lookalike = { type: 'command', command: 'echo /x/snitch/hooks/agent-beat.sh' };    // the person's own: only mentions the name
   const lookalike2 = { type: 'command', command: 'echo /x/snitch/hooks/agent-beat.mjs' };  // the same, for the Node reporter's name
@@ -593,27 +652,33 @@ await group('Second audit cases', async () => {
   const nowhere = join(base, 'not-installed');
   const pathLeft = (process.env.PATH || process.env.Path || '').split(path.delimiter)
     .filter(dir => dir && !['agy', 'kimi'].some(name => fs.existsSync(join(dir, name)))).join(path.delimiter);
-  mkdir(join(base, 'my claude')); mkdir(join(base, 'my codex'));
+  mkdir(join(base, 'my claude')); mkdir(join(base, 'my codex')); mkdir(join(base, 'my qwen'));
   const claudeBin = fakeApp(base, 'claude', FAKE_CLAUDE, log, 'x'), codexBin = fakeApp(base, 'codex', FAKE_CODEX, log, 'x');
+  const qwenBin = fakeApp(base, 'qwen', fakeOther('qwen'), log, 'x');
   const env = homeEnv(home, { CLAUDE_CONFIG_DIR: join(base, 'my claude'), CODEX_HOME: join(base, 'my codex'),
-    CLAUDE_BIN: claudeBin, CODEX_BIN: codexBin, AGY_BIN: nowhere, KIMI_BIN: nowhere, PATH: pathLeft });
+    QWEN_HOME: join(base, 'my qwen'), CLAUDE_BIN: claudeBin, CODEX_BIN: codexBin, QWEN_BIN: qwenBin,
+    AGY_BIN: nowhere, KIMI_BIN: nowhere, PATH: pathLeft });
   const result = runInstall(['--prefix', join(home, 'rt'), '--no-snitch'], env);
   await check('custom settings folders: the install succeeds', () => assert.strictEqual(result.status, 0, result.stdout + result.stderr));
-  await check('two apps are enough', () => assert.ok(result.stdout.includes('Connected to each other: Claude, Codex'), result.stdout));
+  await check('three apps are enough', () => assert.ok(result.stdout.includes('Connected to each other: Claude, Codex, Qwen Code'), result.stdout));
   await check('apps that are not installed are named', () => assert.ok(result.stdout.includes('Not found on this computer (skipped): Gemini (agy), Kimi'), result.stdout));
   await check('CLAUDE_CONFIG_DIR is used', () => {
-    assert.deepStrictEqual(Object.keys(readJson(join(base, 'my claude', '.claude.json')).mcpServers), ['codex']);
+    assert.deepStrictEqual(Object.keys(readJson(join(base, 'my claude', '.claude.json')).mcpServers), ['codex', 'qwen']);
     assert.ok(fs.existsSync(join(base, 'my claude', 'settings.json')));
   });
   await check('CODEX_HOME is used', () => assert.ok(fs.existsSync(join(base, 'my codex', 'hooks.json'))));
+  await check('QWEN_HOME is used', () => {
+    assert.ok(fs.existsSync(join(base, 'my qwen', 'settings.json')));
+    assert.deepStrictEqual(sorted(Object.keys(readJson(join(base, 'my qwen', 'settings.json')).mcpServers)), ['claude', 'codex']);
+  });
   await check('nothing is written to the default folders then', () => {
-    for (const name of ['.claude.json', '.claude', '.codex']) assert.ok(!fs.existsSync(join(home, name)), name);
+    for (const name of ['.claude.json', '.claude', '.codex', '.qwen']) assert.ok(!fs.existsSync(join(home, name)), name);
   });
   // 2. A command that says yes and writes nothing is not believed.
   const liar = fakeApp(base, 'liar', SAYS_YES);
   const home2 = join(base, 'home2'); mkdir(join(home2, '.claude'));
   write(join(home2, '.claude', 'settings.json'), '{"mine":true}');
-  const env2 = homeEnv(home2, { CLAUDE_BIN: liar, CODEX_BIN: codexBin, AGY_BIN: nowhere, KIMI_BIN: nowhere, PATH: pathLeft });
+  const env2 = homeEnv(home2, { CLAUDE_BIN: liar, CODEX_BIN: codexBin, QWEN_BIN: nowhere, AGY_BIN: nowhere, KIMI_BIN: nowhere, PATH: pathLeft });
   const lied = runInstall(['--prefix', join(home2, 'rt'), '--no-snitch'], env2);
   await check('a command that says yes and writes nothing is not believed', () => {
     assert.strictEqual(lied.status, 1, lied.stdout + lied.stderr);
@@ -621,7 +686,7 @@ await group('Second audit cases', async () => {
   });
   await check('and its settings are put back', () => assert.strictEqual(read(join(home2, '.claude', 'settings.json')), '{"mine":true}'));
   await check('one connected app is not enough, and the installer says so', () =>
-    assert.ok(lied.stdout.includes('Frenemy needs at least two of the four AI apps. Found: Codex'), lied.stdout));
+    assert.ok(lied.stdout.includes('Frenemy needs at least two of the AI apps. Found: Codex'), lied.stdout));
   // 3. Ctrl-C between taking the old connection out and putting the new one in.
   const home3 = join(base, 'home3'); mkdir(join(home3, '.codex'));
   const prefix = join(home2, 'rt');
@@ -636,7 +701,7 @@ await group('Second audit cases', async () => {
     throw new installer.Interrupted();
   };
   await check('an interruption half-way is passed on', () => assert.rejects(
-    installer.connect(prefix, { claude: claudeBin, codex: codexBin, agy: null, kimi: null }, home3, { node: process.execPath, run: interrupted }),
+    installer.connect(prefix, { claude: claudeBin, codex: codexBin, agy: null, kimi: null, qwen: null }, home3, { node: process.execPath, run: interrupted }),
     installer.Interrupted));
   await check('the old entry really was taken out before the interruption', () => assert.deepStrictEqual(swap, ['remove', 'add']));
   await check("the interrupted app's settings are put back", () => assert.strictEqual(read(join(home3, '.codex', 'config.toml')), before));
@@ -654,7 +719,7 @@ if (a[1] === 'remove') { fs.writeFileSync(${JSON.stringify(join(home3b, '.codex'
 fs.writeFileSync(${JSON.stringify(slowPid)}, String(process.pid)); fs.appendFileSync(${JSON.stringify(slowLog)}, 'adding\\n');
 setTimeout(() => process.exit(0), 30000);
 `);
-    const env3 = homeEnv(home3b, { CLAUDE_BIN: nowhere, CODEX_BIN: slow, AGY_BIN: nowhere, KIMI_BIN: fakeApp(base, 'kimi', SAYS_YES), PATH: pathLeft });
+    const env3 = homeEnv(home3b, { CLAUDE_BIN: nowhere, CODEX_BIN: slow, QWEN_BIN: nowhere, AGY_BIN: nowhere, KIMI_BIN: fakeApp(base, 'kimi', SAYS_YES), PATH: pathLeft });
     const child = spawn(process.execPath, [INSTALL, '--prefix', join(home3b, 'rt'), '--no-snitch'], { env: env3, stdio: ['ignore', 'pipe', 'pipe'] });
     let err = '';
     child.stderr.setEncoding('utf8'); child.stderr.on('data', chunk => { err += chunk; }); child.stdout.resume();
@@ -894,7 +959,7 @@ await group('TOML that cannot be read with certainty is left untouched', async (
   for (const folder of ['.codex', '.kimi-code']) mkdir(join(home, folder));
   const log = join(base, 'calls.log');
   const env = homeEnv(home, { CLAUDE_BIN: fakeApp(base, 'claude', FAKE_CLAUDE, log, 'x'), CODEX_BIN: fakeApp(base, 'codex', FAKE_CODEX, log, 'x'),
-    AGY_BIN: join(base, 'not-installed'), KIMI_BIN: fakeApp(base, 'kimi', SAYS_YES) });
+    AGY_BIN: join(base, 'not-installed'), KIMI_BIN: fakeApp(base, 'kimi', SAYS_YES), QWEN_BIN: join(base, 'not-installed') });
   // Kimi: a table written over several lines, which only a newer TOML allows. Codex: a name set twice.
   const kimiOdd = '# mine\nmodel = "k"\nlimits = {\n  daily = 5,\n}\n\n[[hooks]]\nevent = "Stop"\ncommand = "/usr/bin/true mine"\n';
   const codexOdd = 'model = "a"\nmodel = "b"\n\n[mcp_servers.mine]\ncommand = "x"\n';
@@ -977,6 +1042,96 @@ await group('TOML that cannot be read with certainty is left untouched', async (
       assert.strictEqual(read(file), text); assert.deepStrictEqual(fs.readdirSync(path.dirname(file)), ['settings.json']);
     }
   });
+});
+
+await group('Qwen home overrides survive generated connections', async () => {
+  const base = tempDir('frenemy-qwen-homes-');
+  const calls = join(base, 'calls.log');
+  const claude = fakeApp(base, 'claude', FAKE_CLAUDE, calls, 'x');
+  const qwen = fakeApp(base, 'qwen', fakeOther('qwen'), calls, 'x');
+  const cases = [
+    ['absolute', join(base, 'absolute home'), () => join(base, 'absolute home')],
+    ['relative', 'relative home', cwd => join(cwd, 'relative home')],
+    ['tilde', '~/custom home', (_cwd, home) => join(home, 'custom home')],
+    ['tilde-backslash', '~\\custom home', (_cwd, home) => join(home, 'custom home')],
+    ['home', '~', (_cwd, home) => home],
+    ['empty', '', (_cwd, home) => join(home, '.qwen')],
+    ['unset', undefined, (_cwd, home) => join(home, '.qwen')],
+  ];
+  for (const [name, value, expected] of cases) {
+    await check('QWEN_HOME ' + name + ' is used for settings and generated environments', () => {
+      const cwd = mkdir(join(base, name));
+      const home = mkdir(join(cwd, 'home'));
+      const prefix = join(home, 'runtime');
+      const env = homeEnv(home, { CLAUDE_BIN: claude, QWEN_BIN: qwen, CODEX_BIN: join(base, 'absent'),
+        AGY_BIN: join(base, 'absent'), KIMI_BIN: join(base, 'absent'), QWEN_HOME: value });
+      const result = spawnSync(process.execPath, [INSTALL, '--prefix', prefix, '--no-snitch'],
+        { env, cwd, encoding: 'utf8', timeout: 60000 });
+      assert.strictEqual(result.status, 0, result.stdout + result.stderr);
+      const wanted = expected(cwd, home);
+      assert.ok(fs.existsSync(join(wanted, 'settings.json')));
+      for (const driver of SEATS) {
+        const servers = readJson(join(prefix, 'config', driver + '-mcp.json')).mcpServers;
+        for (const server of Object.values(servers)) {
+          assert.strictEqual(server.env.QWEN_HOME, value ? wanted : undefined);
+        }
+      }
+      assert.strictEqual(readJson(join(home, '.claude.json')).mcpServers.qwen.env.QWEN_HOME,
+        value ? wanted : undefined);
+    });
+  }
+});
+
+await group('Qwen settings that cannot be read with certainty are left untouched', async () => {
+  const base = tempDir('frenemy-install-jsonc-');
+  const home = mkdir(join(base, 'home'));
+  mkdir(join(home, '.qwen'));
+  const log = join(base, 'calls.log');
+  const env = homeEnv(home, { CLAUDE_BIN: fakeApp(base, 'claude', FAKE_CLAUDE, log, 'x'),
+    CODEX_BIN: fakeApp(base, 'codex', FAKE_CODEX, log, 'x'), QWEN_BIN: fakeApp(base, 'qwen', fakeOther('qwen'), log, 'x'),
+    AGY_BIN: join(base, 'not-installed'), KIMI_BIN: join(base, 'not-installed') });
+  const odd = '{\n  // mine\n  "model": "keep",\n  "mcpServers": { "claude": { "command": "x" } },,\n}\n';
+  write(join(home, '.qwen', 'settings.json'), odd);
+  const result = runInstall(['--prefix', join(home, 'rt'), '--no-snitch'], env);
+  await check('the install goes on for the other apps and ends with exit code 1', () => {
+    assert.strictEqual(result.status, 1, result.stdout + result.stderr); assert.ok(noStack(result.stderr), result.stderr);
+  });
+  await check('Qwen: the installer says plainly that it could not read the file and changed nothing', () =>
+    assert.match(result.stdout, /Could not connect Qwen Code: could not read a member name that is not a quoted string \(its settings were put back as they were\)/));
+  await check('Qwen: settings.json is byte for byte as it was, with no backup and no leftover file', () => {
+    assert.strictEqual(read(join(home, '.qwen', 'settings.json')), odd);
+    assert.deepStrictEqual(fs.readdirSync(join(home, '.qwen')), ['settings.json']);
+  });
+  const prefix = join(home, 'rt');
+  const servers = { codex: { command: process.execPath, args: [join(prefix, 'tools', 'ask-codex-mcp.mjs')], env: {} } };
+  const hooks = installer.hookEntries('qwen', prefix, { node: process.execPath });
+  const cases = {
+    'a comment that is never closed': '{\n  // mine\n  "model": "k"\n',
+    'text after the closing brace': '{ "model": "k" } and then some\n',
+    'the same member written twice': '{ "model": "k", "model": "j" }\n',
+    'a byte-order mark at the start': '\ufeff{ "model": "k" }\n',
+    'a number too large to copy exactly': '{ "id": 12345678901234567890 }\n',
+    'a top level that is not one object': '[1]\n',
+    'hooks that are not a list of groups': '{ "hooks": { "Stop": {} } }\n',
+  };
+  let n = 0;
+  for (const [what, text] of Object.entries(cases)) {
+    const file = join(mkdir(join(base, 'case' + (++n))), 'settings.json');
+    write(file, text);
+    await check('left untouched: ' + what, () => {
+      assert.throws(() => installer.mergeQwenSettings(file, servers, hooks, new Map(), []), installer.Stop, text);
+      assert.strictEqual(read(file), text);
+      assert.deepStrictEqual(fs.readdirSync(path.dirname(file)), ['settings.json']);
+    });
+  }
+  await check('bytes that are not UTF-8 text are left untouched', () => {
+    const file = join(mkdir(join(base, 'case-bytes')), 'settings.json');
+    const bytes = Buffer.from([0x7b, 0x22, 61, 0x22, 0xff, 0xfe, 0x22, 0x7d]);
+    fs.writeFileSync(file, bytes);
+    assert.throws(() => installer.mergeQwenSettings(file, servers, hooks, new Map(), []), installer.Stop);
+    assert.ok(fs.readFileSync(file).equals(bytes));
+  });
+  console.log('Retained Qwen settings fixture:', base);
 });
 
 // ============================================================================================

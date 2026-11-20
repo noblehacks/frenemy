@@ -1,3 +1,9 @@
+# Unreleased
+
+- Add Qwen Code as a fifth agent harness, with consult and write tools, installer configuration, and Snitch reporting.
+- Preserve Qwen settings and JSON comments outside the updated `mcpServers` and `hooks` objects.
+- Support `QWEN_HOME` for settings, worker launches, and log discovery.
+
 # 2.0.0 / Snitch 0.1.1
 
 Version 2 is the four-seat release: Claude, Codex, agy and Kimi, any of them driving, plus Snitch. Version 1 connected Claude and Codex only.

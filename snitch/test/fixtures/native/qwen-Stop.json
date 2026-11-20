@@ -1,0 +1,16 @@
+{
+  "session_id": "fixture-74e0e66882114cd48754d909e0666191",
+  "transcript_path": "/fixture/transcript.jsonl",
+  "cwd": "/fixture/project",
+  "hook_event_name": "Stop",
+  "timestamp": "2026-11-19T23:07:16.526Z",
+  "permission_mode": "default",
+  "prompt_id": "fixture-74e0e66882114cd48754d909e0666191########0",
+  "stop_hook_active": false,
+  "last_assistant_message": "FRENEMY-QWEN-NATIVE-20261119",
+  "background_tasks": [],
+  "crons": [],
+  "context_usage": 0.035587310791015625,
+  "context_limit": 262144,
+  "input_tokens": 9329
+}

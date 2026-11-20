@@ -1,6 +1,6 @@
 # Crew write safeguards — current contract
 
-All four MCP write tools require `prompt`, an absolute `working_directory`, and `allowed_files` (exact relative file paths). Missing scope is rejected before launching a model. Read-only `ask_*` tools remain for questions and audits.
+All five MCP write tools require `prompt`, an absolute `working_directory`, and `allowed_files` (exact relative file paths). Missing scope is rejected before launching a model. Read-only `ask_*` tools remain for questions and audits.
 
 The guard claims each assigned file, makes a private working copy under `.worker-state/workspaces/`, and records original hashes. It rejects overlapping claims, including a file versus a path below that file. Independent files can be assigned separately. Workers edit their copies; their tool response carries a job receipt. The driver reviews the diff and checks the result before calling `crew_job_apply`. The worker must never apply its own job.
 
@@ -21,5 +21,7 @@ node tools/worker-workspace.mjs abandon --root /absolute/project --job JOB_ID --
 ```
 
 All wrapper foreground watchdogs default to 570 seconds; relays have a 600-second backstop. A direct wrapper timeout of zero disables its own watchdog. Agy still has a native 24-hour print ceiling in that mode; unbounded background parity is not certified. MCP calls also remain subject to their host deadline. Worker edit authorization does not bypass a CLI's actual command-approval rejection.
+
+Qwen consults use `--safe-mode --approval-mode plan`. Write jobs use `--safe-mode --yolo` in the staged workspace, with a 300-turn limit and a wall-time limit 30 seconds below the wrapper watchdog. With `QWEN_TIMEOUT=0`, the native wall-time limit is 24 hours. Safe mode disables custom hooks and MCP servers. Write jobs suppress Qwen's no-sandbox warning; the staged workspace and budgets do not provide a security sandbox.
 
 Permission bits are checked together with content hashes. Applied jobs with a leftover interrupted marker can reconcile bookkeeping without undoing committed files, even if the owner subsequently edited them. Legacy interrupted recovery uses hashes when original mode metadata is unavailable and journals that limitation.

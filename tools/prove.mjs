@@ -5,9 +5,9 @@
 // Finding the marker shows only that the text is there; it does not prove a consultation.
 import fs from 'node:fs';
 import path from 'node:path';
-import { homeDir } from './platform.mjs';
+import { homeDir, resolveQwenHome } from './platform.mjs';
 
-const USAGE = 'usage: prove.mjs MARKER-WORD  claude|codex|agy|kimi';
+const USAGE = 'usage: prove.mjs MARKER-WORD  claude|codex|agy|kimi|qwen';
 const DASH = String.fromCharCode(0x2014);   // the long dash the earlier version printed
 
 function refuse(message) {
@@ -67,7 +67,7 @@ function main() {
   if (/[^0-9]/.test(hours)) return refuse('HOURS must be a positive integer');
   if (hours.length > 5 || Number(hours) <= 0) return refuse('HOURS out of range');
   const minutes = Number(hours) * 60;
-  if (!['claude', 'codex', 'agy', 'kimi'].includes(who)) return refuse(USAGE);
+  if (!['claude', 'codex', 'agy', 'kimi', 'qwen'].includes(who)) return refuse(USAGE);
   if (!marker) return refuse(USAGE);
 
   const needles = marker.split('\n').map(line => Buffer.from(line, 'utf8'));
@@ -91,6 +91,8 @@ function main() {
     name => name.length >= 14 && name.startsWith('rollout-') && name.endsWith('.jsonl'));
   row('AGY', path.join(home, '.gemini', 'antigravity-cli', 'brain'), name => name === 'transcript.jsonl');
   row('KIMI', path.join(home, '.kimi-code', 'sessions'), name => name === 'wire.jsonl');
+  const qwenHome = resolveQwenHome(process.env.QWEN_HOME, home);
+  row('QWEN', path.join(qwenHome, 'projects'), name => name.endsWith('.jsonl'));
   console.log('');
 
   if (counts[who.toUpperCase()] > 0) {

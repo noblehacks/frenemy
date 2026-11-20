@@ -18,6 +18,7 @@ const IGNORED = new Set(['.attic', '.git', '.worker-state', '.worker-verificatio
 const SUITES = [
   ['worker-job-status', 'tools/test-worker-status.mjs'],
   ['fresh-install', 'tools/test-install.mjs'],
+  ['jsonc-merge', 'tools/test-jsonc-merge.mjs'],
   ['worker-guard', 'tools/test-worker-workspace.mjs'],
   ['worker-adversarial', 'tools/test-worker-adversarial.mjs'],
   ['worker-repairs', 'tools/test-worker-repairs.mjs'],
@@ -65,7 +66,7 @@ async function run(name, args, timeoutSeconds = 120) {
   let status = 'fail';
   try {
     const env = { ...process.env, PYTHONDONTWRITEBYTECODE: '1' };
-    for (const seat of ['CLAUDE', 'CODEX', 'AGY', 'KIMI']) env[seat + '_BIN'] = path.join(evidence, 'disabled-real-provider');
+    for (const seat of ['CLAUDE', 'CODEX', 'AGY', 'KIMI', 'QWEN']) env[seat + '_BIN'] = path.join(evidence, 'disabled-real-provider');
     status = await new Promise(resolve => {
       let child, settled = false;
       const finish = value => { if (!settled) { settled = true; resolve(value); } };

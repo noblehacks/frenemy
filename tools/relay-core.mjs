@@ -4,7 +4,7 @@ import { isAbsolute } from "node:path";
 import { randomBytes } from "node:crypto";
 import { fleetJob } from "./fleet-report.mjs";
 import { prepareWorker, jobCommand, jobTools, guardChildren } from "./worker-guard.mjs";
-import { WIN, spawnCli, processSnapshot, ownedTree, stillOwned, signalOwned, stopWindowsTree } from "./platform.mjs";
+import { WIN, spawnCli, processSnapshot, ownedTree, stillOwned, signalOwned, stopWindowsTree, resolveQwenHome } from "./platform.mjs";
 
 const MAX_LINE_CHARS = 8 * 1024 * 1024;
 
@@ -162,8 +162,10 @@ export function runWrapper({ script, args = [], env = {}, timeoutMs, maxOutput, 
         CODEX_BIN: process.env.CODEX_BIN,
         AGY_BIN: process.env.AGY_BIN,
         KIMI_BIN: process.env.KIMI_BIN,
+        QWEN_BIN: process.env.QWEN_BIN,
         NODE_BIN: process.env.NODE_BIN,
         ...env,
+        QWEN_HOME: resolveQwenHome(env.QWEN_HOME ?? process.env.QWEN_HOME),
         FRENEMY_RELAY_JOB: job?.id ?? "",
       },
     });

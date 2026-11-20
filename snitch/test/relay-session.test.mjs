@@ -27,7 +27,7 @@ const root = fs.realpathSync.native(fs.mkdtempSync(path.join(os.tmpdir(), 'snitc
 const home = path.join(root, 'home');
 fs.mkdirSync(home);
 
-for (const agent of ['claude', 'codex', 'agy', 'kimi']) {
+for (const agent of ['claude', 'codex', 'agy', 'kimi', 'qwen']) {
   const project = path.join(root, agent);
   fs.mkdirSync(project);
   const store = path.join(project, 'fleet');
